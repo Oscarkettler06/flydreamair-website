@@ -1,1 +1,100 @@
-style
+/* === FlyDreamAir Global Styles === */
+
+:root {
+  --light-sky: #D8ECFE;
+  --ice-blue: #9DCFE1;
+  --soft-steel: #9AB0C8;
+  --cloud-blue: #8CB8E6;
+  --pale-slate: #B8CADE;
+  --text-dark: #333;
+  --text-light: #fff;
+  --accent: var(--cloud-blue);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--light-sky);
+  color: var(--text-dark);
+  padding: 2rem;
+}
+
+/* === Header & Footer (optional) === */
+header, footer {
+  background-color: var(--soft-steel);
+  color: var(--text-light);
+  text-align: center;
+  padding: 1rem;
+}
+
+/* === Links === */
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* === Buttons === */
+button {
+  background-color: var(--ice-blue);
+  color: var(--text-dark);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--cloud-blue);
+}
+
+/* === Signup Page === */
+.signup-container {
+  max-width: 400px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: var(--ice-blue);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.signup-container h1 {
+  margin-bottom: 1.5rem;
+  color: var(--cloud-blue);
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.signup-form label {
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+}
+
+.signup-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.signup-form button {
+  margin-top: 1.5rem;
+}
+
+.logo img {
+  margin-bottom: 1rem;
+}
