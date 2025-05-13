@@ -58,8 +58,6 @@ button:hover {
 }
 
 /* === Signup Page === */
-/* === FlyDreamAir Global Styles === */
-
 :root {
   --light-sky: #7aa4c9;
   --ice-blue: #9DCFE1;
@@ -79,7 +77,7 @@ button:hover {
 
 body {
   font-family: Arial, sans-serif;
-  background-image: url('signUpBackground.png');
+  background-image: url('./signUpBackground.png');
   color: var(--text-dark);
   padding: 2rem;
   background-size: cover;
@@ -87,7 +85,6 @@ body {
   background-position: center;
 }
 
-/* === Header & Footer (optional) === */
 header, footer {
   background-color: var(--soft-steel);
   color: var(--text-light);
@@ -95,7 +92,6 @@ header, footer {
   padding: 1rem;
 }
 
-/* === Links === */
 a {
   color: var(--accent);
   text-decoration: none;
@@ -105,7 +101,6 @@ a:hover {
   text-decoration: underline;
 }
 
-/* === Buttons === */
 button {
   background-color: var(--ice-blue);
   color: var(--text-dark);
@@ -120,7 +115,6 @@ button:hover {
   background-color: var(--cloud-blue);
 }
 
-/* === Signup Page === */
 .signup-container {
   max-width: 600px;
   margin: 3rem auto;
@@ -131,7 +125,7 @@ button:hover {
   text-align: left;
   position: relative;
 
-  background-image: url('logo-large.png');
+  background-image: url('./logo-large.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
