@@ -1,30 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="style.css">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lounge Check-In - FlyDreamAir</title>
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background: linear-gradient(180deg, #87CEEB 0%, #B7E4F9 100%);
+            min-height: 100vh;
+            background-image: url('images/sky-clouds.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="style2.css">
 </head>
 <body>
-
-    <main class="checkin-container">
-        <h1>Lounge Check-In</h1>
-
-        <div class="checkin-summary">
-            <p><strong>Lounge:</strong> Sydney Gold Lounge</p>
-            <p><strong>Date:</strong> 17 Apr 2025</p>
-            <p><strong>Time:</strong> 10:00 AM</p>
-            <p><strong>Guest:</strong> 1</p>
+    <main class="main-container">
+        <!-- Airplane decoration -->
+        <img src="images/airplane.png" alt="" class="airplane-decoration">
+        
+        <!-- Header -->
+        <div class="header">
+            <h2>FlyDreamAir Lounge Check-In</h2>
         </div>
 
+        <!-- Welcome and Booking Info -->
+        <div class="booking-info">
+            <p class="welcome-text">Hello, John Smith</p>
+            <p>You have an upcoming lounge booking.</p>
+            <ul>
+                <li><strong>Lounge:</strong> Sydney Gold Lounge</li>
+                <li><strong>Location:</strong> SYD International Terminal 1</li>
+                <li><strong>Date:</strong> April 17, 2025</li>
+                <li><strong>Time:</strong> 10:00 AM</li>
+            </ul>
+
+            <button class="primary-button">Check-In Now</button>
+        </div>
+
+        <!-- Lounge Image -->
+        <img src="images/lounge-room.jpg" alt="Sydney Gold Lounge" class="lounge-image">
+
+        <!-- QR Code Section -->
         <div class="qr-section">
-            <p>Present this QR code at the lounge entrance:</p>
-            <img src="images/sample-qr.png" alt="QR Code" class="qr-img">
+            <h3>After check-in, display Your QR Code</h3>
+            <img src="images/qr-code.png" alt="QR Code" class="qr-code">
+            <p class="qr-instructions">Show this code to lounge staff to complete your entry.</p>
         </div>
 
-        <button onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+        <!-- Back Button -->
+        <a href="dashboard.html" class="back-button">
+            <span>←</span>
+            Back to Dashboard
+        </a>
     </main>
-
 </body>
 </html>

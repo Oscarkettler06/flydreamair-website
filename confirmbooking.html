@@ -1,35 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="style.css">
 <head>
     <meta charset="UTF-8">
-    <title>Confirm Booking - FlyDreamAir</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lounge Check-In - FlyDreamAir</title>
+    <style>
+        body {
+            background: linear-gradient(180deg, #87CEEB 0%, #B7E4F9 100%);
+            min-height: 100vh;
+            background-image: url('images/sky-clouds.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="style2.css">
 </head>
 <body>
-
-    <main class="confirm-container">
-        <h1>Confirm Your Booking</h1>
-
-        <div class="booking-details">
-            <p><strong>Lounge:</strong> Sydney Gold Lounge</p>
-            <p><strong>Date:</strong> 17 Apr 2025</p>
-            <p><strong>Time:</strong> 10:00 AM</p>
-            <p><strong>Guests:</strong> 1</p>
-            <p><strong>Price:</strong> $20</p>
+    <main class="main-container">
+        <!-- Airplane decoration -->
+        <img src="images/airplane.png" alt="" class="airplane-decoration">
+        
+        <!-- Header -->
+        <div class="header">
+            <h2>FlyDreamAir Lounge Check-In</h2>
         </div>
 
-        <h2>Select Payment Method</h2>
-        <div class="payment-options">
-            <button>💳 Visa</button>
-            <button>📱 Apple Pay</button>
-            <button>🌐 Google Pay</button>
+        <!-- Welcome and Booking Info -->
+        <div class="booking-info">
+            <p class="welcome-text">Hello, John Smith</p>
+            <p>You have an upcoming lounge booking.</p>
+            <ul>
+                <li><strong>Lounge:</strong> Sydney Gold Lounge</li>
+                <li><strong>Location:</strong> SYD International Terminal 1</li>
+                <li><strong>Date:</strong> April 17, 2025</li>
+                <li><strong>Time:</strong> 10:00 AM</li>
+            </ul>
+
+            <button class="primary-button">Check-In Now</button>
         </div>
 
-        <button class="confirm-btn" onclick="window.location.href='upcomingbookings.html'">Confirm Booking</button>
-        <p><a href="search.html">Cancel</a></p>
+        <!-- Lounge Image -->
+        <img src="images/lounge-room.jpg" alt="Sydney Gold Lounge" class="lounge-image">
+
+        <!-- QR Code Section -->
+        <div class="qr-section">
+            <h3>After check-in, display Your QR Code</h3>
+            <img src="images/qr-code.png" alt="QR Code" class="qr-code">
+            <p class="qr-instructions">Show this code to lounge staff to complete your entry.</p>
+        </div>
+
+        <!-- Back Button -->
+        <a href="dashboard.html" class="back-button">
+            <span>←</span>
+            Back to Dashboard
+        </a>
     </main>
-
 </body>
 </html>
