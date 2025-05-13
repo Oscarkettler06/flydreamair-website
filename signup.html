@@ -1,38 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="style.css">
 <head>
-    <meta charset="UTF-8">
-    <title>Create Account - FlyDreamAir</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <title>Create Account – FlyDreamAir</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <main class="signup-container">
-        <div class="logo">
-            <img src="images/logo.png" alt="FlyDreamAir Logo" width="100">
-        </div>
-
-        <h1>Create An Account</h1>
-
-        <form action="dashboard.html" method="post" class="signup-form">
-            <label for="fullname">Full Name</label>
-            <input type="text" id="fullname" name="fullname" required>
-
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
-
-            <label for="confirm">Confirm Password</label>
-            <input type="password" id="confirm" name="confirm" required>
-
-            <button type="submit">Sign In</button>
-        </form>
-
-        <p>Already have an account? <a href="index.html">Login</a></p>
-    </main>
-
+  <main class="signup-container">
+    <h1>Create An Account</h1>
+    <form action="dashboard.html" method="post" class="signup-form">
+      <div class="form-group">
+        <label for="fullname">Full Name</label>
+        <input
+          type="text"
+          id="fullname"
+          name="fullname"
+          placeholder="Value"
+          required
+        >
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Value"
+          required
+        >
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Value"
+          required
+        >
+      </div>
+      <div class="form-group">
+        <label for="confirm">Confirm Pass</label>
+        <input
+          type="password"
+          id="confirm"
+          name="confirm"
+          placeholder="Value"
+          required
+        >
+      </div>
+      <button type="submit">Sign In</button>
+    </form>
+    <p class="login-text">
+      Already have an account?
+      <a href="index.html">Login</a>
+    </p>
+  </main>
 </body>
 </html>
