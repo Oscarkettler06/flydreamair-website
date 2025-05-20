@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lounge Check-In - FlyDreamAir</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
 <h1 id="greeting">No Membership with RyanAir? You can fix that</h1>
 <form id="MemberForm">
   <input type="text" id="FirstNameInput" placeholder="Your first name" required><br>
@@ -63,8 +73,9 @@ function updateTierOptions() {
     // Hide Regular tier option
     regularRadio.style.display = 'none';
     regularLabel.style.display = 'none';
+
     // Show upgrade offer
-    upgradeDiv.innerHTML = `You're a Regular member. Upgrade to Deluxe for premium access`;
+    upgradeDiv.innerHTML = `You're a Regular member. <button id="upgradeBtn">Upgrade to Deluxe</button>`;
     // Show only Deluxe option
     deluxeRadio.checked = false;
     // Add upgrade logic
@@ -115,3 +126,5 @@ window.onload = function() {
   updateTierOptions();
 };
 </script>
+</body>
+</html>
