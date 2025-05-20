@@ -182,6 +182,26 @@ body {
     color: #666;
 }
 
+/* hide all by default */
+.payment-form {
+  display: none;
+}
+
+/* simple grid for expiry/CVC */
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+/* make all form controls full-width in their column */
+.payment-form .form-group input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
 /* === Action Buttons === */
 .button-container {
     display: flex;
