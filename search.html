@@ -1,44 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Search Results - FlyDreamAir</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <title>Search Results – FlyDreamAir</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <header>
+  <main class="main-container">
+    <header class="searchHeader">
+      <div>
         <h1>FlyDreamAir</h1>
         <p>Find your perfect lounge experience</p>
+      </div>
     </header>
 
-    <main class="search-container">
-        <h2>Available Lounges</h2>
+    <h2>Available Lounges</h2>
 
-        <div class="lounge-card">
-            <h3>Sydney Gold Lounge</h3>
-            <p>Date: 17 Apr | Time: 10:00 AM</p>
-            <p>Amenities: Free Wi-Fi, Bar, 2 Beds, 1 Bath, Breakfast</p>
-            <p>Rating: ★★★★☆</p>
-            <button onclick="window.location.href='confirmbooking.html'">Add to Itinerary</button>
-        </div>
+    <!-- Dropdown filter (unchanged) -->
+    <div class="filter-row">
+      <label for="lounge-filter">Browse by Lounge:</label>
+      <select id="lounge-filter">
+        <option value="">All Lounges</option>
+        <option value="Sydney Gold Lounge">Sydney Gold Lounge</option>
+        <option value="Melbourne Executive Lounge">Melbourne Executive Lounge</option>
+        <option value="Brisbane Serenity Lounge">Brisbane Serenity Lounge</option>
+      </select>
+    </div>
 
-        <div class="lounge-card">
-            <h3>Melbourne Executive Lounge</h3>
-            <p>Date: 17 Apr | Time: 11:00 AM</p>
-            <p>Amenities: Workspace, Shower, Quiet Zone, Buffet</p>
-            <p>Rating: ★★★★★</p>
-            <button onclick="window.location.href='confirmbooking.html'">Add to Itinerary</button>
-        </div>
+    <!-- Card: Sydney -->
+    <div class="lounge-card" data-lounge="Sydney Gold Lounge">
+      <img src="./Images/sydneyLounge.png" alt="Sydney Gold Lounge" class="lounge-image">
+      <div class="card-content">
+        <h3>Sydney Gold Lounge</h3>
+        <p>Date: 17 Apr | Time: 10:00 AM</p>
+        <p>Amenities: Free Wi-Fi, Bar, 2 Beds, 1 Bath, Breakfast</p>
+        <p>Rating: ★★★★☆</p>
+        <button class="search-button" onclick="window.location.href='confirmbooking.html'">
+          Add to Itinerary
+        </button>
+      </div>
+    </div>
 
-        <div class="lounge-card">
-            <h3>Brisbane Serenity Lounge</h3>
-            <p>Date: 17 Apr | Time: 12:00 PM</p>
-            <p>Amenities: Recliners, Beverages, Wi-Fi, Snacks</p>
-            <p>Rating: ★★★☆☆</p>
-            <button onclick="window.location.href='confirmbooking.html'">Add to Itinerary</button>
-        </div>
-    </main>
+    <!-- Card: Melbourne -->
+    <div class="lounge-card" data-lounge="Melbourne Executive Lounge">
+      <img src="./Images/melbourneLounge.png" alt="Melbourne Executive Lounge" class="lounge-image">
+      <div class="card-content">
+        <h3>Melbourne Executive Lounge</h3>
+        <p>Date: 17 Apr | Time: 11:00 AM</p>
+        <p>Amenities: Workspace, Shower, Quiet Zone, Buffet</p>
+        <p>Rating: ★★★★★</p>
+        <button class="search-button" onclick="window.location.href='confirmbooking.html'">
+          Add to Itinerary
+        </button>
+      </div>
+    </div>
 
+    <!-- Card: Brisbane -->
+    <div class="lounge-card" data-lounge="Brisbane Serenity Lounge">
+      <img src="./Images/brisbaneLounge.png" alt="Brisbane Serenity Lounge" class="lounge-image">
+      <div class="card-content">
+        <h3>Brisbane Serenity Lounge</h3>
+        <p>Date: 17 Apr | Time: 12:00 PM</p>
+        <p>Amenities: Recliners, Beverages, Wi-Fi, Snacks</p>
+        <p>Rating: ★★★☆☆</p>
+        <button class="search-button" onclick="window.location.href='confirmbooking.html'">
+          Add to Itinerary
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const filterSelect = document.getElementById('lounge-filter');
+    const cards = document.querySelectorAll('.lounge-card');
+
+    filterSelect.addEventListener('change', () => {
+      const choice = filterSelect.value;
+      cards.forEach(card => {
+        const loungeName = card.dataset.lounge;
+        card.style.display = (!choice || loungeName === choice) ? '' : 'none';
+      });
+    });
+  </script>
 </body>
 </html>
