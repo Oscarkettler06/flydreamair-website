@@ -462,8 +462,7 @@ body {
   object-fit: cover;
   height: 500px; /* adjust as you like */
 }
-
-    /* Card content */
+   /* Card content */
 .card-content {
   padding: 1rem 1.5rem 2rem;
 }
@@ -476,8 +475,7 @@ body {
   font-size: 0.95rem;
   margin: 0.5rem 0;
 }
-
-    /* Button */
+   /* Button */
 .search-button {
   margin-top: 1rem;
   margin-bottom: 0;
