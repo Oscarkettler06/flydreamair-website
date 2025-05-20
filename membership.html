@@ -14,12 +14,13 @@
     <label for="Deluxe" id="DeluxeLabel">Deluxe Tier</label>
     <input type="radio" id="Regular" name="MemberTier" value="Regular">
     <label for="Regular" id="RegularLabel">Regular Tier</label>
+    <input type="radio" id="None" name="MemberTier" value="">
+    <label for="None" id="NoneLabel">None</label>
   </span>
   <br>
   <button type="submit">Confirm membership</button>
 </form>
 <p id="status"></p>
-<div id="upgradeOffer" style="margin-top:10px; font-weight:bold;"></div>
 
 <script>
 function setCookie(name, value, days) {
@@ -40,64 +41,46 @@ function getCookie(name) {
   return "";
 }
 
-function updateTierOptions() {
+function updateGreeting() {
   const tier = getCookie("membershipTier");
-  const regularRadio = document.getElementById("Regular");
-  const regularLabel = document.getElementById("RegularLabel");
-  const deluxeRadio = document.getElementById("Deluxe");
-  const deluxeLabel = document.getElementById("DeluxeLabel");
-
-  // Reset visibility and selection
-  regularRadio.style.display = '';
-  regularLabel.style.display = '';
-  deluxeRadio.style.display = '';
-  deluxeLabel.style.display = '';
-  upgradeDiv.innerHTML = '';
-
+  let greeting = "No Membership with RyanAir? You can fix that";
   if (tier === "Regular") {
-    // Hide Regular option and show upgrade offer
-    regularRadio.style.display = 'none';
-    regularLabel.style.display = 'none';
-    greeting.innerHTML = `You're a Regular member. <button id="upgradeBtn">Upgrade to Deluxe</button>`;
-    deluxeRadio.checked = false;
-
-    document.getElementById("upgradeBtn").onclick = function() {
-      setCookie("membershipTier", "Deluxe", 7);
-      greeting.innerHTML = "Congratulations! You've been upgraded to Deluxe.";
-      regularRadio.style.display = 'none';
-      regularLabel.style.display = 'none';
-      deluxeRadio.style.display = 'none';
-      deluxeLabel.style.display = 'none';
-    };
+    greeting = "Welcome Regular member! Want to upgrade to Deluxe? Just select it below.";
   } else if (tier === "Deluxe") {
-    // Hide both options, no upgrade offer
-    regularRadio.style.display = 'none';
-    regularLabel.style.display = 'none';
-    deluxeRadio.style.display = 'none';
-    deluxeLabel.style.display = 'none';
-  } else {
-    // No tier saved, show both options and clear selection
-    regularRadio.checked = false;
-    deluxeRadio.checked = false;
+    greeting = "Welcome Deluxe member! Enjoy your premium benefits.";
   }
+  document.getElementById("greeting").innerText = greeting;
+}
+
+function updateRadioSelection() {
+  const tier = getCookie("membershipTier");
+  document.getElementById("Deluxe").checked = tier === "Deluxe";
+  document.getElementById("Regular").checked = tier === "Regular";
+  document.getElementById("None").checked = !tier;
 }
 
 document.getElementById("MemberForm").onsubmit = function(e) {
   e.preventDefault();
   const tierInput = document.querySelector('input[name="MemberTier"]:checked');
-  if (!tierInput) {
-    document.getElementById("status").innerText = "Please select a membership tier.";
-    return;
-  }
-  
-  const tier = tierInput.value;
-  setCookie("membershipTier", tier, 7);
+  const tier = tierInput ? tierInput.value : "";
 
-  document.getElementById("status").innerText = `Membership tier '${tier}' saved!`;
-  updateTierOptions();
+  // Save or clear the cookie
+  if (tier) {
+    setCookie("membershipTier", tier, 7);
+    document.getElementById("status").innerText = `Membership tier '${tier}' saved!`;
+  } else {
+    setCookie("membershipTier", "", -1); // Delete the cookie
+    document.getElementById("status").innerText = "Membership cleared.";
+  }
+
+  updateGreeting();
+  updateRadioSelection();
 };
 
-window.onload = updateTierOptions;
+window.onload = function() {
+  updateGreeting();
+  updateRadioSelection();
+};
 </script>
 </body>
 </html>
