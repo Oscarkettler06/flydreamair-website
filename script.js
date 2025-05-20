@@ -58,4 +58,3 @@ function updateRadioSelection() {
     updateGreeting();
     updateRadioSelection();
   };
-});
