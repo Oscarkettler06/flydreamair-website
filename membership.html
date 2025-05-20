@@ -8,18 +8,46 @@
      <script src="functions.js"></script>
 </head>
 <body>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Create TXT File</title>
-</head>
-<body>
 
-  <button onclick="createTextFile()">Create text file</button>
+  <button onclick="createTextFile()">Create Textfile</button>
 
-</body>
-</html>
-    </main>
+ <h2>Enter your name</h2>
+  <form id="nameForm">
+    <label>First Name: <input type="text" id="firstName"></label><br><br>
+    <label>Last Name: <input type="text" id="lastName"></label><br><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.getElementById('nameForm').addEventListener('submit', function(e) {
+  e.preventDefault(); // Prevent form from refreshing the page
+
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName = document.getElementById('lastName').value.trim();
+
+  // Set cookies
+  document.cookie = `firstName=${encodeURIComponent(firstName)}; path=/`;
+  document.cookie = `lastName=${encodeURIComponent(lastName)}; path=/`;
+  document.cookie = 'Test'${}
+
+  // Prepare text file content
+  const cookieData = `Cookies Saved:\nFirst Name: ${firstName}\nLast Name: ${lastName}`;
+  const blob = new Blob([cookieData], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+
+  // Create a temporary link and download the file
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'user_info.txt';
+  document.body.appendChild(a);
+  a.click();
+
+  // Clean up
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+  </script>
+
+
 </body>
 </html>
