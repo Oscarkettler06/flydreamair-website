@@ -79,24 +79,69 @@ body {
 
 /* === Booking Details === */
 
-    .booking-details .form-group {
-      margin-bottom: 1rem;
-    }
-    .booking-details label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
-    .booking-details select,
-    .booking-details input {
-      width: 100%;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .booking-details p {
-      margin: 0.5rem 0;
-    }
+.booking-details .form-group {
+    margin-bottom: 1rem;
+}
+
+.booking-details label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.booking-details select,
+.booking-details input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.booking-details p {
+    margin: 0.5rem 0;
+}
+
+.booking-details strong {
+    color: #2c3e50;
+    min-width: 150px;
+    display: inline-block;
+    font-weight: 600;
+}
+
+/* make booking-details two columns */
+.booking-details {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+/* left side grows to fill, right side holds the image */
+.booking-form {
+    flex: 1;
+}
+
+.booking-image {
+    flex: 1;
+}
+
+/* force inputs & selects to full width of their column */
+.booking-form select,
+.booking-form input[type="date"],
+.booking-form input[type="time"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem;
+}
+
+/* style the preview image */
+.booking-image img {
+    width: 100%;
+    height: auto;
+    display: none;             /* hidden until a lounge is chosen */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
 /* === Payment Section === */
 .payment-container {
     margin: 2.5rem 0;

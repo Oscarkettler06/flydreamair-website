@@ -5,11 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Confirm Booking – FlyDreamAir</title>
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* quick form-group styling inside booking-details */
+    .booking-details .form-group {
+      margin-bottom: 1rem;
+    }
+    .booking-details label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .booking-details select,
+    .booking-details input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .booking-details p {
+      margin: 0.5rem 0;
+    }
+  </style>
 </head>
 <body>
   <!-- Logo Banner -->
   <div class="logo-container">
-    <img src="./Images/logo-large.png" alt="FlyDreamAir Logo" class="main-logo">
+    <img src="./images/logo-large-search.png" alt="FlyDreamAir Logo" class="main-logo">
   </div>
 
   <main class="main-container">
@@ -20,35 +41,43 @@
 
     <!-- Booking Details -->
     <div class="booking-details">
-      <!-- 1) Lounge dropdown -->
-      <div class="form-group">
-        <label for="lounge-select">Lounge</label>
-        <select id="lounge-select">
-          <option value="">Select a lounge...</option>
-          <option value="Sydney Gold Lounge">Sydney Gold Lounge</option>
-          <option value="Melbourne Executive Lounge">Melbourne Executive Lounge</option>
-          <option value="Brisbane Serenity Lounge">Brisbane Serenity Lounge</option>
-        </select>
+      <!--left column: form-->
+      <div class="booking-form">
+        <!-- 1) Lounge dropdown -->
+        <div class="form-group">
+          <label for="lounge-select">Lounge</label>
+          <select id="lounge-select">
+            <option value="">Select a lounge...</option>
+            <option value="Sydney Gold Lounge">Sydney Gold Lounge</option>
+            <option value="Melbourne Executive Lounge">Melbourne Executive Lounge</option>
+            <option value="Brisbane Serenity Lounge">Brisbane Serenity Lounge</option>
+          </select>
+        </div>
+
+        <!-- 2) Date picker -->
+        <div class="form-group">
+          <label for="booking-date">Date</label>
+          <input type="date" id="booking-date">
+        </div>
+
+        <!-- 3) Time picker -->
+        <div class="form-group">
+          <label for="booking-time">Time</label>
+          <input type="time" id="booking-time">
+        </div>
+
+        <!-- 4) Guests & Price (static) -->
+        <p><strong>Guests:</strong> 1</p>
+        <p><strong>Price:</strong> $80</p>
+
+        <!-- 5) Time Until Booking (calculated) -->
+        <p><strong>Time Until Booking:</strong> <span id="time-until">—</span></p>
       </div>
 
-      <!-- 2) Date picker -->
-      <div class="form-group">
-        <label for="booking-date">Date</label>
-        <input type="date" id="booking-date">
+      <!-- right column: image preview -->
+      <div class="booking-image">
+        <img id="lounge-preview" src="" alt="Lounge preview" />
       </div>
-
-      <!-- 3) Time picker -->
-      <div class="form-group">
-        <label for="booking-time">Time</label>
-        <input type="time" id="booking-time">
-      </div>
-
-      <!-- 4) Guests & Price (static) -->
-      <p><strong>Guests:</strong> 1</p>
-      <p><strong>Price:</strong> $80</p>
-
-      <!-- 5) Time Until Booking (calculated) -->
-      <p><strong>Time Until Booking:</strong> <span id="time-until">—</span></p>
     </div>
 
     <!-- Payment Section -->
@@ -134,6 +163,26 @@
           (days? days+'d ':'') +
           (hours? hours+'h ':'') +
           mins+'m';
+      }
+    });
+
+    const loungeImages = {
+      'Sydney Gold Lounge': './Images/sydneyLounge.png',
+      'Melbourne Executive Lounge': './Images/melbourneLounge.png',
+      'Brisbane Serenity Lounge': './Images/brisbaneLounge.png'
+    };
+
+    const loungeSelect = document.getElementById('lounge-select');
+    const previewImg  = document.getElementById('lounge-preview');
+
+    loungeSelect.addEventListener('change', () => {
+      const choice = loungeSelect.value;
+      if (loungeImages[choice]) {
+        previewImg.src = loungeImages[choice];
+        previewImg.style.display = 'block';
+      } else {
+        previewImg.src = '';
+        previewImg.style.display = 'none';
       }
     });
   </script>
