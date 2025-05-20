@@ -63,7 +63,7 @@ function updateTierOptions() {
 
     document.getElementById("upgradeBtn").onclick = function() {
       setCookie("membershipTier", "Deluxe", 7);
-      upgradeDiv.innerHTML = "Congratulations! You've been upgraded to Deluxe.";
+      greeting.innerHTML = "Congratulations! You've been upgraded to Deluxe.";
       regularRadio.style.display = 'none';
       regularLabel.style.display = 'none';
       deluxeRadio.style.display = 'none';
@@ -75,7 +75,6 @@ function updateTierOptions() {
     regularLabel.style.display = 'none';
     deluxeRadio.style.display = 'none';
     deluxeLabel.style.display = 'none';
-    upgradeDiv.innerHTML = '';
   } else {
     // No tier saved, show both options and clear selection
     regularRadio.checked = false;
@@ -99,8 +98,6 @@ document.getElementById("MemberForm").onsubmit = function(e) {
 };
 
 window.onload = updateTierOptions;
-</script>
-
 </script>
 </body>
 </html>
