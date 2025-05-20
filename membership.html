@@ -42,12 +42,10 @@ function getCookie(name) {
 
 function updateTierOptions() {
   const tier = getCookie("membershipTier");
-  const tierOptions = document.getElementById("tierOptions");
   const regularRadio = document.getElementById("Regular");
   const regularLabel = document.getElementById("RegularLabel");
   const deluxeRadio = document.getElementById("Deluxe");
   const deluxeLabel = document.getElementById("DeluxeLabel");
-  const upgradeDiv = document.getElementById("upgradeOffer");
 
   // Reset visibility and selection
   regularRadio.style.display = '';
@@ -60,7 +58,7 @@ function updateTierOptions() {
     // Hide Regular option and show upgrade offer
     regularRadio.style.display = 'none';
     regularLabel.style.display = 'none';
-    upgradeDiv.innerHTML = `You're a Regular member. <button id="upgradeBtn">Upgrade to Deluxe</button>`;
+    greeting.innerHTML = `You're a Regular member. <button id="upgradeBtn">Upgrade to Deluxe</button>`;
     deluxeRadio.checked = false;
 
     document.getElementById("upgradeBtn").onclick = function() {
