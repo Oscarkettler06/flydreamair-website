@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Confirm Booking - FlyDreamAir</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Confirm Booking – FlyDreamAir</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -20,12 +20,35 @@
 
     <!-- Booking Details -->
     <div class="booking-details">
-      <p><strong>Lounge:</strong> Sydney Gold Lounge</p>
-      <p><strong>Date:</strong> 17 Apr 2025</p>
-      <p><strong>Time:</strong> 10:00 AM</p>
+      <!-- 1) Lounge dropdown -->
+      <div class="form-group">
+        <label for="lounge-select">Lounge</label>
+        <select id="lounge-select">
+          <option value="">Select a lounge...</option>
+          <option value="Sydney Gold Lounge">Sydney Gold Lounge</option>
+          <option value="Melbourne Executive Lounge">Melbourne Executive Lounge</option>
+          <option value="Brisbane Serenity Lounge">Brisbane Serenity Lounge</option>
+        </select>
+      </div>
+
+      <!-- 2) Date picker -->
+      <div class="form-group">
+        <label for="booking-date">Date</label>
+        <input type="date" id="booking-date">
+      </div>
+
+      <!-- 3) Time picker -->
+      <div class="form-group">
+        <label for="booking-time">Time</label>
+        <input type="time" id="booking-time">
+      </div>
+
+      <!-- 4) Guests & Price (static) -->
       <p><strong>Guests:</strong> 1</p>
       <p><strong>Price:</strong> $80</p>
-      <p><strong>Time Until Booking:</strong> 2 days</p>
+
+      <!-- 5) Time Until Booking (calculated) -->
+      <p><strong>Time Until Booking:</strong> <span id="time-until">—</span></p>
     </div>
 
     <!-- Payment Section -->
@@ -45,7 +68,6 @@
           <input type="radio" name="payment"> <img src="images/googlepay-icon.png" alt="Google Pay">
         </label>
       </div>
-
       <div class="payment-details">
         Ask for card details in here, e.g., CVC, expiry, numbers, etc.
       </div>
@@ -56,14 +78,64 @@
       <button class="primary-button" onclick="window.location.href='upcomingbookings.html'">
         Confirm Booking
       </button>
-
       <a href="search.html" class="cancel-link">Cancel ✕</a>
-
       <a href="index.html" class="back-button">
         <span>←</span> Back to Dashboard
       </a>
     </div>
-
   </main>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const dateInput = document.getElementById('booking-date');
+      const timeInput = document.getElementById('booking-time');
+      const timeUntilSpan = document.getElementById('time-until');
+
+      // 1) Set min date = today
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth()+1).padStart(2,'0');
+      const dd = String(now.getDate()).padStart(2,'0');
+      const todayStr = `${yyyy}-${mm}-${dd}`;
+      dateInput.min = todayStr;
+
+      // 2) When date changes, if it’s today, lock time.min to now; else clear it
+      dateInput.addEventListener('change', () => {
+        if (dateInput.value === todayStr) {
+          const h = String(now.getHours()).padStart(2,'0');
+          const m = String(now.getMinutes()).padStart(2,'0');
+          timeInput.min = `${h}:${m}`;
+        } else {
+          timeInput.min = '';
+        }
+        updateTimeUntil();
+      });
+
+      // 3) Whenever time changes, recalc countdown
+      timeInput.addEventListener('change', updateTimeUntil);
+
+      function updateTimeUntil() {
+        if (!dateInput.value || !timeInput.value) {
+          timeUntilSpan.textContent = '—';
+          return;
+        }
+        const [y,mo,d] = dateInput.value.split('-');
+        const [h,mi] = timeInput.value.split(':');
+        const booking = new Date(y, mo-1, d, h, mi);
+        const diffMs = booking - new Date();
+        if (diffMs <= 0) {
+          timeUntilSpan.textContent = '0';
+          return;
+        }
+        const days = Math.floor(diffMs / 86400000);
+        const hours = Math.floor((diffMs % 86400000) / 3600000);
+        const mins = Math.floor((diffMs % 3600000) / 60000);
+        timeUntilSpan.textContent = 
+          (days? days+'d ':'') +
+          (hours? hours+'h ':'') +
+          mins+'m';
+      }
+    });
+  </script>
 </body>
 </html>
