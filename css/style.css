@@ -14,7 +14,7 @@ body {
     min-height: 100vh;
 }
 
-/* Banner and Logo */
+/* === Banner and Logo === */
 .logo-container {
     position: fixed;
     top: 0;
@@ -50,7 +50,7 @@ body {
     -webkit-backdrop-filter: blur(10px);
 }
 
-/* Airplane Decoration */
+/* === Airplane Decoration === */
 .airplane-decoration {
     position: absolute;
     top: 50%;
@@ -62,7 +62,7 @@ body {
     z-index: 0;
 }
 
-/* Header */
+/* === Header === */
 .header {
     text-align: left;
     margin-bottom: 2.5rem;
@@ -77,29 +77,65 @@ body {
     font-weight: 600;
 }
 
-/* Booking Details */
-.booking-details {
-    background: #f8f9fa;
-    padding: 2rem;
-    border-radius: 12px;
-    margin-bottom: 2.5rem;
-    position: relative;
-    z-index: 1;
+/* === Booking Details === */
+
+.booking-details .form-group {
+    margin-bottom: 1rem;
+}
+
+.booking-details label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.booking-details select,
+.booking-details input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .booking-details p {
-    margin: 0.75rem 0;
-    font-size: 1.1rem;
+    margin: 0.5rem 0;
 }
 
-.booking-details strong {
-    color: #2c3e50;
-    min-width: 150px;
-    display: inline-block;
-    font-weight: 600;
+/* make booking-details two columns */
+.booking-details {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
 }
 
-/* Payment Section */
+/* left side grows to fill, right side holds the image */
+.booking-form {
+    flex: 1;
+}
+
+.booking-image {
+    flex: 1;
+}
+
+/* force inputs & selects to full width of their column */
+.booking-form select,
+.booking-form input[type="date"],
+.booking-form input[type="time"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem;
+}
+
+/* style the preview image */
+.booking-image img {
+    width: 100%;
+    height: auto;
+    display: none;             /* hidden until a lounge is chosen */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* === Payment Section === */
 .payment-container {
     margin: 2.5rem 0;
     position: relative;
@@ -146,7 +182,27 @@ body {
     color: #666;
 }
 
-/* Action Buttons */
+/* hide all by default */
+.payment-form {
+  display: none;
+}
+
+/* simple grid for expiry/CVC */
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+/* make all form controls full-width in their column */
+.payment-form .form-group input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* === Action Buttons === */
 .button-container {
     display: flex;
     flex-direction: column;
@@ -182,6 +238,7 @@ body {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    margin-top: 1rem;
 }
 
 .back-button {
@@ -192,6 +249,7 @@ body {
     text-decoration: none;
     font-weight: 500;
     padding: 1rem 2rem;
+    margin-top: 2rem;
     border-radius: 25px;
     background: #e8f2ff;
     width: 100%;
@@ -203,7 +261,7 @@ body {
     font-size: 1.2rem;
 }
 
-/* Lounge Check-in Specific Styles */
+/* === Lounge Check-in Specific Styles === */
 .booking-info {
     background: #f8f9fa;
     padding: 2rem;
@@ -278,7 +336,7 @@ body {
     margin-top: 1.5rem;
 }
 
-/* Responsive Design */
+/* === Responsive Design === */
 @media (max-width: 600px) {
     .main-container {
         margin: 0;
@@ -301,7 +359,7 @@ body {
     }
 }
 
-/* Profile */
+/* === Profile === */
 .profile-info {
     background: #f8f9fa;
     padding: 2rem;
@@ -338,7 +396,7 @@ body {
     font-weight: 600;
 }
 
-/* Sign up Page */
+/* === Sign up Page === */
 
 .signup-container {
   max-width: 600px;
