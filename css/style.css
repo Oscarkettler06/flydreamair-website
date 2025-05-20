@@ -6,7 +6,7 @@ body {
     background-color: #f0f5ff;
     color: #333;
     line-height: 1.6;
-    background-image: url('../images/sky-clouds.jpg');
+    background-image: url('./images/sky-clouds.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
