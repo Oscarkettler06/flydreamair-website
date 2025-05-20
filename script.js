@@ -1,15 +1,15 @@
-function writeTest(){
-// Requiring fs module in which
-// writeFile function is defined.
-const fs = require('fs')
-
-// Data which will write in a file.
-let data = "Hello world."
-
-// Write data in 'Hello.txt' .
-fs.writeFile('Hello.txt', data, (err) => {
-
-    // In case of a error throw err.
-    if (err) throw err;
-})
-}
+ function createTextFile() {
+      const textContent = "This is the content of the text file.";
+      const blob = new Blob([textContent], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "example.txt";
+      document.body.appendChild(a);
+      a.click();
+      
+      // Clean up
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }

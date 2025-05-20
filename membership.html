@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Membership - FlyDreamAir</title>
     <link rel="stylesheet" href="css/style.css">
+     <script src="functions.js"></script>
 </head>
 <body>
 <!DOCTYPE html>
@@ -16,24 +17,6 @@
 <body>
 
   <button onclick="createTextFile()">Create text file</button>
-
-  <script>
-    function createTextFile() {
-      const textContent = "This is the content of the text file.";
-      const blob = new Blob([textContent], { type: "text/plain" });
-      const url = URL.createObjectURL(blob);
-      
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "example.txt";
-      document.body.appendChild(a);
-      a.click();
-      
-      // Clean up
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-  </script>
 
 </body>
 </html>
