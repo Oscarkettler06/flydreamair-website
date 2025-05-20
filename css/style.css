@@ -426,21 +426,23 @@ body {
 
 /* === Search Lounges === */
 
-    /* Filter Row (unchanged) */
+/* Filter Row */
 .filter-row {
   margin: 1.5rem 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-.filter-row label { font-weight: 600; }
+.filter-row label {
+  font-weight: 600;
+}
 .filter-row select {
   padding: 0.5rem;
   border-radius: 4px;
   border: 1px solid #ccc;
 }
 
-    /* Lounge Cards */
+/* Lounge Cards */
 .lounge-card {
   background: #fff;
   border-radius: 8px;
@@ -453,32 +455,31 @@ body {
   transform: translateY(-4px);
 }
 
-    /* Card image */
+/* Lounge Image */
 .lounge-image {
   margin-top: 0;
-  margin-bottom: 0;
   width: 100%;
-  display: block;
+  height: 30rem;
   object-fit: cover;
-  height: 500px; /* adjust as you like */
 }
-   /* Card content */
+
+/* Card Content */
 .card-content {
   padding: 1rem 1.5rem 2rem;
 }
 .card-content h3 {
-  margin-top: 0;
+  margin: 0 0 0.5rem;
   font-size: 1.25rem;
-  margin-bottom: 0.5rem;
 }
 .card-content p {
-  font-size: 0.95rem;
   margin: 0.5rem 0;
+  font-size: 0.95rem;
 }
-   /* Button */
+
+/* Button */
 .search-button {
+  display: inline-block;
   margin-top: 1rem;
-  margin-bottom: 0;
   padding: 0.75rem 1.25rem;
   background: #3a5a8f;
   color: #fff;
@@ -492,22 +493,18 @@ body {
   background: #2e4770;
 }
 
-.searchHeader {
+/* Search Header */
+.search-header {
   display: flex;
   align-items: center;
   gap: 1rem;
-  /* optional padding to taste */
   padding: 1rem 2rem;
 }
-
-    /* Make the logo exactly as tall as the header */
-.searchHeader .header-logo {
-    height: 60px;    /* ← adjust this value so the logo height matches your header’s total height */
-    width: auto;
-    }
-
-    /* Ensure your header text stacks nicely */
-header .header-text h1,
-header .header-text p {
-    margin: 0;
+.search-header .header-logo {
+  height: 60px;
+  width: auto;
+}
+.search-header .header-text h1,
+.search-header .header-text p {
+  margin: 0;
 }

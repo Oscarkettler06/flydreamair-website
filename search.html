@@ -8,8 +8,11 @@
 <body>
 
   <main class="main-container">
-    <header class="searchHeader">
-      <div>
+
+    <!-- Fixed Header with Logo -->
+    <header class="search-header">
+      <img src="../images/logo-large.png" alt="FlyDreamAir Logo" class="header-logo">
+      <div class="header-text">
         <h1>FlyDreamAir</h1>
         <p>Find your perfect lounge experience</p>
       </div>
@@ -17,7 +20,7 @@
 
     <h2>Available Lounges</h2>
 
-    <!-- Dropdown filter (unchanged) -->
+    <!-- Dropdown filter -->
     <div class="filter-row">
       <label for="lounge-filter">Browse by Lounge:</label>
       <select id="lounge-filter">
@@ -69,6 +72,7 @@
         </button>
       </div>
     </div>
+
   </main>
 
   <script>
@@ -83,5 +87,6 @@
       });
     });
   </script>
+
 </body>
 </html>
