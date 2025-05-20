@@ -349,7 +349,7 @@ body {
   box-shadow: 15px 15px 4px rgba(0,0,0,0.1);
   text-align: left;
   position: relative;
-  background-image: url('logo-large.png');
+  background-image: url('../images/logo-large.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -414,4 +414,7 @@ body {
 .login-text a {
   color: #007bff;
   text-decoration: underline;
+}
+#backHome {
+    margin-bottom: 0;
 }
