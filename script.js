@@ -1,5 +1,5 @@
 
-//From Membership.html if you change these check if Memberhsip.html still functions properly. 
+//membership.html script code
 function setCookie(name, value, days) {
   const date = new Date();
   date.setTime(date.getTime() + (days*24*60*60*1000));
@@ -20,6 +20,7 @@ function getCookie(name) {
 
 function updateGreeting() {
   const tier = getCookie("membershipTier");
+  let greeting;
   if (tier === "Regular") {
     greeting = "Welcome Regular member! Want to upgrade to Deluxe? Just select it below.";
   } else if (tier === "Deluxe") {
@@ -37,25 +38,33 @@ function updateRadioSelection() {
   document.getElementById("None").checked = !tier;
 }
 
-document.getElementById("MemberForm").onsubmit = function(e) {
-  e.preventDefault();
-  const tierInput = document.querySelector('input[name="MemberTier"]:checked');
-  const tier = tierInput ? tierInput.value : "";
-
-  // Save or clear the cookie
-  if (tier) {
-    setCookie("membershipTier", tier, 7);
-    document.getElementById("status").innerText = `Membership tier '${tier}' saved!`;
-  } else {
-    setCookie("membershipTier", "", -1); // Delete the cookie
-    document.getElementById("status").innerText = "Membership cleared.";
+document.addEventListener("DOMContentLoaded", function() {
+  // Add a status message span if it doesn't exist
+  if (!document.getElementById("status")) {
+    const statusSpan = document.createElement("span");
+    statusSpan.id = "status";
+    statusSpan.style.marginLeft = "1em";
+    document.getElementById("MemberForm").appendChild(statusSpan);
   }
 
   updateGreeting();
   updateRadioSelection();
-};
 
-window.onload = function() {
-  updateGreeting();
-  updateRadioSelection();
-};
+  document.getElementById("MemberForm").onsubmit = function(e) {
+    e.preventDefault();
+    const tierInput = document.querySelector('input[name="MemberTier"]:checked');
+    const tier = tierInput ? tierInput.value : "";
+
+    // Save or clear the cookie
+    if (tier) {
+      setCookie("membershipTier", tier, 7);
+      document.getElementById("status").innerText = `Membership tier '${tier}' saved!`;
+    } else {
+      setCookie("membershipTier", "", -1); // Delete the cookie
+      document.getElementById("status").innerText = "Membership cleared.";
+    }
+
+    updateGreeting();
+    updateRadioSelection();
+  };
+});
