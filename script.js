@@ -38,15 +38,6 @@ function updateRadioSelection() {
   document.getElementById("None").checked = !tier;
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-  // Add a status message span if it doesn't exist
-  if (!document.getElementById("status")) {
-    const statusSpan = document.createElement("span");
-    statusSpan.id = "status";
-    statusSpan.style.marginLeft = "1em";
-    document.getElementById("MemberForm").appendChild(statusSpan);
-  }
-
   updateGreeting();
   updateRadioSelection();
 
