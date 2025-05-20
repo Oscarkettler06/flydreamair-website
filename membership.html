@@ -1,71 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Membership - FlyDreamAir</title>
-    <link rel="stylesheet" href="css/style.css">
-     <script src="functions.js"></script>
-</head>
-<body>
+<h1 id="greeting">No Membership with RyanAir? You can fix that</h1>
+<form id="MemberForm">
+  <input type="text" id="FirstNameInput" placeholder="Your first name" required><br>
+  <input type="text" id="LastNameInput" placeholder="Your last name" required><br>
+  <input type="email" id="EmailInput" placeholder="Your email" required><br>
+  <input type="radio" id="Deluxe" name="MemberTier" value="Deluxe">
+  <label for="Deluxe">Deluxe Tier</label>
+  <input type="radio" id="Regular" name="MemberTier" value="Regular">
+  <label for="Regular">Regular Tier</label><br>
+  <button type="submit">Confirm membership</button>
+</form>
+<p id="status"></p>
 
-  <button onclick="createTextFile()">Create Textfile</button>
-
-  <h1 id="greeting">Enter your name:</h1>
-  <form id="nameForm">
-    <input type="text" id="nameInput" placeholder="Your name" required>
-    <button type="submit">Save Name</button>
-  </form>
-
-   <p id="status"></p>
-
-  <script>
-  function setCookie(name, value, days) {
+<script>
+function setCookie(name, value, days) {
   const date = new Date();
   date.setTime(date.getTime() + (days*24*60*60*1000));
   const expires = "expires=" + date.toUTCString();
-  document.cookie = name + "=" + value + ";" + expires + ";path=/";
+  document.cookie = `${name}=${encodeURIComponent(value)};${expires};path=/;SameSite=Lax`;
 }
 
-// Function to get a cookie
 function getCookie(name) {
   const cname = name + "=";
   const decodedCookie = decodeURIComponent(document.cookie);
-  const cookies = decodedCookie.split(';');
-  for (let i = 0; i < cookies.length; i++) {
-    let c = cookies[i].trim();
-    if (c.indexOf(cname) === 0) {
-      return c.substring(cname.length, c.length);
-    }
+  const ca = decodedCookie.split(';');
+  for(let c of ca) {
+    c = c.trim();
+    if (c.indexOf(cname) === 0) return c.substring(cname.length);
   }
   return "";
 }
 
-// Function to check and display the name if the cookie exists
-function checkNameCookie() {
-  const user = getCookie("username");
-  if (user !== "") {
-    document.getElementById("greeting").innerText = "Welcome back, " + user + "!";
+function showGreeting() {
+  const first = getCookie("firstName");
+  const last = getCookie("lastName");
+  if (first && last) {
+    document.getElementById("greeting").innerText = `Welcome back, ${first} ${last}!`;
   }
 }
 
-// Function to handle the form submission
-function handleFormSubmit(event) {
-  event.preventDefault();
-  const name = document.getElementById("nameInput").value;
-  if (name) {
-    setCookie("username", name, 7);
-    document.getElementById("greeting").innerText = "Thanks, " + name + "! Your name has been saved.";
+document.getElementById("MemberForm").onsubmit = function(e) {
+  e.preventDefault();
+  const firstName = document.getElementById("FirstNameInput").value.trim();
+  const lastName = document.getElementById("LastNameInput").value.trim();
+  const email = document.getElementById("EmailInput").value.trim();
+  const tierInput = document.querySelector('input[name="MemberTier"]:checked');
+  if (!tierInput) {
+    document.getElementById("status").innerText = "Please select a membership tier.";
+    return;
   }
-}
+  const tier = tierInput.value;
 
-// Run on page load
-window.onload = function () {
-  checkNameCookie();
-  document.getElementById("nameForm").addEventListener("submit", handleFormSubmit);
+  setCookie("firstName", firstName, 7);
+  setCookie("lastName", lastName, 7);
+  setCookie("email", email, 7);
+  setCookie("membershipTier", tier, 7);
+
+  document.getElementById("status").innerText = `Saved! ${firstName} ${lastName}, ${email}, ${tier}`;
+  showGreeting();
 };
-  </script>
 
-
-</body>
-</html>
+window.onload = showGreeting;
+</script>
