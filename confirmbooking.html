@@ -20,7 +20,7 @@
 
     <!-- Booking Details -->
     <div class="booking-details">
-      <!--left column: form-->
+      <!-- left column: form -->
       <div class="booking-form">
         <!-- 1) Lounge dropdown -->
         <div class="form-group">
@@ -61,24 +61,28 @@
 
     <!-- Payment Section -->
     <div class="payment-container">
-      <!--Payment Selection-->
+      <!-- Payment Selection -->
       <div class="payment-methods">
         <h3>Choose Payment Method</h3>
         <label class="payment-option">
-          <input type="radio" name="payment" checked> Credit or Debit Card
+          <input type="radio" name="payment" value="card" checked>
+          Credit or Debit Card
         </label>
         <label class="payment-option">
-          <input type="radio" name="payment"> <img src="./Images/visa-icon.png" alt="Visa">
+          <input type="radio" name="payment" value="visa">
+          <img src="./Images/visa-icon.png" alt="Visa"> Visa
         </label>
         <label class="payment-option">
-          <input type="radio" name="payment"> <img src="./Images/applepay-icon.png" alt="Apple Pay">
+          <input type="radio" name="payment" value="applepay">
+          <img src="./Images/applepay-icon.png" alt="Apple Pay"> Apple Pay
         </label>
         <label class="payment-option">
-          <input type="radio" name="payment"> <img src="./Images/googlepay-icon.png" alt="Google Pay">
+          <input type="radio" name="payment" value="googlepay">
+          <img src="./Images/googlepay-icon.png" alt="Google Pay"> Google Pay
         </label>
       </div>
 
-      <!--Payment Informations-->
+      <!-- Payment Informations -->
       <div class="payment-details">
         <!-- Credit / Debit Card Form -->
         <div class="payment-form" id="form-card">
@@ -102,7 +106,7 @@
           </div>
         </div>
 
-        <!-- Visa-Specific Form (same fields, could be customized) -->
+        <!-- Visa-Specific Form -->
         <div class="payment-form" id="form-visa">
           <div class="form-group">
             <label for="visa-card-number">Visa Card Number</label>
@@ -164,7 +168,7 @@
       const todayStr = `${yyyy}-${mm}-${dd}`;
       dateInput.min = todayStr;
 
-      // 2) When date changes, if it’s today, lock time.min to now; else clear it
+      // 2) Lock time.min when date is today
       dateInput.addEventListener('change', () => {
         if (dateInput.value === todayStr) {
           const h = String(now.getHours()).padStart(2,'0');
@@ -176,7 +180,7 @@
         updateTimeUntil();
       });
 
-      // 3) Whenever time changes, recalc countdown
+      // 3) Recalc time-until on time change
       timeInput.addEventListener('change', updateTimeUntil);
 
       function updateTimeUntil() {
@@ -195,50 +199,44 @@
         const days = Math.floor(diffMs / 86400000);
         const hours = Math.floor((diffMs % 86400000) / 3600000);
         const mins = Math.floor((diffMs % 3600000) / 60000);
-        timeUntilSpan.textContent = 
-          (days? days+'d ':'') +
-          (hours? hours+'h ':'') +
+        timeUntilSpan.textContent =
+          (days ? days+'d ' : '') +
+          (hours ? hours+'h ' : '') +
           mins+'m';
       }
-    });
 
-    const loungeImages = {
-      'Sydney Gold Lounge': './Images/sydneyLounge.png',
-      'Melbourne Executive Lounge': './Images/melbourneLounge.png',
-      'Brisbane Serenity Lounge': './Images/brisbaneLounge.png'
-    };
+      // lounge preview logic
+      const loungeImages = {
+        'Sydney Gold Lounge': 'Images/sydneyLounge.png',
+        'Melbourne Executive Lounge': 'Images/melbourneLounge.png',
+        'Brisbane Serenity Lounge': 'Images/brisbaneLounge.png'
+      };
+      const loungeSelect = document.getElementById('lounge-select');
+      const previewImg  = document.getElementById('lounge-preview');
 
-    const loungeSelect = document.getElementById('lounge-select');
-    const previewImg  = document.getElementById('lounge-preview');
-
-    loungeSelect.addEventListener('change', () => {
-      const choice = loungeSelect.value;
-      if (loungeImages[choice]) {
-        previewImg.src = loungeImages[choice];
-        previewImg.style.display = 'block';
-      } else {
-        previewImg.src = '';
-        previewImg.style.display = 'none';
-      }
-    });
-
-    document.querySelectorAll('input[name="payment"]').forEach(radio => {
-      radio.addEventListener('change', switchForm);
-    });
-
-    function switchForm() {
-      // hide every form
-      document.querySelectorAll('.payment-form').forEach(f => {
-        f.style.display = 'none';
+      loungeSelect.addEventListener('change', () => {
+        const choice = loungeSelect.value;
+        if (loungeImages[choice]) {
+          previewImg.src = loungeImages[choice];
+          previewImg.style.display = 'block';
+        } else {
+          previewImg.style.display = 'none';
+        }
       });
-      // show the selected one
-      const selected = document.querySelector('input[name="payment"]:checked').value;
-      const form = document.getElementById('form-' + selected);
-      if (form) form.style.display = 'block';
-    }
+      loungeSelect.dispatchEvent(new Event('change'));
 
-    // initialize on page load
-    switchForm();
+      // payment form toggle
+      document.querySelectorAll('input[name="payment"]').forEach(r => {
+        r.addEventListener('change', switchForm);
+      });
+      function switchForm() {
+        document.querySelectorAll('.payment-form').forEach(f => f.style.display = 'none');
+        const sel = document.querySelector('input[name="payment"]:checked').value;
+        const form = document.getElementById('form-' + sel);
+        if (form) form.style.display = 'block';
+      }
+      switchForm();
+    });
   </script>
 </body>
 </html>
