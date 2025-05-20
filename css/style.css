@@ -101,13 +101,6 @@ body {
     margin: 0.5rem 0;
 }
 
-.booking-details strong {
-    color: #2c3e50;
-    min-width: 150px;
-    display: inline-block;
-    font-weight: 600;
-}
-
 /* make booking-details two columns */
 .booking-details {
     display: flex;
