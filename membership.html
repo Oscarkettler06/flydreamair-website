@@ -43,11 +43,12 @@ function getCookie(name) {
 
 function updateGreeting() {
   const tier = getCookie("membershipTier");
-  let greeting = "No Membership with RyanAir? You can fix that";
   if (tier === "Regular") {
     greeting = "Welcome Regular member! Want to upgrade to Deluxe? Just select it below.";
   } else if (tier === "Deluxe") {
     greeting = "Welcome Deluxe member! Enjoy your premium benefits.";
+  } else {
+    greeting = "No Membership with RyanAir? You can fix that here";
   }
   document.getElementById("greeting").innerText = greeting;
 }
