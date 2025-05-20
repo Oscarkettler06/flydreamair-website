@@ -36,7 +36,11 @@
       <img src="./Images/sydneyLounge.png" alt="Sydney Gold Lounge" class="lounge-image">
       <div class="card-content">
         <h3>Sydney Gold Lounge</h3>
-        <p>Date: 17 Apr | Time: 10:00 AM</p>
+        <p>
+          Date: <span class="date"></span>
+          |
+          Time: <span class="time"></span>
+        </p>
         <p>Amenities: Free Wi-Fi, Bar, 2 Beds, 1 Bath, Breakfast</p>
         <p>Rating: ★★★★☆</p>
         <button class="search-button" onclick="window.location.href='confirmbooking.html'">
@@ -50,7 +54,11 @@
       <img src="./Images/melbourneLounge.png" alt="Melbourne Executive Lounge" class="lounge-image">
       <div class="card-content">
         <h3>Melbourne Executive Lounge</h3>
-        <p>Date: 17 Apr | Time: 11:00 AM</p>
+        <p>
+          Date: <span class="date"></span>
+          |
+          Time: <span class="time"></span>
+        </p>
         <p>Amenities: Workspace, Shower, Quiet Zone, Buffet</p>
         <p>Rating: ★★★★★</p>
         <button class="search-button" onclick="window.location.href='confirmbooking.html'">
@@ -64,7 +72,11 @@
       <img src="./Images/brisbaneLounge.png" alt="Brisbane Serenity Lounge" class="lounge-image">
       <div class="card-content">
         <h3>Brisbane Serenity Lounge</h3>
-        <p>Date: 17 Apr | Time: 12:00 PM</p>
+        <p>
+          Date: <span class="date"></span>
+          |
+          Time: <span class="time"></span>
+        </p>
         <p>Amenities: Recliners, Beverages, Wi-Fi, Snacks</p>
         <p>Rating: ★★★☆☆</p>
         <button class="search-button" onclick="window.location.href='confirmbooking.html'">
@@ -84,6 +96,24 @@
       cards.forEach(card => {
         const loungeName = card.dataset.lounge;
         card.style.display = (!choice || loungeName === choice) ? '' : 'none';
+      });
+    });
+     // Run this after the DOM is ready
+    window.addEventListener('DOMContentLoaded', () => {
+      const now = new Date();
+
+      // Format date as "17 Apr"
+      const dateOptions = { day: 'numeric', month: 'short' };
+      const dateStr = now.toLocaleDateString(undefined, dateOptions);
+
+      // Format time as "10:05 AM"
+      const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
+      const timeStr = now.toLocaleTimeString(undefined, timeOptions);
+
+      // Inject into every card
+      document.querySelectorAll('.card-content').forEach(card => {
+        card.querySelector('.date').textContent = dateStr;
+        card.querySelector('.time').textContent = timeStr;
       });
     });
   </script>
