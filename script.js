@@ -57,15 +57,21 @@ document.getElementById("MemberForm").onsubmit = function(e) {
   updateRadioSelection();
 };
 
-// Cancel Membership button handler
-document.getElementById("Cancel").onclick = function() {
-  const confirmCancel = window.confirm("Are you sure you want to cancel your membership?");
-  if (confirmCancel) {
+function promptCancelMembership() {
+  const answer = window.prompt(
+    "Are you sure you want to cancel your membership and void access to benefits?\nType 'yes' to confirm, or 'no' to keep your membership."
+  );
+  if (answer && answer.trim().toLowerCase() === "yes") {
     setCookie("membershipTier", "", -1); // Delete the cookie
     document.getElementById("status").innerText = "Membership cleared.";
     updateGreeting();
     updateRadioSelection();
-  } else {
+  } else if (answer && answer.trim().toLowerCase() === "no") {
     document.getElementById("status").innerText = "Membership cancellation aborted.";
+  } else {
+    document.getElementById("status").innerText = "Please type 'yes' or 'no'.";
   }
-};
+}
+
+document.getElementById("Cancel").onclick = promptCancelMembership;
+
