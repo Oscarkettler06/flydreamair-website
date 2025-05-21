@@ -75,7 +75,7 @@ function initializeMembershipPage() {
   updateGreeting();
   updateRadioSelection();
   document.getElementById("MemberForm").onsubmit = handleMemberFormSubmit;
-  document.getElementById("Cancel").onclick = handleCancelMembership;
+  document.getElementById("Cancel").addEventListener('click', handleCancelMembership);
 }
 
 // Run initialization after DOM is loaded
