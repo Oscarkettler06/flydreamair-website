@@ -1,4 +1,3 @@
-
 //membership.html script code
 function setCookie(name, value, days) {
   const date = new Date();
@@ -35,26 +34,38 @@ function updateRadioSelection() {
   const tier = getCookie("membershipTier");
   document.getElementById("Deluxe").checked = tier === "Deluxe";
   document.getElementById("Regular").checked = tier === "Regular";
-  document.getElementById("None").checked = !tier;
 }
+
+updateGreeting();
+updateRadioSelection();
+
+document.getElementById("MemberForm").onsubmit = function(e) {
+  e.preventDefault();
+  const tierInput = document.querySelector('input[name="MemberTier"]:checked');
+  const tier = tierInput ? tierInput.value : "";
+
+  // Save or clear the cookie
+  if (tier) {
+    setCookie("membershipTier", tier, 7);
+    document.getElementById("status").innerText = `Membership tier '${tier}' saved!`;
+  } else {
+    setCookie("membershipTier", "", -1);
+    document.getElementById("status").innerText = "Membership cleared.";
+  }
 
   updateGreeting();
   updateRadioSelection();
+};
 
-  document.getElementById("MemberForm").onsubmit = function(e) {
-    e.preventDefault();
-    const tierInput = document.querySelector('input[name="MemberTier"]:checked');
-    const tier = tierInput ? tierInput.value : "";
-
-    // Save or clear the cookie
-    if (tier) {
-      setCookie("membershipTier", tier, 7);
-      document.getElementById("status").innerText = `Membership tier '${tier}' saved!`;
-    } else {
-      setCookie("membershipTier", "", -1); // Delete the cookie
-      document.getElementById("status").innerText = "Membership cleared.";
-    }
-
+// Cancel Membership button handler
+document.getElementById("Cancel").onclick = function() {
+  const confirmCancel = window.confirm("Are you sure you want to cancel your membership?");
+  if (confirmCancel) {
+    setCookie("membershipTier", "", -1); // Delete the cookie
+    document.getElementById("status").innerText = "Membership cleared.";
     updateGreeting();
     updateRadioSelection();
-  };
+  } else {
+    document.getElementById("status").innerText = "Membership cancellation aborted.";
+  }
+};
