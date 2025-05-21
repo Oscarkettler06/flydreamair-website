@@ -9,18 +9,22 @@
 <body>
 <h1 id="greeting"></h1>
 <form id="MemberForm">
-  <span id="tierOptions">
-    <input type="radio" id="Deluxe" name="MemberTier" value="Deluxe">
-    <label for="Deluxe" id="DeluxeLabel">Deluxe Tier</label>
-    <input type="radio" id="Regular" name="MemberTier" value="Regular">
-    <label for="Regular" id="RegularLabel">Regular Tier</label>
-  </span>
-  <br>
-  <button type="submit">Confirm membership</button><br>
-  <button type="button" id="Cancel">Cancel Membership</button>
+  <div id="tierOptions" class="tier-columns">
+    <div class="tier-column">
+      <input type="radio" id="Deluxe" name="MemberTier" value="Deluxe">
+      <label for="Deluxe" id="DeluxeLabel">Deluxe Tier</label>
+    </div>
+    <div class="tier-column">
+      <input type="radio" id="Regular" name="MemberTier" value="Regular">
+      <label for="Regular" id="RegularLabel">Regular Tier</label>
+    </div>
+  </div>
+  <div class="button-row">
+    <button type="submit">Confirm membership</button>
+    <button type="button" id="Cancel">Cancel Membership</button>
+  </div>
 </form>
 <span id="status"></span>
 <script src="script.js"></script>
 </body>
-
 </html>
