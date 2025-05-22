@@ -98,6 +98,10 @@ function initializeMembershipPage() {
     document.getElementById("MemberForm").onsubmit = handleMemberFormSubmit;
     document.getElementById("Cancel").addEventListener('click', handleCancelMembership);
 }
+setCookie('firstName', 'John', 7);
+setCookie('surname', 'Smith', 7);
+setCookie('email', 'john.smith@gmail.com', 7);
+setCookie('phone', '0400 123 123', 7);
 
 // Run initialization after DOM is loaded
 window.onload = initializeMembershipPage;
