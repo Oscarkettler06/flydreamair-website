@@ -92,13 +92,21 @@ function populateProfileFromCookies() {
 
 
 function initializeMembershipPage() {
-    populateProfileFromCookies();
-    updateGreeting();
-    updateRadioSelection();
-    document.getElementById("MemberForm").onsubmit = handleMemberFormSubmit;
-    document.getElementById("Cancel").addEventListener('click', handleCancelMembership);
-    document.getElementById("edit-profile").addEventListener('click', handleUpdateProfile);
+  if (!document.getElementById("MemberForm")) return;
+  updateGreeting();
+  updateRadioSelection();
+  document.getElementById("MemberForm").onsubmit = handleMemberFormSubmit;
+  document.getElementById("Cancel").addEventListener('click', handleCancelMembership);
+}
+
+function initializeProfilePage() {
+  if (!document.getElementById("firstName")) return;
+  populateProfileFromCookies();
+  // Add event listeners for profile editing if needed
 }
 
 // Run initialization after DOM is loaded
-window.onload = initializeMembershipPage;
+window.onload = function() {
+  initializeMembershipPage();
+  initializeProfilePage();
+};
