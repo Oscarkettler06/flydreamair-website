@@ -71,24 +71,40 @@ function handleCancelMembership() {
   }
 }
 
-//profile code
 // Populate user profile fields from cookies
 function populateProfileFromCookies() {
-    const firstName = getCookie("firstName") || "Not set";
-    const surname = getCookie("surname") || "Not set";
-    const email = getCookie("email") || "Not set";
-    const phone = getCookie("phone") || "Not set";
-    const membership = getCookie("membershipTier") || "None";
+  const firstName = getCookie("firstName") || "Not set";
+  const surname = getCookie("surname") || "Not set";
+  const email = getCookie("email") || "Not set";
+  const phone = getCookie("phone") || "Not set";
+  const membership = getCookie("membershipTier") || "None";
 
-    document.getElementById("first-name").innerText = firstName;
-    document.getElementById("surname").innerText = surname;
-    document.getElementById("email").innerText = email;
-    document.getElementById("phone").innerText = phone;
-    document.getElementById("membership").innerText = membership;
+  document.getElementById("firstName").innerText = firstName;
+  document.getElementById("surname").innerText = surname;
+  document.getElementById("email").innerText = email;
+  document.getElementById("phone").innerText = phone;
+  document.getElementById("membershipTier").innerText = membership;
 
-    // Update welcome text
-    document.getElementById("welcome-text").innerText = `Hello! ${firstName} ${surname}`;
+  // Update welcome text
+  document.getElementById("welcome-text").innerText = `Hello! ${firstName} ${surname}`;
 }
+
+// Edit profile handler
+function handleUpdateProfile(e) {
+  e.preventDefault();
+  const firstName = prompt("First Name:", getCookie("firstName") || "");
+  const surname = prompt("Surname:", getCookie("surname") || "");
+  const email = prompt("Email:", getCookie("email") || "");
+  const phone = prompt("Phone:", getCookie("phone") || "");
+
+  if (firstName !== null) setCookie("firstName", firstName, 7);
+  if (surname !== null) setCookie("surname", surname, 7);
+  if (email !== null) setCookie("email", email, 7);
+  if (phone !== null) setCookie("phone", phone, 7);
+
+  populateProfileFromCookies();
+}
+
 
 
 function initializeMembershipPage() {
@@ -97,6 +113,7 @@ function initializeMembershipPage() {
     updateRadioSelection();
     document.getElementById("MemberForm").onsubmit = handleMemberFormSubmit;
     document.getElementById("Cancel").addEventListener('click', handleCancelMembership);
+    document.getElementById("edit-profile").addEventListener('click', handleUpdateProfile);
 }
 
 // Run initialization after DOM is loaded
