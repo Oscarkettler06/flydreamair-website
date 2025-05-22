@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Search Results - FlyDreamAir</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <title>Search Results – FlyDreamAir</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -26,30 +26,103 @@
     <main class="search-container" style="margin-top: 110px;">
         <h2>Available Lounges</h2>
 
-        <div class="lounge-card">
-            <h3>Sydney Gold Lounge</h3>
-            <p>Date: 17 Apr | Time: 10:00 AM</p>
-            <p>Amenities: Free Wi-Fi, Bar, 2 Beds, 1 Bath, Breakfast</p>
-            <p>Rating: ★★★★☆</p>
-            <button onclick="window.location.href='confirmbooking.html'">Add to Itinerary</button>
-        </div>
+    <!-- Dropdown filter -->
+    <div class="filter-row">
+      <label for="lounge-filter">Browse by Lounge:</label>
+      <select id="lounge-filter">
+        <option value="">All Lounges</option>
+        <option value="Sydney Gold Lounge">Sydney Gold Lounge</option>
+        <option value="Melbourne Executive Lounge">Melbourne Executive Lounge</option>
+        <option value="Brisbane Serenity Lounge">Brisbane Serenity Lounge</option>
+      </select>
+    </div>
 
-        <div class="lounge-card">
-            <h3>Melbourne Executive Lounge</h3>
-            <p>Date: 17 Apr | Time: 11:00 AM</p>
-            <p>Amenities: Workspace, Shower, Quiet Zone, Buffet</p>
-            <p>Rating: ★★★★★</p>
-            <button onclick="window.location.href='confirmbooking.html'">Add to Itinerary</button>
-        </div>
+    <!-- Card: Sydney -->
+    <div class="lounge-card" data-lounge="Sydney Gold Lounge">
+      <img src="./Images/sydneyLounge.png" alt="Sydney Gold Lounge" class="lounge-image">
+      <div class="card-content">
+        <h3>Sydney Gold Lounge</h3>
+        <p>
+          Date: <span class="date"></span>
+          |
+          Time: <span class="time"></span>
+        </p>
+        <p>Amenities: Free Wi-Fi, Bar, 2 Beds, 1 Bath, Breakfast</p>
+        <p>Rating: ★★★★☆</p>
+        <button class="search-button" onclick="window.location.href='confirmbooking.html'">
+          Add to Itinerary
+        </button>
+      </div>
+    </div>
 
-        <div class="lounge-card">
-            <h3>Brisbane Serenity Lounge</h3>
-            <p>Date: 17 Apr | Time: 12:00 PM</p>
-            <p>Amenities: Recliners, Beverages, Wi-Fi, Snacks</p>
-            <p>Rating: ★★★☆☆</p>
-            <button onclick="window.location.href='confirmbooking.html'">Add to Itinerary</button>
-        </div>
-    </main>
+    <!-- Card: Melbourne -->
+    <div class="lounge-card" data-lounge="Melbourne Executive Lounge">
+      <img src="./Images/melbourneLounge.png" alt="Melbourne Executive Lounge" class="lounge-image">
+      <div class="card-content">
+        <h3>Melbourne Executive Lounge</h3>
+        <p>
+          Date: <span class="date"></span>
+          |
+          Time: <span class="time"></span>
+        </p>
+        <p>Amenities: Workspace, Shower, Quiet Zone, Buffet</p>
+        <p>Rating: ★★★★★</p>
+        <button class="search-button" onclick="window.location.href='confirmbooking.html'">
+          Add to Itinerary
+        </button>
+      </div>
+    </div>
+
+    <!-- Card: Brisbane -->
+    <div class="lounge-card" data-lounge="Brisbane Serenity Lounge">
+      <img src="./Images/brisbaneLounge.png" alt="Brisbane Serenity Lounge" class="lounge-image">
+      <div class="card-content">
+        <h3>Brisbane Serenity Lounge</h3>
+        <p>
+          Date: <span class="date"></span>
+          |
+          Time: <span class="time"></span>
+        </p>
+        <p>Amenities: Recliners, Beverages, Wi-Fi, Snacks</p>
+        <p>Rating: ★★★☆☆</p>
+        <button class="search-button" onclick="window.location.href='confirmbooking.html'">
+          Add to Itinerary
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const filterSelect = document.getElementById('lounge-filter');
+    const cards = document.querySelectorAll('.lounge-card');
+
+    filterSelect.addEventListener('change', () => {
+      const choice = filterSelect.value;
+      cards.forEach(card => {
+        const loungeName = card.dataset.lounge;
+        card.style.display = (!choice || loungeName === choice) ? '' : 'none';
+      });
+    });
+     // Run this after the DOM is ready
+    window.addEventListener('DOMContentLoaded', () => {
+      const now = new Date();
+
+      // Format date as "17 Apr"
+      const dateOptions = { day: 'numeric', month: 'short' };
+      const dateStr = now.toLocaleDateString(undefined, dateOptions);
+
+      // Format time as "10:05 AM"
+      const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
+      const timeStr = now.toLocaleTimeString(undefined, timeOptions);
+
+      // Inject into every card
+      document.querySelectorAll('.card-content').forEach(card => {
+        card.querySelector('.date').textContent = dateStr;
+        card.querySelector('.time').textContent = timeStr;
+      });
+    });
+  </script>
 
 </body>
 </html>

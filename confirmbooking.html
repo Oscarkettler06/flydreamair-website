@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Confirm Booking - FlyDreamAir</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Confirm Booking – FlyDreamAir</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -32,34 +32,125 @@
 
     <!-- Booking Details -->
     <div class="booking-details">
-      <p><strong>Lounge:</strong> Sydney Gold Lounge</p>
-      <p><strong>Date:</strong> 17 Apr 2025</p>
-      <p><strong>Time:</strong> 10:00 AM</p>
-      <p><strong>Guests:</strong> 1</p>
-      <p><strong>Price:</strong> $80</p>
-      <p><strong>Time Until Booking:</strong> 2 days</p>
+      <!-- left column: form -->
+      <div class="booking-form">
+        <!-- 1) Lounge dropdown -->
+        <div class="form-group">
+          <label for="lounge-select">Lounge</label>
+          <select id="lounge-select">
+            <option value="">Select a lounge...</option>
+            <option value="Sydney Gold Lounge">Sydney Gold Lounge</option>
+            <option value="Melbourne Executive Lounge">Melbourne Executive Lounge</option>
+            <option value="Brisbane Serenity Lounge">Brisbane Serenity Lounge</option>
+          </select>
+        </div>
+
+        <!-- 2) Date picker -->
+        <div class="form-group">
+          <label for="booking-date">Date</label>
+          <input type="date" id="booking-date">
+        </div>
+
+        <!-- 3) Time picker -->
+        <div class="form-group">
+          <label for="booking-time">Time</label>
+          <input type="time" id="booking-time">
+        </div>
+
+        <!-- 4) Guests & Price (static) -->
+        <p><strong>Guests:</strong> 1</p>
+        <p><strong>Price:</strong> $80</p>
+
+        <!-- 5) Time Until Booking (calculated) -->
+        <p><strong>Time Until Booking:</strong> <span id="time-until">—</span></p>
+      </div>
+
+      <!-- right column: image preview -->
+      <div class="booking-image">
+        <img id="lounge-preview" src="" alt="Lounge preview" />
+      </div>
     </div>
 
     <!-- Payment Section -->
     <div class="payment-container">
+      <!-- Payment Selection -->
       <div class="payment-methods">
         <h3>Choose Payment Method</h3>
         <label class="payment-option">
-          <input type="radio" name="payment" checked> Credit or Debit Card
+          <input type="radio" name="payment" value="card" checked>
+          Credit or Debit Card
         </label>
         <label class="payment-option">
-          <input type="radio" name="payment"> <img src="images/visa-icon.png" alt="Visa">
+          <input type="radio" name="payment" value="visa">
+          <img src="./Images/visa-icon.png" alt="Visa"> Visa
         </label>
         <label class="payment-option">
-          <input type="radio" name="payment"> <img src="images/applepay-icon.png" alt="Apple Pay">
+          <input type="radio" name="payment" value="applepay">
+          <img src="./Images/applepay-icon.png" alt="Apple Pay"> Apple Pay
         </label>
         <label class="payment-option">
-          <input type="radio" name="payment"> <img src="images/googlepay-icon.png" alt="Google Pay">
+          <input type="radio" name="payment" value="googlepay">
+          <img src="./Images/googlepay-icon.png" alt="Google Pay"> Google Pay
         </label>
       </div>
 
+      <!-- Payment Informations -->
       <div class="payment-details">
-        Ask for card details in here, e.g., CVC, expiry, numbers, etc.
+        <!-- Credit / Debit Card Form -->
+        <div class="payment-form" id="form-card">
+          <div class="form-group">
+            <label for="card-name">Cardholder Name</label>
+            <input type="text" id="card-name" placeholder="Full name on card">
+          </div>
+          <div class="form-group">
+            <label for="card-number">Card Number</label>
+            <input type="text" id="card-number" maxlength="19" placeholder="1234 5678 9012 3456">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="card-expiry">Expiry Date</label>
+              <input type="month" id="card-expiry">
+            </div>
+            <div class="form-group">
+              <label for="card-cvc">CVC</label>
+              <input type="text" id="card-cvc" maxlength="4" placeholder="123">
+            </div>
+          </div>
+        </div>
+
+        <!-- Visa-Specific Form -->
+        <div class="payment-form" id="form-visa">
+          <div class="form-group">
+            <label for="visa-card-number">Visa Card Number</label>
+            <input type="text" id="visa-card-number" maxlength="19" placeholder="1234 5678 9012 3456">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="visa-expiry">Expiry Date</label>
+              <input type="month" id="visa-expiry">
+            </div>
+            <div class="form-group">
+              <label for="visa-cvc">CVC</label>
+              <input type="text" id="visa-cvc" maxlength="4" placeholder="123">
+            </div>
+          </div>
+        </div>
+
+        <!-- Apple Pay Form -->
+        <div class="payment-form" id="form-applepay">
+          <div class="form-group">
+            <label for="apple-email">Apple Pay Email</label>
+            <input type="email" id="apple-email" placeholder="you@apple.com">
+          </div>
+        </div>
+
+        <!-- Google Pay Form -->
+        <div class="payment-form" id="form-googlepay">
+          <div class="form-group">
+            <label for="google-email">Google Pay Email</label>
+            <input type="email" id="google-email" placeholder="you@gmail.com">
+          </div>
+        </div>
       </div>
     </div>
 
@@ -68,14 +159,96 @@
       <button class="primary-button" onclick="window.location.href='upcomingbookings.html'">
         Confirm Booking
       </button>
-
       <a href="search.html" class="cancel-link">Cancel ✕</a>
-
-      <a href="dashboard.html" class="back-button">
+      <a href="index.html" class="back-button">
         <span>←</span> Back to Dashboard
       </a>
     </div>
-
   </main>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const dateInput = document.getElementById('booking-date');
+      const timeInput = document.getElementById('booking-time');
+      const timeUntilSpan = document.getElementById('time-until');
+
+      // 1) Set min date = today
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth()+1).padStart(2,'0');
+      const dd = String(now.getDate()).padStart(2,'0');
+      const todayStr = `${yyyy}-${mm}-${dd}`;
+      dateInput.min = todayStr;
+
+      // 2) Lock time.min when date is today
+      dateInput.addEventListener('change', () => {
+        if (dateInput.value === todayStr) {
+          const h = String(now.getHours()).padStart(2,'0');
+          const m = String(now.getMinutes()).padStart(2,'0');
+          timeInput.min = `${h}:${m}`;
+        } else {
+          timeInput.min = '';
+        }
+        updateTimeUntil();
+      });
+
+      // 3) Recalc time-until on time change
+      timeInput.addEventListener('change', updateTimeUntil);
+
+      function updateTimeUntil() {
+        if (!dateInput.value || !timeInput.value) {
+          timeUntilSpan.textContent = '—';
+          return;
+        }
+        const [y,mo,d] = dateInput.value.split('-');
+        const [h,mi] = timeInput.value.split(':');
+        const booking = new Date(y, mo-1, d, h, mi);
+        const diffMs = booking - new Date();
+        if (diffMs <= 0) {
+          timeUntilSpan.textContent = '0';
+          return;
+        }
+        const days = Math.floor(diffMs / 86400000);
+        const hours = Math.floor((diffMs % 86400000) / 3600000);
+        const mins = Math.floor((diffMs % 3600000) / 60000);
+        timeUntilSpan.textContent =
+          (days ? days+'d ' : '') +
+          (hours ? hours+'h ' : '') +
+          mins+'m';
+      }
+
+      // lounge preview logic
+      const loungeImages = {
+        'Sydney Gold Lounge': 'Images/sydneyLounge.png',
+        'Melbourne Executive Lounge': 'Images/melbourneLounge.png',
+        'Brisbane Serenity Lounge': 'Images/brisbaneLounge.png'
+      };
+      const loungeSelect = document.getElementById('lounge-select');
+      const previewImg  = document.getElementById('lounge-preview');
+
+      loungeSelect.addEventListener('change', () => {
+        const choice = loungeSelect.value;
+        if (loungeImages[choice]) {
+          previewImg.src = loungeImages[choice];
+          previewImg.style.display = 'block';
+        } else {
+          previewImg.style.display = 'none';
+        }
+      });
+      loungeSelect.dispatchEvent(new Event('change'));
+
+      // payment form toggle
+      document.querySelectorAll('input[name="payment"]').forEach(r => {
+        r.addEventListener('change', switchForm);
+      });
+      function switchForm() {
+        document.querySelectorAll('.payment-form').forEach(f => f.style.display = 'none');
+        const sel = document.querySelector('input[name="payment"]:checked').value;
+        const form = document.getElementById('form-' + sel);
+        if (form) form.style.display = 'block';
+      }
+      switchForm();
+    });
+  </script>
 </body>
 </html>

@@ -1,1 +1,36 @@
-membership.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership - FlyDreamAir</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main class="main-container">
+  <h1 id="greeting"></h1>
+  <form id="MemberForm">
+    <div id="tierOptions" class="tier-columns">
+    <div class="tier-column">
+      <div class="main-container">
+        <input type="radio" id="Deluxe" name="MemberTier" value="Deluxe">
+        <label for="Deluxe" id="DeluxeLabel">Deluxe Tier</label>
+      </div>
+    </div>
+    <div class="tier-column" >
+      <div class="main-container">
+        <input type="radio" id="Regular" name="MemberTier" value="Regular">
+        <label for="Regular" id="RegularLabel">Regular Tier</label>
+      </div>
+    </div>
+  </div>
+    <div class="button-container">
+      <button type="submit" class="primary-button">Confirm membership</button>
+      <a href="javascript:void(0);" id="Cancel" class="cancel-link">Cancel Membership</a>
+    </div>
+  </form>
+</main>
+<span id="status"></span>
+<script src="script.js"></script>
+</body>
+</html>

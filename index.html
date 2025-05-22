@@ -31,7 +31,7 @@
 
         <section class="dashboard-actions">
             <button onclick="window.location.href='search.html'">🔍 Search Lounges</button>
-            <button onclick="window.location.href='upcomingbookings.html'">📅 View Bookings</button>
+            <button onclick="window.location.href='upcomingbooking.html'">📅 View Bookings</button>
             <button onclick="window.location.href='loungecheckin.html'">📲 Check In</button>
         </section>
 
@@ -43,6 +43,73 @@
             <p><a href="upcomingbookings.html">View All Bookings →</a></p>
         </section>
     </main>
+    <div id="user-info-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+  <form id="user-info-form" style="background:#fff; padding:2em; border-radius:8px; max-width:350px; margin:auto;">
+    <h2>Welcome! Please enter your details</h2>
+    <label>
+      First Name:
+      <input type="text" name="firstName" required>
+    </label><br><br>
+    <label>
+      Surname:
+      <input type="text" name="surname" required>
+    </label><br><br>
+    <label>
+      Email:
+      <input type="email" name="email" required>
+    </label><br><br>
+    <label>
+      Phone:
+      <input type="tel" name="phone" required>
+    </label><br><br>
+    <button type="submit">Save</button>
+  </form>
+</div>
+
 
 </body>
+<script>
+// Cookie helpers
+function setCookie(name, value, days) {
+  const date = new Date();
+  date.setTime(date.getTime() + (days*24*60*60*1000));
+  const expires = "expires=" + date.toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)};${expires};path=/;SameSite=Lax`;
+}
+
+function getCookie(name) {
+  const cname = name + "=";
+  const decodedCookie = decodeURIComponent(document.cookie);
+  const ca = decodedCookie.split(';');
+  for(let c of ca) {
+    c = c.trim();
+    if (c.indexOf(cname) === 0) return c.substring(cname.length);
+  }
+  return "";
+}
+
+// Show modal if firstName is not set
+window.onload = function() {
+  if (!getCookie("firstName")) {
+    document.getElementById("user-info-modal").style.display = "flex";
+  }
+  // Optionally, you can update the greeting with the user's name if desired
+  // const userName = getCookie("firstName");
+  // if (userName) document.querySelector('.user-greeting h2').innerText = `Hello, ${userName}!`;
+};
+
+document.getElementById("user-info-form").onsubmit = function(e) {
+  e.preventDefault();
+  const form = e.target;
+  setCookie("firstName", form.firstName.value, 30);
+  setCookie("surname", form.surname.value, 30);
+  setCookie("email", form.email.value, 30);
+  setCookie("phone", form.phone.value, 30);
+  document.getElementById("user-info-modal").style.display = "none";
+  // Optionally, reload or update greeting
+  // location.reload();
+  document.querySelector('.user-greeting h2').innerText = `Hello, ${form.firstName.value}!`;
+};
+</script>
+
 </html>
