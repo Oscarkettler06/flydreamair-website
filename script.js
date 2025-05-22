@@ -89,22 +89,6 @@ function populateProfileFromCookies() {
   document.getElementById("welcome-text").innerText = `Hello! ${firstName} ${surname}`;
 }
 
-// Edit profile handler
-function handleUpdateProfile(e) {
-  e.preventDefault();
-  const firstName = prompt("First Name:", getCookie("firstName") || "");
-  const surname = prompt("Surname:", getCookie("surname") || "");
-  const email = prompt("Email:", getCookie("email") || "");
-  const phone = prompt("Phone:", getCookie("phone") || "");
-
-  if (firstName !== null) setCookie("firstName", firstName, 7);
-  if (surname !== null) setCookie("surname", surname, 7);
-  if (email !== null) setCookie("email", email, 7);
-  if (phone !== null) setCookie("phone", phone, 7);
-
-  populateProfileFromCookies();
-}
-
 
 
 function initializeMembershipPage() {
