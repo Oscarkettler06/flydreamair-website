@@ -1,4 +1,3 @@
-//membership code
 // Set a cookie
 function setCookie(name, value, days) {
   const date = new Date();
@@ -19,6 +18,24 @@ function getCookie(name) {
   return "";
 }
 
+// Populate user profile fields from cookies
+function populateProfileFromCookies() {
+  const firstName = getCookie("firstName") || "Not set";
+  const surname = getCookie("surname") || "Not set";
+  const email = getCookie("email") || "Not set";
+  const phone = getCookie("phone") || "Not set";
+  const membership = getCookie("membershipTier") || "None";
+
+  document.getElementById("first-name").innerText = firstName;
+  document.getElementById("surname").innerText = surname;
+  document.getElementById("email").innerText = email;
+  document.getElementById("phone").innerText = phone;
+  document.getElementById("membership").innerText = membership;
+
+  // Update welcome text
+  document.getElementById("welcome-text").innerText = `Hello! ${firstName} ${surname}`;
+}
+
 // Update the greeting message
 function updateGreeting() {
   const tier = getCookie("membershipTier");
@@ -28,7 +45,7 @@ function updateGreeting() {
   } else if (tier === "Deluxe") {
     greeting = "Welcome Deluxe member! Enjoy your premium benefits.";
   } else {
-    greeting = "No Membership with RyanAir? You can fix that here";
+    greeting = "No Membership with FlyDreamAir? You can fix that here";
   }
   document.getElementById("greeting").innerText = greeting;
 }
@@ -54,6 +71,7 @@ function handleMemberFormSubmit(e) {
     document.getElementById("status").innerText = "Membership cleared.";
   }
 
+  populateProfileFromCookies();
   updateGreeting();
   updateRadioSelection();
 }
@@ -64,6 +82,7 @@ function handleCancelMembership() {
   if (confirmCancel) {
     setCookie("membershipTier", "", -1); 
     document.getElementById("status").innerText = "Membership cleared.";
+    populateProfileFromCookies();
     updateGreeting();
     updateRadioSelection();
   } else {
@@ -71,37 +90,31 @@ function handleCancelMembership() {
   }
 }
 
-//profile code
-// Populate user profile fields from cookies
-function populateProfileFromCookies() {
-    const firstName = getCookie("firstName") || "Not set";
-    const surname = getCookie("surname") || "Not set";
-    const email = getCookie("email") || "Not set";
-    const phone = getCookie("phone") || "Not set";
-    const membership = getCookie("membershipTier") || "None";
+// Edit Profile Button Handler
+function handleEditProfile(e) {
+  e.preventDefault();
+  const firstName = prompt("First Name:", getCookie("firstName") || "");
+  const surname = prompt("Surname:", getCookie("surname") || "");
+  const email = prompt("Email:", getCookie("email") || "");
+  const phone = prompt("Phone:", getCookie("phone") || "");
 
-    document.getElementById("first-name").innerText = firstName;
-    document.getElementById("surname").innerText = surname;
-    document.getElementById("email").innerText = email;
-    document.getElementById("phone").innerText = phone;
-    document.getElementById("membership").innerText = membership;
+  if (firstName !== null) setCookie("firstName", firstName, 7);
+  if (surname !== null) setCookie("surname", surname, 7);
+  if (email !== null) setCookie("email", email, 7);
+  if (phone !== null) setCookie("phone", phone, 7);
 
-    // Update welcome text
-    document.getElementById("welcome-text").innerText = `Hello! ${firstName} ${surname}`;
+  populateProfileFromCookies();
 }
 
-
+// Initialize the page and event listeners
 function initializeMembershipPage() {
-    populateProfileFromCookies();
-    updateGreeting();
-    updateRadioSelection();
-    document.getElementById("MemberForm").onsubmit = handleMemberFormSubmit;
-    document.getElementById("Cancel").addEventListener('click', handleCancelMembership);
+  populateProfileFromCookies();
+  updateGreeting();
+  updateRadioSelection();
+  document.getElementById("MemberForm").onsubmit = handleMemberFormSubmit;
+  document.getElementById("Cancel").addEventListener('click', handleCancelMembership);
+  document.getElementById("edit-profile").addEventListener('click', handleEditProfile);
 }
-setCookie('firstName', 'John', 7);
-setCookie('surname', 'Smith', 7);
-setCookie('email', 'john.smith@gmail.com', 7);
-setCookie('phone', '0400 123 123', 7);
 
 // Run initialization after DOM is loaded
 window.onload = initializeMembershipPage;
