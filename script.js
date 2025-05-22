@@ -36,61 +36,7 @@ function populateProfileFromCookies() {
   document.getElementById("welcome-text").innerText = `Hello! ${firstName} ${surname}`;
 }
 
-// Update the greeting message
-function updateGreeting() {
-  const tier = getCookie("membershipTier");
-  let greeting;
-  if (tier === "Regular") {
-    greeting = "Welcome Regular member! Want to upgrade to Deluxe? Just select it below.";
-  } else if (tier === "Deluxe") {
-    greeting = "Welcome Deluxe member! Enjoy your premium benefits.";
-  } else {
-    greeting = "No Membership with FlyDreamAir? You can fix that here";
-  }
-  document.getElementById("greeting").innerText = greeting;
-}
-
-// Update which radio button is selected
-function updateRadioSelection() {
-  const tier = getCookie("membershipTier");
-  document.getElementById("Deluxe").checked = tier === "Deluxe";
-  document.getElementById("Regular").checked = tier === "Regular";
-}
-
-// Handle membership form submission
-function handleMemberFormSubmit(e) {
-  e.preventDefault();
-  const tierInput = document.querySelector('input[name="MemberTier"]:checked');
-  const tier = tierInput ? tierInput.value : "";
-
-  if (tier) {
-    setCookie("membershipTier", tier, 7);
-    document.getElementById("status").innerText = `Membership tier '${tier}' saved!`;
-  } else {
-    setCookie("membershipTier", "", -1);
-    document.getElementById("status").innerText = "Membership cleared.";
-  }
-
-  populateProfileFromCookies();
-  updateGreeting();
-  updateRadioSelection();
-}
-
-// Handle cancel membership button
-function handleCancelMembership() {
-  const confirmCancel = window.confirm("Are you sure you want to cancel your membership?");
-  if (confirmCancel) {
-    setCookie("membershipTier", "", -1); 
-    document.getElementById("status").innerText = "Membership cleared.";
-    populateProfileFromCookies();
-    updateGreeting();
-    updateRadioSelection();
-  } else {
-    document.getElementById("status").innerText = "Membership cancellation aborted.";
-  }
-}
-
-// Updare Profile Button Handler
+// Edit profile handler
 function handleUpdateProfile(e) {
   e.preventDefault();
   const firstName = prompt("First Name:", getCookie("firstName") || "");
@@ -109,10 +55,6 @@ function handleUpdateProfile(e) {
 // Initialize the page and event listeners
 function initializeMembershipPage() {
   populateProfileFromCookies();
-  updateGreeting();
-  updateRadioSelection();
-  document.getElementById("MemberForm").onsubmit = handleMemberFormSubmit;
-  document.getElementById("Cancel").addEventListener('click', handleCancelMembership);
   document.getElementById("edit-profile").addEventListener('click', handleUpdateProfile);
 }
 
