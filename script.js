@@ -26,11 +26,11 @@ function populateProfileFromCookies() {
   const phone = getCookie("phone") || "Not set";
   const membership = getCookie("membershipTier") || "None";
 
-  document.getElementById("first-name").innerText = firstName;
+  document.getElementById("firstName").innerText = firstName;
   document.getElementById("surname").innerText = surname;
   document.getElementById("email").innerText = email;
   document.getElementById("phone").innerText = phone;
-  document.getElementById("membership").innerText = membership;
+  document.getElementById("membershipTier").innerText = membership;
 
   // Update welcome text
   document.getElementById("welcome-text").innerText = `Hello! ${firstName} ${surname}`;
@@ -90,8 +90,8 @@ function handleCancelMembership() {
   }
 }
 
-// Edit Profile Button Handler
-function handleEditProfile(e) {
+// Updare Profile Button Handler
+function handleUpdateProfile(e) {
   e.preventDefault();
   const firstName = prompt("First Name:", getCookie("firstName") || "");
   const surname = prompt("Surname:", getCookie("surname") || "");
@@ -113,7 +113,7 @@ function initializeMembershipPage() {
   updateRadioSelection();
   document.getElementById("MemberForm").onsubmit = handleMemberFormSubmit;
   document.getElementById("Cancel").addEventListener('click', handleCancelMembership);
-  document.getElementById("edit-profile").addEventListener('click', handleEditProfile);
+  document.getElementById("edit-profile").addEventListener('click', handleUpdateProfile);
 }
 
 // Run initialization after DOM is loaded
