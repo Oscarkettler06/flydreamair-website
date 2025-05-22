@@ -1,3 +1,4 @@
+//membership code
 // Set a cookie
 function setCookie(name, value, days) {
   const date = new Date();
@@ -70,12 +71,32 @@ function handleCancelMembership() {
   }
 }
 
-// Initialize the page and event listeners
+//profile code
+// Populate user profile fields from cookies
+function populateProfileFromCookies() {
+    const firstName = getCookie("firstName") || "Not set";
+    const surname = getCookie("surname") || "Not set";
+    const email = getCookie("email") || "Not set";
+    const phone = getCookie("phone") || "Not set";
+    const membership = getCookie("membershipTier") || "None";
+
+    document.getElementById("first-name").innerText = firstName;
+    document.getElementById("surname").innerText = surname;
+    document.getElementById("email").innerText = email;
+    document.getElementById("phone").innerText = phone;
+    document.getElementById("membership").innerText = membership;
+
+    // Update welcome text
+    document.getElementById("welcome-text").innerText = `Hello! ${firstName} ${surname}`;
+}
+
+
 function initializeMembershipPage() {
-  updateGreeting();
-  updateRadioSelection();
-  document.getElementById("MemberForm").onsubmit = handleMemberFormSubmit;
-  document.getElementById("Cancel").addEventListener('click', handleCancelMembership);
+    populateProfileFromCookies();
+    updateGreeting();
+    updateRadioSelection();
+    document.getElementById("MemberForm").onsubmit = handleMemberFormSubmit;
+    document.getElementById("Cancel").addEventListener('click', handleCancelMembership);
 }
 
 // Run initialization after DOM is loaded
