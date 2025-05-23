@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Membership - FlyDreamAir</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Membership - FlyDreamAir</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-   <nav class="navbar">
+  <nav class="navbar">
     <div class="navbar-logo">
       <img src="images/airplane.png" alt="FlyDreamAir Logo">
       <span>FlyDreamAir</span>
@@ -22,104 +22,74 @@
       <a href="profile.html">Profile</a>
     </div>
   </nav>
-<main class="main-container">
-  <h1 id="greeting"></h1>
-  <form id="MemberForm">
-    <div id="tierOptions" class="tier-columns">
-      <div class="tier-column">
-        <div class="main-container">
-          <input type="radio" id="Bronze" name="MemberTier" value="Bronze">
-          <label for="Bronze" id="BronzeLabel" style="color: #cd7f32;">
-            Bronze Tier – Free membership that collects points for discounts.
-          </label>
+  <main class="main-container">
+    <h1 id="greeting"></h1>
+    <form id="MemberForm">
+      <div id="tierOptions" class="tier-columns">
+        <div class="tier-column">
+          <div class="main-container">
+            <input type="radio" id="Bronze" name="MemberTier" value="Bronze">
+            <label for="Bronze" id="BronzeLabel" style="color: #cd7f32;">
+              Bronze Tier – Free membership that collects points for discounts.
+            </label>
+          </div>
+        </div>
+        <div class="tier-column">
+          <div class="main-container">
+            <input type="radio" id="Silver" name="MemberTier" value="Silver">
+            <label for="Silver" id="SilverLabel" style="color: #c0c0c0;">
+              Silver Tier – All Bronze perks plus priority booking and free amenities.
+            </label>
+          </div>
+        </div>
+        <div class="tier-column">
+          <div class="main-container">
+            <input type="radio" id="Gold" name="MemberTier" value="Gold">
+            <label for="Gold" id="GoldLabel" style="color: #ffd700;">
+              Gold Tier – All perks including VIP breakfast upgrades and early check-in.
+            </label>
+          </div>
         </div>
       </div>
-      <div class="tier-column">
-        <div class="main-container">
-          <input type="radio" id="Silver" name="MemberTier" value="Silver">
-          <label for="Silver" id="SilverLabel" style="color: #c0c0c0;">
-            Silver Tier – All Bronze perks plus priority booking and free amenities.
-          </label>
-        </div>
+      <div class="button-container">
+        <button type="submit" class="primary-button">Confirm membership</button>
+        <a href="javascript:void(0);" id="Cancel" class="primary-button">Cancel Membership</a>
       </div>
-      <div class="tier-column">
-        <div class="main-container">
-          <input type="radio" id="Gold" name="MemberTier" value="Gold">
-          <label for="Gold" id="GoldLabel" style="color: #ffd700;">
-            Gold Tier – All perks including VIP breakfast upgrades and early check-in.
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class="button-container">
-      <button type="submit" class="primary-button">Confirm membership</button>
-      <a href="javascript:void(0);" id="Cancel" class="primary-button">Cancel Membership</a>
-    </div>
-  </form>
-</main>
-<script>
-  // Utility functions for cookies
-  function setCookie(name, value, days) {
-    let expires = "";
-    if (days) {
-      const date = new Date();
-      date.setTime(date.getTime() + (days*24*60*60*1000));
-      expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-  }
-  function getCookie(name) {
-    const nameEQ = name + "=";
-    const ca = document.cookie.split(';');
-    for(let i=0;i < ca.length;i++) {
-      let c = ca[i];
-      while (c.charAt(0)==' ') c = c.substring(1,c.length);
-      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-    }
-    return null;
-  }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const tier = getCookie("membershipTier");
-    const greeting = document.getElementById("greeting");
-
-    if (tier && greeting) {
-      greeting.textContent = "Welcome " + tier + " member!";
-    }
-
-    if (tier) {
-      const radio = document.querySelector(`input[name="MemberTier"][value="${tier}"]`);
-      if (radio) radio.checked = true;
-    }
-
-    const form = document.getElementById("MemberForm");
-    form.addEventListener("submit", function(e) {
+      <div id="status" style="margin-top:1em;color:green;"></div>
+    </form>
+  </main>
+  <script src="script.js"></script>
+  <script>
+    // Override or extend handleMemberFormSubmit to support payment flow
+    function handleMemberFormSubmit(e) {
       e.preventDefault();
-      const selected = document.querySelector('input[name="MemberTier"]:checked');
-      if (selected) {
-        // Bronze is free, set immediately
-        if (selected.value === "Bronze") {
-          setCookie("membershipTier", selected.value, 7);
-          greeting.textContent = "Welcome " + selected.value + " member!";
-        } else {
-          // Silver or Gold: store selection and redirect to payment page
-          localStorage.setItem("pendingMembershipTier", selected.value);
-          window.location.href = "confirmMembership.html?membership=1";
-        }
-      }
-    });
+      const tierInput = document.querySelector('input[name="MemberTier"]:checked');
+      const tier = tierInput ? tierInput.value : "";
+      const statusElem = document.getElementById("status");
 
-    const cancelBtn = document.getElementById("Cancel");
-    if (cancelBtn) {
-      cancelBtn.addEventListener("click", () => {
-        if (confirm("Are you sure you want to cancel your membership?")) {
-          setCookie("membershipTier", "", -1);
-          if (greeting) greeting.textContent = "No Membership with FlyDreamAir? You can fix that here.";
+      if (tier) {
+        if (tier === "Bronze") { // Free tier
+          setCookie("membershipTier", tier, 7);
+          if (statusElem) statusElem.innerText = `Membership tier '${tier}' saved!`;
+          updateGreeting();
+          updateRadioSelection();
+        } else { // Paid tiers
+          localStorage.setItem("pendingMembershipTier", tier);
+          window.location.href = "confirmbooking.html?membership=1";
         }
-      });
+      } else {
+        setCookie("membershipTier", "", -1);
+        if (statusElem) statusElem.innerText = "Membership cleared.";
+        updateGreeting();
+        updateRadioSelection();
+      }
     }
-  });
-</script>
+    // Attach the new handler
+    document.addEventListener("DOMContentLoaded", function() {
+      const memberForm = document.getElementById("MemberForm");
+      if (memberForm) memberForm.onsubmit = handleMemberFormSubmit;
+    });
+  </script>
 </body>
 </html>
 

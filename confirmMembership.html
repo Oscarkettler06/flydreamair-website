@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Payment Method – FlyDreamAir</title>
+  <title>Confirm Booking – FlyDreamAir</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -26,9 +26,16 @@
 
   <main class="main-container" style="margin-top: 110px;">
     <div class="header">
-      <h1>Confirm Membership payment</h1>
+      <h1 id="confirm-title">Confirm Your Booking</h1>
     </div>
 
+    <!-- Booking Details (hidden if membership payment) -->
+    <div class="booking-details" id="booking-details-section">
+      <!-- ... (same as your original, omitted for brevity) ... -->
+      <!-- Keep your booking form here if you want to support both flows -->
+    </div>
+
+    <!-- Payment Section -->
     <div class="payment-container">
       <!-- Payment Selection -->
       <div class="payment-methods">
@@ -109,20 +116,21 @@
           </div>
         </div>
       </div>
+    </div>
 
-
-        <!-- Action Buttons -->
-        <div class="button-container">
-        <button class="primary-button" id="payment-form">Confirm Booking</button>
-        <a href="search.html" class="primary-button cancel-link">Cancel ✕</a>
-        <a href="index.html" class="primary-button back-button">
-         <span>←</span> Back to Dashboard
-        </a>
-        </div>
+    <!-- Action Buttons -->
+    <div class="button-container">
+      <button class="primary-button" id="confirmBooking">Confirm Payment</button>
+      <a href="search.html" class="primary-button cancel-link">Cancel ✕</a>
+      <a href="index.html" class="primary-button back-button">
+        <span>←</span> Back to Dashboard
+      </a>
     </div>
   </main>
 
+  <script src="script.js"></script>
   <script>
+    // Payment form switching logic
     window.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('input[name="payment"]').forEach(r => {
         r.addEventListener('change', switchForm);
@@ -134,7 +142,57 @@
         if (form) form.style.display = 'block';
       }
       switchForm();
+
+      // Membership payment flow
+      const urlParams = new URLSearchParams(window.location.search);
+      const isMembership = urlParams.has('membership') || localStorage.getItem('pendingMembershipTier');
+      if (isMembership) {
+        document.getElementById('confirm-title').textContent = "Confirm Membership Payment";
+        const bookingSection = document.getElementById('booking-details-section');
+        if (bookingSection) bookingSection.style.display = "none";
+      }
+    });
+
+    // Confirm payment handler
+    document.getElementById("confirmBooking").addEventListener("click", function (e) {
+      e.preventDefault();
+
+      // Membership payment flow
+      const pendingTier = localStorage.getItem("pendingMembershipTier");
+      if (pendingTier) {
+        setCookie("membershipTier", pendingTier, 7);
+        localStorage.removeItem("pendingMembershipTier");
+        alert("Membership payment successful! Welcome " + pendingTier + " member.");
+        window.location.href = "membership.html";
+        return;
+      }
+
+      // Booking flow 
+      const lounge = document.getElementById("lounge-select") ? document.getElementById("lounge-select").value : null;
+      const date = document.getElementById("booking-date") ? document.getElementById("booking-date").value : null;
+      const time = document.getElementById("booking-time") ? document.getElementById("booking-time").value : null;
+      if (lounge && date && time) {
+        const loungeImages = {
+          "Sydney Gold Lounge": "Images/sydneyLounge.png",
+          "Melbourne Executive Lounge": "Images/melbourneLounge.png",
+          "Brisbane Serenity Lounge": "Images/brisbaneLounge.png"
+        };
+        const booking = {
+          lounge,
+          date,
+          time,
+          guests: 1,
+          image: loungeImages[lounge] || "images/lounge-room.jpg"
+        };
+        const bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
+        bookings.push(booking);
+        localStorage.setItem("bookings", JSON.stringify(bookings));
+        window.location.href = "upcomingbooking.html";
+      } else if (!pendingTier) {
+        alert("Please complete all booking details.");
+      }
     });
   </script>
 </body>
 </html>
+
