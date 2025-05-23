@@ -179,57 +179,32 @@
     </div>
   </main>
 
-  <script>
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  // --- Utility Functions ---
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return "";
+  }
   function getMembershipTier() {
-  const name = "membershipTier=";
-  const decodedCookie = decodeURIComponent(document.cookie);
-  const ca = decodedCookie.split(';');
-  for (let c of ca) {
-    c = c.trim();
-    if (c.indexOf(name) === 0) return c.substring(name.length);
+    return getCookie("membershipTier") || "";
   }
-  return "";
-}
+  function shouldShowPayment() {
+    const tier = getMembershipTier();
+    return !(tier === "Silver" || tier === "Gold");
+  }
+  function getBookingPrice(guestCount) {
+    const PRICE_PER_GUEST = 80;
+    if (!shouldShowPayment()) return 0;
+    return (guestCount || 1) * PRICE_PER_GUEST;
+  }
 
-function shouldShowPayment() {
-  const tier = getMembershipTier();
-  return !(tier === "Silver" || tier === "Gold");
-}
-
-function getBookingPrice(guestCount) {
-  const PRICE_PER_GUEST = 80;
-  if (!shouldShowPayment()) return 0;
-  return (guestCount || 1) * PRICE_PER_GUEST;
-}
-
-function updatePriceDisplay() {
-  const guestSelect = document.getElementById("guest-select");
-  const priceSpan = document.getElementById("price");
-  const guests = parseInt(guestSelect.value, 10) || 1;
-  priceSpan.textContent = getBookingPrice(guests);
-}
-
-function updatePaymentSection() {
+  // --- DOM Elements ---
+  const guestSelect    = document.getElementById("guest-select");
+  const priceSpan      = document.getElementById("price");
   const paymentContainer = document.querySelector('.payment-container');
-  if (!shouldShowPayment() && paymentContainer) {
-    paymentContainer.style.display = 'none';
-  } else if (paymentContainer) {
-    paymentContainer.style.display = '';
-  }
-}
-
-const first = getCookie("firstName") || "Guest";
-    const last = getCookie("surname") || "";
-    const tier = getCookie("membershipTier") || "";
-
-
-    window.addEventListener('DOMContentLoaded', () => {
-      updatePriceDisplay();
-      updatePaymentSection();
-      const guestSelect = document.getElementById("guest-select");
-      guestSelect.addEventListener("change", updatePriceDisplay);
-    });
-
   const paymentRadios = document.querySelectorAll('input[name="payment"]');
   const paymentForms = {
     card: document.getElementById('form-card'),
@@ -237,178 +212,233 @@ const first = getCookie("firstName") || "Guest";
     applepay: document.getElementById('form-applepay'),
     googlepay: document.getElementById('form-googlepay')
   };
+  const loungeSelect   = document.getElementById('lounge-select');
+  const dateInput      = document.getElementById('booking-date');
+  const timeInput      = document.getElementById('booking-time');
+  const timeUntil      = document.getElementById('time-until');
+  const previewImg     = document.getElementById('lounge-preview');
+  const confirmBtn     = document.getElementById('confirmBooking');
+  const welcomeText    = document.getElementById('welcome-text');
+  const perksText      = document.getElementById('membership-perks');
 
-function togglePaymentForms() {
-  const selected = document.querySelector('input[name="payment"]:checked').value;
-  Object.keys(paymentForms).forEach(key => {
-    paymentForms[key].style.display = (key === selected) ? 'block' : 'none';
+  // --- Welcome Message and Perks ---
+  const first = getCookie("firstName") || "Guest";
+  const last = getCookie("surname") || "";
+  const tier = getMembershipTier();
+  welcomeText.textContent = `Hello, ${first}${last ? ' ' + last : ''}`;
+  if (tier === "Gold") {
+    perksText.textContent = "Gold Member: Free lounge bookings for you and your guests!";
+  } else if (tier === "Silver") {
+    perksText.textContent = "Silver Member: Free lounge bookings for you and your guests!";
+  } else if (tier) {
+    perksText.textContent = `Welcome, ${tier} Member!`;
+  } else {
+    perksText.textContent = "";
+  }
+
+  // --- Lounge & Capacity Logic ---
+  const DEFAULT_CAPACITIES = {
+    'Sydney Gold Lounge':         30,
+    'Melbourne Executive Lounge': 25,
+    'Brisbane Serenity Lounge':   20
+  };
+  let loungeCapacities = JSON.parse(localStorage.getItem('loungeCapacities') || 'null')
+                          || { ...DEFAULT_CAPACITIES };
+  function saveCapacities() {
+    localStorage.setItem('loungeCapacities', JSON.stringify(loungeCapacities));
+  }
+  function resetForBookingDate(selDate) {
+    const last = localStorage.getItem('capacitiesLastReset');
+    if (selDate && selDate !== last) {
+      loungeCapacities = { ...DEFAULT_CAPACITIES };
+      saveCapacities();
+      localStorage.setItem('capacitiesLastReset', selDate);
+    }
+  }
+  const loungeImages = {
+    'Sydney Gold Lounge':         'images/sydneyLounge.png',
+    'Melbourne Executive Lounge': 'images/melbourneLounge.png',
+    'Brisbane Serenity Lounge':   'images/brisbaneLounge.png'
+  };
+
+  // --- Date Picker Restriction ---
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth()+1).padStart(2,'0');
+  const dd = String(now.getDate()).padStart(2,'0');
+  const todayStr = `${yyyy}-${mm}-${dd}`;
+  dateInput.min = todayStr;
+
+  // --- Guest Dropdown & Sold Out Message ---
+  function updateGuestOptions() {
+    const cap = loungeCapacities[loungeSelect.value] || 0;
+    guestSelect.innerHTML = '';
+    if (!loungeSelect.value || cap === 0) {
+      guestSelect.disabled   = true;
+      guestSelect.innerHTML  = '<option>—</option>';
+      confirmBtn.disabled    = true;
+      confirmBtn.textContent = cap === 0 && loungeSelect.value
+        ? 'Sold Out'
+        : 'Confirm Booking';
+      // Show sold out message if needed
+      if (cap === 0 && loungeSelect.value) {
+        guestSelect.title = "This lounge is fully booked for the selected date.";
+      } else {
+        guestSelect.title = "";
+      }
+    } else {
+      guestSelect.disabled   = false;
+      confirmBtn.disabled    = false;
+      confirmBtn.textContent = 'Confirm Booking';
+      for (let i = 1; i <= cap && i <= 6; i++) {
+        const o = document.createElement('option');
+        o.value = i;
+        o.textContent = i + (i===1 ? ' Guest' : ' Guests');
+        guestSelect.appendChild(o);
+      }
+      guestSelect.title = "";
+    }
+    updatePriceDisplay();
+    updatePaymentSection();
+  }
+
+  // --- Lounge Image Preview ---
+  loungeSelect.addEventListener('change', () => {
+    const url = loungeImages[loungeSelect.value];
+    if (url) {
+      previewImg.src = url;
+      previewImg.style.display = 'block';
+    } else {
+      previewImg.style.display = 'none';
+    }
+    updateGuestOptions();
   });
-}
 
-paymentRadios.forEach(radio => {
-  radio.addEventListener('change', togglePaymentForms);
-});
+  // --- Price, Payment Section, and Display Logic ---
+  function updatePriceDisplay() {
+    const guests = parseInt(guestSelect.value, 10) || 1;
+    priceSpan.textContent = getBookingPrice(guests);
+  }
+  function updatePaymentSection() {
+    if (!shouldShowPayment() && paymentContainer) {
+      paymentContainer.style.display = 'none';
+    } else if (paymentContainer) {
+      paymentContainer.style.display = '';
+    }
+  }
 
-// Initialize
-togglePaymentForms();
+  guestSelect.addEventListener("change", () => {
+    updatePriceDisplay();
+    updatePaymentSection();
+  });
 
-
-  </script>
-
-  <script>
-     window.addEventListener('DOMContentLoaded', () => {
-      // 1) Compute todayStr (local date)
-      const now      = new Date();
-      const yyyy     = now.getFullYear();
-      const mm       = String(now.getMonth()+1).padStart(2,'0');
-      const dd       = String(now.getDate()).padStart(2,'0');
-      const todayStr = `${yyyy}-${mm}-${dd}`;
-
-      // 2) Your one-and-only defaults
-      const DEFAULT_CAPACITIES = {
-        'Sydney Gold Lounge':         30,
-        'Melbourne Executive Lounge': 25,
-        'Brisbane Serenity Lounge':   20
-      };
-
-      // 3) Load or initialize stored capacities
-      let loungeCapacities = JSON.parse(localStorage.getItem('loungeCapacities') || 'null')
-                              || { ...DEFAULT_CAPACITIES };
-      function saveCapacities() {
-        localStorage.setItem('loungeCapacities', JSON.stringify(loungeCapacities));
-      }
-
-      // 4) Reset helper, called whenever the booking-date changes
-      function resetForBookingDate(selDate) {
-        const last = localStorage.getItem('capacitiesLastReset');
-        if (selDate && selDate !== last) {
-          loungeCapacities = { ...DEFAULT_CAPACITIES };
-          saveCapacities();
-          localStorage.setItem('capacitiesLastReset', selDate);
-        }
-      }
-
-      // 5) Grab all your controls
-      const loungeSelect = document.getElementById('lounge-select');
-      const guestSelect  = document.getElementById('guest-select');
-      const priceSpan    = document.getElementById('price');
-      const confirmBtn   = document.getElementById('confirmBooking');
-      const dateInput    = document.getElementById('booking-date');
-      const timeInput    = document.getElementById('booking-time');
-      const timeUntil    = document.getElementById('time-until');
-      const previewImg   = document.getElementById('lounge-preview');
-      const PRICE_PER_GUEST = 80;
-
-      // lock the date picker to today forward
-      dateInput.min = todayStr;
-
-      // 6) Build guest dropdown up to remaining capacity
-      function updateGuestOptions() {
-        const cap = loungeCapacities[loungeSelect.value] || 0;
-        guestSelect.innerHTML = '';
-        if (!loungeSelect.value || cap === 0) {
-          guestSelect.disabled   = true;
-          guestSelect.innerHTML  = '<option>—</option>';
-          confirmBtn.disabled    = true;
-          confirmBtn.textContent = cap === 0 && loungeSelect.value
-            ? 'Sold Out'
-            : 'Confirm Booking';
-        } else {
-          guestSelect.disabled   = false;
-          confirmBtn.disabled    = false;
-          confirmBtn.textContent = 'Confirm Booking';
-          for (let i = 1; i <= cap; i++) {
-            const o = document.createElement('option');
-            o.value = i;
-            o.textContent = i + (i===1 ? ' Guest' : ' Guests');
-            guestSelect.appendChild(o);
-          }
-          updatePrice();
-        }
-      }
-
-      // 7) When lounge changes: swap image + rebuild guests
-      const loungeImages = {
-        'Sydney Gold Lounge':         'Images/sydneyLounge.png',
-        'Melbourne Executive Lounge': 'Images/melbourneLounge.png',
-        'Brisbane Serenity Lounge':   'Images/brisbaneLounge.png'
-      };
-      loungeSelect.addEventListener('change', () => {
-        const url = loungeImages[loungeSelect.value];
-        if (url) {
-          previewImg.src = url;
-          previewImg.style.display = 'block';
-        } else {
-          previewImg.style.display = 'none';
-        }
-        updateGuestOptions();
-      });
-
-      // 8) Price updater
-      function updatePrice() {
-        const cnt = parseInt(guestSelect.value,10) || 1;
-        priceSpan.textContent = cnt * PRICE_PER_GUEST;
-      }
-      guestSelect.addEventListener('change', updatePrice);
-
-      // 9) Time-until updater
-      function updateTimeUntil() {
-        if (!dateInput.value || !timeInput.value) {
-          timeUntil.textContent = '—';
-          return;
-        }
-        const [y,mo,d] = dateInput.value.split('-');
-        const [h,mi]   = timeInput.value.split(':');
-        let diff = new Date(y,mo-1,d,h,mi) - new Date();
-        if (diff <= 0) {
-          timeUntil.textContent = '0';
-          return;
-        }
-        const days = Math.floor(diff/86400000); diff%=86400000;
-        const hrs  = Math.floor(diff/3600000);   diff%=3600000;
-        const mins = Math.floor(diff/60000);
-        timeUntil.textContent =
-          (days? days+'d ':'')+
-          (hrs  ? hrs+'h ':'')+
-          mins+'m';
-      }
-      dateInput.addEventListener('change', () => {
-        resetForBookingDate(dateInput.value);
-        updateTimeUntil();
-        updateGuestOptions();
-      });
-      timeInput.addEventListener('change', updateTimeUntil);
-
-      // 10) Confirm handler
-      confirmBtn.addEventListener('click', () => {
-        const lounge = loungeSelect.value;
-        const date   = dateInput.value;
-        const time   = timeInput.value;
-        const guests = parseInt(guestSelect.value,10);
-        const price  = parseInt(priceSpan.textContent,10);
-        if (!lounge || !date || !time) {
-          alert('Please complete all booking details.');
-          return;
-        }
-        // store the booking
-        const bs = JSON.parse(localStorage.getItem('bookings')||'[]');
-        bs.push({ lounge, date, time, guests, price, image: previewImg.src });
-        localStorage.setItem('bookings', JSON.stringify(bs));
-
-        // subtract & persist capacities
-        loungeCapacities[lounge] -= guests;
-        saveCapacities();
-
-        // go to the upcoming page
-        window.location.href = 'upcomingbooking.html';
-      });
-
-      // 11) kick it all off
-      dateInput.dispatchEvent(new Event('change'));
-      loungeSelect.dispatchEvent(new Event('change'));
-      updatePrice();
-      updateTimeUntil();
+  // --- Payment Form Toggle ---
+  function togglePaymentForms() {
+    const selected = document.querySelector('input[name="payment"]:checked').value;
+    Object.keys(paymentForms).forEach(key => {
+      paymentForms[key].style.display = (key === selected) ? 'block' : 'none';
     });
-  </script>
+  }
+  paymentRadios.forEach(radio => {
+    radio.addEventListener('change', togglePaymentForms);
+  });
+
+  // --- Time Until Booking ---
+  function updateTimeUntil() {
+    if (!dateInput.value || !timeInput.value) {
+      timeUntil.textContent = '—';
+      return;
+    }
+    const [y,mo,d] = dateInput.value.split('-');
+    const [h,mi]   = timeInput.value.split(':');
+    let diff = new Date(y,mo-1,d,h,mi) - new Date();
+    if (diff <= 0) {
+      timeUntil.textContent = '0';
+      return;
+    }
+    const days = Math.floor(diff/86400000); diff%=86400000;
+    const hrs  = Math.floor(diff/3600000);   diff%=3600000;
+    const mins = Math.floor(diff/60000);
+    timeUntil.textContent =
+      (days? days+'d ':'')+
+      (hrs  ? hrs+'h ':'')+
+      mins+'m';
+  }
+  dateInput.addEventListener('change', () => {
+    resetForBookingDate(dateInput.value);
+    updateTimeUntil();
+    updateGuestOptions();
+  });
+  timeInput.addEventListener('change', updateTimeUntil);
+
+  // --- Confirm Booking Handler with Basic Validation ---
+  confirmBtn.addEventListener('click', (e) => {
+    const lounge = loungeSelect.value;
+    const date   = dateInput.value;
+    const time   = timeInput.value;
+    const guests = parseInt(guestSelect.value,10);
+    const price  = parseInt(priceSpan.textContent,10);
+
+    if (!lounge || !date || !time || !guests) {
+      alert('Please complete all booking details.');
+      return;
+    }
+
+    // If payment is required, validate payment form
+    if (shouldShowPayment()) {
+      const selectedMethod = document.querySelector('input[name="payment"]:checked').value;
+      if (selectedMethod === 'card') {
+        if (!document.getElementById('card-name').value ||
+            !document.getElementById('card-number').value ||
+            !document.getElementById('card-expiry').value ||
+            !document.getElementById('card-cvc').value) {
+          alert("Please complete all card details.");
+          return;
+        }
+      } else if (selectedMethod === 'visa') {
+        if (!document.getElementById('visa-card-number').value ||
+            !document.getElementById('visa-expiry').value ||
+            !document.getElementById('visa-cvc').value) {
+          alert("Please complete all Visa card details.");
+          return;
+        }
+      } else if (selectedMethod === 'applepay') {
+        if (!document.getElementById('apple-email').value) {
+          alert("Please enter your Apple Pay email.");
+          return;
+        }
+      } else if (selectedMethod === 'googlepay') {
+        if (!document.getElementById('google-email').value) {
+          alert("Please enter your Google Pay email.");
+          return;
+        }
+      }
+    }
+
+    // Store the booking
+    const bs = JSON.parse(localStorage.getItem('bookings')||'[]');
+    bs.push({ lounge, date, time, guests, price, image: previewImg.src });
+    localStorage.setItem('bookings', JSON.stringify(bs));
+
+    // Subtract & persist capacities
+    loungeCapacities[lounge] -= guests;
+    saveCapacities();
+
+    // Go to the upcoming page
+    window.location.href = 'upcomingbooking.html';
+  });
+
+  // --- Initialization ---
+  // Show the correct payment form and section on load
+  togglePaymentForms();
+  updatePriceDisplay();
+  updatePaymentSection();
+
+  // Trigger initial events for date and lounge
+  dateInput.dispatchEvent(new Event('change'));
+  loungeSelect.dispatchEvent(new Event('change'));
+  updateTimeUntil();
+});
+</script>
 </body>
 </html>
