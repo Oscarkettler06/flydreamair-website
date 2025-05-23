@@ -193,7 +193,7 @@
 
 function shouldShowPayment() {
   const tier = getMembershipTier();
-  return (tier === "Bronze");
+  return !(tier === "Silver" || tier === "Gold");
 }
 
 function getBookingPrice(guestCount) {
