@@ -58,9 +58,21 @@
         </div>
 
         <!-- 4) Guests & Price (static) -->
-        <p><strong>Guests:</strong> 1</p>
-        <p><strong>Price:</strong> $80</p>
-
+        <label for="guest-select">Guests</label>
+          <select id="guest-select">
+            <option value="1">1 Guest</option>
+            <option value="2">2 Guests</option>
+            <option value="3">3 Guests</option>
+            <option value="4">4 Guests</option>
+            <option value="5">5 Guests</option>
+            <option value="6">6 Guests</option>
+          </select>
+        </div>
+        <p>
+          <strong>Price:</strong>
+          $<span id="price">80</span>
+        </p>
+        
         <!-- 5) Time Until Booking (calculated) -->
         <p><strong>Time Until Booking:</strong> <span id="time-until">—</span></p>
       </div>
@@ -169,6 +181,17 @@
       const dateInput = document.getElementById('booking-date');
       const timeInput = document.getElementById('booking-time');
       const timeUntilSpan = document.getElementById('time-until');
+      const guestSelect = document.getElementById('guest-select');
+      const priceSpan   = document.getElementById('price');
+      const PRICE_PER_GUEST = 80;
+
+      function updatePrice() {
+        const count = parseInt(guestSelect.value, 10) || 1;
+        priceSpan.textContent = count * PRICE_PER_GUEST;
+      }
+      // initialize and re-calculate on change
+      guestSelect.addEventListener('change', updatePrice);
+      updatePrice();
 
       // 1) Set min date = today
       const now = new Date();
