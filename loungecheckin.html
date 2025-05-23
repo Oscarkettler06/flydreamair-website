@@ -18,13 +18,13 @@
         <a href="search.html">Search</a>
         <a href="upcomingbooking.html">Upcoming</a>
         <a href="confirmbooking.html">Confirm</a>
-        <a href="loungecheckin.html">Check-In</a>
+        <a href="loungecheckin.html" class="active">Check-In</a>
         <a href="membership.html">Membership</a>
         <a href="profile.html">Profile</a>
       </div>
     </nav>
 
-    <main class="main-container" style="margin-top: 110px;">
+    <main class="main-container">
         <!-- Header -->
         <div class="header">
             <h2>FlyDreamAir Lounge Check-In</h2>
@@ -32,7 +32,8 @@
 
         <!-- Welcome and Booking Info -->
         <div class="booking-info">
-            <p class="welcome-text">Hello, John Smith</p>
+            <p class="welcome-text" id="welcome-text">Hello, Guest</p>
+            <p id="membership-perks"></p>
             <p>You have an upcoming lounge booking.</p>
             <ul>
                 <li><strong>Lounge:</strong> Sydney Gold Lounge</li>
@@ -61,4 +62,28 @@
         </a>
     </main>
 </body>
+<script src="script.js"></script>
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const first = getCookie("firstName") || "Guest";
+    const last = getCookie("surname") || "";
+    const tier = getCookie("membershipTier") || "";
+
+    const welcome = document.getElementById("welcome-text");
+    const perks = document.getElementById("membership-perks");
+
+    if (welcome) welcome.textContent = "Hello, " + first + " " + last;
+    if (perks) {
+      if (tier === "Gold") {
+        perks.textContent = "Enjoy early check-in and complimentary VIP breakfast.";
+      } else if (tier === "Silver") {
+        perks.textContent = "You get priority access today.";
+      } else if (tier === "Bronze") {
+        perks.textContent = "Earn points with every visit.";
+      } else {
+        perks.textContent = "Join our membership program to enjoy perks.";
+      }
+    }
+  });
+</script>
 </html>

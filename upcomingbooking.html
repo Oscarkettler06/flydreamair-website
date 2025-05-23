@@ -15,7 +15,7 @@
       <div class="navbar-links">
         <a href="index.html">Home</a>
         <a href="search.html">Search</a>
-        <a href="upcomingbooking.html">Upcoming</a>
+        <a href="upcomingbooking.html" class="active">Upcoming</a>
         <a href="confirmbooking.html">Confirm</a>
         <a href="loungecheckin.html">Check-In</a>
         <a href="membership.html">Membership</a>
@@ -23,43 +23,63 @@
       </div>
     </nav>
 
-    <main class="bookings-container" style="margin-top: 110px;">
-        <div class="booking-card">
-            <img src="images/lounge-room.jpg" alt="Lounge preview" class="booking-thumbnail">
-            <h3>Sydney Gold Lounge</h3>
-            <p>Date: 17 Apr 2025</p>
-            <p>Time: 10:00 AM</p>
-            <p>Guests: 1</p>
-            <div class="booking-actions">
-                <button onclick="window.location.href='loungecheckin.html'">Check In</button>
-                <button class="cancel-btn">Cancel</button>
-            </div>
-        </div>
-
-        <div class="booking-card">
-            <img src="images/lounge-room.jpg" alt="Lounge preview" class="booking-thumbnail">
-            <h3>Melbourne Executive Lounge</h3>
-            <p>Date: 20 Apr 2025</p>
-            <p>Time: 2:30 PM</p>
-            <p>Guests: 2</p>
-            <div class="booking-actions">
-                <button onclick="window.location.href='loungecheckin.html'">Check In</button>
-                <button class="cancel-btn">Cancel</button>
-            </div>
-        </div>
-
-        <div class="booking-card">
-            <img src="images/lounge-room.jpg" alt="Lounge preview" class="booking-thumbnail">
-            <h3>Brisbane Serenity Lounge</h3>
-            <p>Date: 22 Apr 2025</p>
-            <p>Time: 9:00 AM</p>
-            <p>Guests: 1</p>
-            <div class="booking-actions">
-                <button onclick="window.location.href='loungecheckin.html'">Check In</button>
-                <button class="cancel-btn">Cancel</button>
-            </div>
-        </div>
+    <main class="main-container">
+        <div id="booking-list"></div>
     </main>
+
+<script>
+    const perks = [
+        "Free VIP Breakfast and Early Check-In",
+        "Priority Booking and Free Amenities",
+        "Earn points for discounts"
+    ];
+
+    perks.forEach(perk => {
+        console.log(perk);
+    });
+</script>
+
+<script>
+    const bookingList = document.getElementById("booking-list");
+    const stored = localStorage.getItem("bookings");
+    const bookings = stored ? JSON.parse(stored) : [];
+
+    if (bookings.length === 0) {
+      bookingList.innerHTML = "<p>No bookings found. Book a lounge to get started.</p>";
+    } else {
+      bookings.forEach(({ lounge, date, time, guests, image }, index) => {
+        const card = document.createElement("div");
+        card.className = "booking-card";
+        card.innerHTML = `
+          <img src="${image}" alt="Lounge preview" class="booking-thumbnail">
+          <h3>${lounge}</h3>
+          <p>Date: ${date}</p>
+          <p>Time: ${time}</p>
+          <p>Guests: ${guests}</p>
+          <div class="booking-actions">
+            <button class="primary-button" onclick="window.location.href='loungecheckin.html'">Check In</button>
+            <button class="primary-button cancel-btn" data-index="${index}">Cancel</button>
+          </div>
+        `;
+        bookingList.appendChild(card);
+      });
+    }
+  </script>
+
+<script>
+  document.addEventListener('click', function(event) {
+    if (event.target && event.target.classList.contains('cancel-btn')) {
+      const index = event.target.getAttribute('data-index');
+      const storedBookings = localStorage.getItem('bookings');
+      if (storedBookings) {
+        const bookingsArray = JSON.parse(storedBookings);
+        bookingsArray.splice(index, 1);
+        localStorage.setItem('bookings', JSON.stringify(bookingsArray));
+        location.reload();
+      }
+    }
+  });
+</script>
 
 </body>
 </html>

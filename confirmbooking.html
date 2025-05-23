@@ -17,7 +17,7 @@
       <a href="index.html">Home</a>
       <a href="search.html">Search</a>
       <a href="upcomingbooking.html">Upcoming</a>
-      <a href="confirmbooking.html">Confirm</a>
+      <a href="confirmbooking.html" class="active">Confirm</a>
       <a href="loungecheckin.html">Check-In</a>
       <a href="membership.html">Membership</a>
       <a href="profile.html">Profile</a>
@@ -156,11 +156,9 @@
 
     <!-- Action Buttons -->
     <div class="button-container">
-      <button class="primary-button" onclick="window.location.href='upcomingbookings.html'">
-        Confirm Booking
-      </button>
-      <a href="search.html" class="cancel-link">Cancel ✕</a>
-      <a href="index.html" class="back-button">
+      <button class="primary-button" id="confirmBooking">Confirm Booking</button>
+      <a href="search.html" class="primary-button cancel-link">Cancel ✕</a>
+      <a href="index.html" class="primary-button back-button">
         <span>←</span> Back to Dashboard
       </a>
     </div>
@@ -248,6 +246,39 @@
         if (form) form.style.display = 'block';
       }
       switchForm();
+    });
+  </script>
+
+  <script>
+    const loungeImages = {
+      "Sydney Gold Lounge": "Images/sydneyLounge.png",
+      "Melbourne Executive Lounge": "Images/melbourneLounge.png",
+      "Brisbane Serenity Lounge": "Images/brisbaneLounge.png"
+    };
+
+    document.getElementById("confirmBooking").addEventListener("click", function () {
+      const lounge = document.getElementById("lounge-select").value;
+      const date = document.getElementById("booking-date").value;
+      const time = document.getElementById("booking-time").value;
+
+      if (!lounge || !date || !time) {
+        alert("Please complete all booking details.");
+        return;
+      }
+
+      const booking = {
+        lounge,
+        date,
+        time,
+        guests: 1,
+        image: loungeImages[lounge] || "images/lounge-room.jpg"
+      };
+
+      const bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
+      bookings.push(booking);
+      localStorage.setItem("bookings", JSON.stringify(bookings));
+
+      window.location.href = "upcomingbooking.html";
     });
   </script>
 </body>

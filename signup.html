@@ -11,7 +11,7 @@
   </header>
   <main class="signup-container">
     <h1>Create Account</h1>
-    <form action="dashboard.html" method="post" class="signup-form">
+    <form action="profile.html" method="post" class="signup-form">
       <div class="form-group">
         <label for="fullname">Full Name</label>
         <input
@@ -29,6 +29,16 @@
           id="email"
           name="email"
           placeholder="Value"
+          required
+        >
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          placeholder="0400 000 000"
           required
         >
       </div>
@@ -69,5 +79,33 @@
 
 
   </main>
+  <script src="script.js"></script>
+  <script>
+    function setCookie(name, value, days) {
+      const d = new Date();
+      d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+      const expires = "expires=" + d.toUTCString();
+      document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";
+    }
+    document.querySelector(".signup-form").addEventListener("submit", function(e) {
+      const fullName = document.getElementById('fullname').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const password = document.getElementById('password').value;
+
+      const [firstName, ...rest] = fullName.split(" ");
+      const surname = rest.join(" ");
+
+      const memberId = "FD" + Math.floor(100000 + Math.random() * 900000);
+      const tier = "Bronze";
+
+      setCookie("firstName", firstName, 7);
+      setCookie("surname", surname, 7);
+      setCookie("email", email, 7);
+      setCookie("phone", phone, 7);
+      setCookie("membershipID", memberId, 7);
+      setCookie("membershipTier", tier, 7);
+    });
+  </script>
 </body>
 </html>

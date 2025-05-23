@@ -7,30 +7,85 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<nav>
+  <div class="logo">FlyDreamAir</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="flights.html">Flights</a></li>
+    <li><a href="membership.html" class="active">Membership</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
 <main class="main-container">
   <h1 id="greeting"></h1>
   <form id="MemberForm">
     <div id="tierOptions" class="tier-columns">
     <div class="tier-column">
       <div class="main-container">
-        <input type="radio" id="Deluxe" name="MemberTier" value="Deluxe">
-        <label for="Deluxe" id="DeluxeLabel">Deluxe Tier</label>
+        <input type="radio" id="Bronze" name="MemberTier" value="Bronze">
+        <label for="Bronze" id="BronzeLabel" style="color: #cd7f32;">
+          Bronze Tier – Free membership that collects points for discounts.
+        </label>
       </div>
     </div>
-    <div class="tier-column" >
+    <div class="tier-column">
       <div class="main-container">
-        <input type="radio" id="Regular" name="MemberTier" value="Regular">
-        <label for="Regular" id="RegularLabel">Regular Tier</label>
+        <input type="radio" id="Silver" name="MemberTier" value="Silver">
+        <label for="Silver" id="SilverLabel" style="color: #c0c0c0;">
+          Silver Tier – All Bronze perks plus priority booking and free amenities.
+        </label>
+      </div>
+    </div>
+    <div class="tier-column">
+      <div class="main-container">
+        <input type="radio" id="Gold" name="MemberTier" value="Gold">
+        <label for="Gold" id="GoldLabel" style="color: #ffd700;">
+          Gold Tier – All perks including VIP breakfast upgrades and early check-in.
+        </label>
       </div>
     </div>
   </div>
     <div class="button-container">
       <button type="submit" class="primary-button">Confirm membership</button>
-      <a href="javascript:void(0);" id="Cancel" class="cancel-link">Cancel Membership</a>
+      <a href="javascript:void(0);" id="Cancel" class="primary-button">Cancel Membership</a>
     </div>
   </form>
 </main>
-<span id="status"></span>
 <script src="script.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const tier = getCookie("membershipTier");
+      const greeting = document.getElementById("greeting");
+
+      if (tier && greeting) {
+        greeting.textContent = "Welcome " + tier + " member!";
+      }
+
+      if (tier) {
+        const radio = document.querySelector(`input[name="MemberTier"][value="${tier}"]`);
+        if (radio) radio.checked = true;
+      }
+
+      const form = document.getElementById("MemberForm");
+      form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const selected = document.querySelector('input[name="MemberTier"]:checked');
+        if (selected) {
+          setCookie("membershipTier", selected.value, 7);
+          greeting.textContent = "Welcome " + selected.value + " member!";
+        }
+      });
+
+      const cancelBtn = document.getElementById("Cancel");
+      if (cancelBtn) {
+        cancelBtn.addEventListener("click", () => {
+          if (confirm("Are you sure you want to cancel your membership?")) {
+            setCookie("membershipTier", "", -1);
+            if (greeting) greeting.textContent = "No Membership with FlyDreamAir? You can fix that here.";
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>

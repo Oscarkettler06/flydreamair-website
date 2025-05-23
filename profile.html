@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -20,47 +19,67 @@
        <a href="confirmbooking.html">Confirm</a>
        <a href="loungecheckin.html">Check-In</a>
        <a href="membership.html">Membership</a>
-       <a href="profile.html">Profile</a>
+       <a href="profile.html" class="active">Profile</a>
      </div>
    </nav>
 
-  <main class="main-container" style="margin-top: 110px;">
+  <main class="main-container">
         <!-- Header -->
         <div class="header">
             <h2>Your Profile</h2>
         </div>
 
       <div class="profile-info">
-        <p class="welcome-text">Hello! John Smith</p>
+        <p class="welcome-text"><span id="welcome-text">Hello! Guest</span></p>
         <p>Personal Details</p>
         <ul>
-            <li><strong>First Name:</strong> John</li>
-            <li><strong>Surname:</strong> Smith</li>
-            <li><strong>Email:</strong> john.smith@gmail.com</li>
-            <li><strong>Phone:</strong> 0400 123 123</li>
+            <li><strong>First Name:</strong> <span id="firstName">—</span></li>
+            <li><strong>Surname:</strong> <span id="surname">—</span></li>
+            <li><strong>Email:</strong> <span id="email">—</span></li>
+            <li><strong>Phone:</strong> <span id="phone">—</span></li>
         </ul>
         <br>
         <button class="primary-button">Edit</button>
         </div>
 
       <div class="profile-info">
-        <p>Payment Details</p>
+        <p>Membership Details</p>
         <ul>
-            <li><strong>First Name:</strong> John</li>
-            <li><strong>Surname:</strong> Smith</li>
-            <li><strong>Email:</strong> john.smith@gmail.com</li>
-            <li><strong>Phone:</strong> 0400 123 123</li>
+            <li><strong>Membership ID:</strong> <span id="membershipID">—</span></li>
+            <li><strong>Tier:</strong> <span id="membershipTier">—</span></li>
+            <li><strong>Badge:</strong> <span id="membershipBadge" class="membership-badge">—</span></li>
         </ul>
-        <br>
-        <button class="primary-button">Edit</button>
-        </div>
+      </div>
 
   </main>
 
-  <footer>
-    <p>&copy; 2025 FlyDreamAir. All rights reserved.</p>
-  </footer>
   <script src="script.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+      const fields = ['firstName', 'surname', 'email', 'phone', 'membershipID', 'membershipTier', 'membershipBadge'];
+      fields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = getCookie(id) || '—';
+      });
+
+      const firstName = getCookie("firstName");
+      const surname = getCookie("surname");
+      if (firstName && surname) {
+        document.getElementById("welcome-text").textContent = `Hello! ${firstName} ${surname}`;
+      } else {
+        document.getElementById("welcome-text").textContent = "Hello! Guest";
+      }
+
+      const badge = document.getElementById("membershipBadge");
+      const tier = getCookie("membershipTier");
+      if (badge && tier) {
+        badge.textContent = tier + " Member";
+        if (tier === "Gold") badge.className = "membership-badge badge-gold";
+        else if (tier === "Silver") badge.className = "membership-badge badge-silver";
+        else if (tier === "Bronze") badge.className = "membership-badge badge-bronze";
+        else badge.className = "membership-badge";
+      }
+    });
+  </script>
 </body>
 </html>
-
