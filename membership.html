@@ -61,33 +61,31 @@
   <script>
     // Override or extend handleMemberFormSubmit to support payment flow
     function handleMemberFormSubmit(e) {
-      e.preventDefault();
-      const tierInput = document.querySelector('input[name="MemberTier"]:checked');
-      const tier = tierInput ? tierInput.value : "";
-      const statusElem = document.getElementById("status");
+  e.preventDefault();
+  const tierInput = document.querySelector('input[name="MemberTier"]:checked');
+  const tier = tierInput ? tierInput.value : "";
+  const statusElem = document.getElementById("status");
 
-      if (tier) {
-        if (tier === "Bronze") { // Free tier
-          setCookie("membershipTier", tier, 7);
-          if (statusElem) statusElem.innerText = `Membership tier '${tier}' saved!`;
-          updateGreeting();
-          updateRadioSelection();
-        } else { // Paid tiers
-          localStorage.setItem("pendingMembershipTier", tier);
-          window.location.href = "confirmMembership.html?membership=1";
-        }
-      } else {
-        setCookie("membershipTier", "Bronze", -1);
-        if (statusElem) statusElem.innerText = "Membership Reset to free.";
-        updateGreeting();
-        updateRadioSelection();
-      }
+  if (tier) {
+    if (tier === "Bronze") { // Free tier
+      setCookie("membershipTier", tier, 7);
+      if (statusElem) statusElem.innerText = `Membership tier '${tier}' saved!`;
+      updateGreeting();
+      updateRadioSelection();
+      window.location.href = "profile.html"; // Redirect to profile
+    } else { // Paid tiers
+      localStorage.setItem("pendingMembershipTier", tier);
+      window.location.href = "confirmMembership.html?membership=1";
     }
-    // Attach the new handler
-    document.addEventListener("DOMContentLoaded", function() {
-      const memberForm = document.getElementById("MemberForm");
-      if (memberForm) memberForm.onsubmit = handleMemberFormSubmit;
-    });
+  } else {
+    setCookie("membershipTier", "Bronze", -1);
+    if (statusElem) statusElem.innerText = "Membership Reset to free.";
+    updateGreeting();
+    updateRadioSelection();
+    window.location.href = "profile.html"; // Redirect to profile
+  }
+}
+
   </script>
 </body>
 </html>
