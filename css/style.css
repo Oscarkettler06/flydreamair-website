@@ -229,6 +229,7 @@ body {
 }
 
 .cancel-link {
+    background-color: white;
     color: #e74c3c;
     border: solid;
     padding: 12px 30px;
