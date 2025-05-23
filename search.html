@@ -284,49 +284,37 @@
    </div>
   </main>
   <script>
-   const filterSelect = document.getElementById('lounge-filter');
+    const loungeSelect = document.getElementById('lounge-filter');
+    const stateSelect  = document.getElementById('state-filter');
     const cards = document.querySelectorAll('.lounge-card');
 
-    filterSelect.addEventListener('change', () => {
-      const choice = filterSelect.value;
+    function filterLounges() {
+      const lounge  = loungeSelect.value;
+      const state   = stateSelect.value;
       cards.forEach(card => {
         const loungeName = card.dataset.lounge;
         card.style.display = (!choice || loungeName.includes(choice)) ? '' : 'none';
       });
-    });
-     // Run this after the DOM is ready
+    }
+
+    function persistSelection() {
+      localStorage.setItem('selectedLounge', loungeSelect.value);
+      localStorage.setItem('selectedState',  stateSelect.value);
+    }
+
+     // Go back to standard selection "All" after load
     window.addEventListener('DOMContentLoaded', () => {
-      const now = new Date();
+      // Reset both filters to “All”
+      loungeSelect.value = '';
+      stateSelect.value  = '';
 
-      // Format date as "17 Apr"
-      const dateOptions = { day: 'numeric', month: 'short' };
-      const dateStr = now.toLocaleDateString(undefined, dateOptions);
-
-      // Format time as "10:05 AM"
-      const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
-      const timeStr = now.toLocaleTimeString(undefined, timeOptions);
-
-      // Inject into every card
-      document.querySelectorAll('.card-content').forEach(card => {
-        card.querySelector('.date').textContent = dateStr;
-        card.querySelector('.time').textContent = timeStr;
-      });
+      filterLounges();
     });
+
+    // wire up events
+    loungeSelect.addEventListener('change', () => { filterLounges(); persistSelection(); });
+    stateSelect .addEventListener('change', () => { filterLounges(); persistSelection(); });
   </script>
   <script src="script.js"></script>
-  <script>
-   function persistSelection() {
-  const val = document.getElementById('lounge-filter').value;
-  localStorage.setItem('selectedLounge', val);
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem('selectedLounge');
-  if (saved) {
-    document.getElementById('lounge-filter').value = saved;
-    filterLounges();
-  }
-});
-  </script>
  </body>
 </html>

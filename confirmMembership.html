@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Confirm Membership – FlyDreamAir</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <img src="images/airplane.png" alt="FlyDreamAir Logo">
+      <span>FlyDreamAir</span>
+    </div>
+    <div class="navbar-links">
+      <a href="index.html">Home</a>
+      <a href="search.html">Search</a>
+      <a href="upcomingbooking.html">Upcoming</a>
+      <a href="confirmbooking.html" class="active">Confirm</a>
+      <a href="loungecheckin.html">Check-In</a>
+      <a href="membership.html">Membership</a>
+      <a href="profile.html">Profile</a>
+    </div>
+  </nav>
+
+  <main class="main-container" style="margin-top: 110px;">
+    <div class="header">
+      <h1 id="confirm-title">Confirm Your Membership</h1>
+    </div>
+    <div class="booking-details" id="booking-details-section">
+    </div>
+
+    <!-- Payment Section -->
+    <div class="payment-container">
+      <!-- Payment Selection -->
+      <div class="payment-methods">
+        <h3>Choose Payment Method</h3>
+        <label class="payment-option">
+          <input type="radio" name="payment" value="card" checked>
+          Credit or Debit Card
+        </label>
+        <label class="payment-option">
+          <input type="radio" name="payment" value="visa">
+          <img src="./Images/visa-icon.png" alt="Visa"> Visa
+        </label>
+        <label class="payment-option">
+          <input type="radio" name="payment" value="applepay">
+          <img src="./Images/applepay-icon.png" alt="Apple Pay"> Apple Pay
+        </label>
+        <label class="payment-option">
+          <input type="radio" name="payment" value="googlepay">
+          <img src="./Images/googlepay-icon.png" alt="Google Pay"> Google Pay
+        </label>
+      </div>
+
+      <!-- Payment Informations -->
+      <div class="payment-details">
+        <!-- Credit / Debit Card Form -->
+        <div class="payment-form" id="form-card">
+          <div class="form-group">
+            <label for="card-name">Cardholder Name</label>
+            <input type="text" id="card-name" placeholder="Full name on card">
+          </div>
+          <div class="form-group">
+            <label for="card-number">Card Number</label>
+            <input type="text" id="card-number" maxlength="19" placeholder="1234 5678 9012 3456">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="card-expiry">Expiry Date</label>
+              <input type="month" id="card-expiry">
+            </div>
+            <div class="form-group">
+              <label for="card-cvc">CVC</label>
+              <input type="text" id="card-cvc" maxlength="4" placeholder="123">
+            </div>
+          </div>
+        </div>
+
+        <!-- Visa-Specific Form -->
+        <div class="payment-form" id="form-visa">
+          <div class="form-group">
+            <label for="visa-card-number">Visa Card Number</label>
+            <input type="text" id="visa-card-number" maxlength="19" placeholder="1234 5678 9012 3456">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="visa-expiry">Expiry Date</label>
+              <input type="month" id="visa-expiry">
+            </div>
+            <div class="form-group">
+              <label for="visa-cvc">CVC</label>
+              <input type="text" id="visa-cvc" maxlength="4" placeholder="123">
+            </div>
+          </div>
+        </div>
+
+        <!-- Apple Pay Form -->
+        <div class="payment-form" id="form-applepay">
+          <div class="form-group">
+            <label for="apple-email">Apple Pay Email</label>
+            <input type="email" id="apple-email" placeholder="you@apple.com">
+          </div>
+        </div>
+
+        <!-- Google Pay Form -->
+        <div class="payment-form" id="form-googlepay">
+          <div class="form-group">
+            <label for="google-email">Google Pay Email</label>
+            <input type="email" id="google-email" placeholder="you@gmail.com">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="button-container">
+      <button class="primary-button" id="confirmBooking">Confirm Payment</button>
+      <a href="search.html" class="primary-button cancel-link">Cancel ✕</a>
+      <a href="index.html" class="primary-button back-button">
+        <span>←</span> Back to Dashboard
+      </a>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    // Payment form switching logic
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('input[name="payment"]').forEach(r => {
+        r.addEventListener('change', switchForm);
+      });
+      function switchForm() {
+        document.querySelectorAll('.payment-form').forEach(f => f.style.display = 'none');
+        const sel = document.querySelector('input[name="payment"]:checked').value;
+        const form = document.getElementById('form-' + sel);
+        if (form) form.style.display = 'block';
+      }
+      switchForm();
+
+      // Membership payment flow
+      const urlParams = new URLSearchParams(window.location.search);
+      const isMembership = urlParams.has('membership') || localStorage.getItem('pendingMembershipTier');
+      if (isMembership) {
+        document.getElementById('confirm-title').textContent = "Confirm Membership Payment";
+        const bookingSection = document.getElementById('booking-details-section');
+        if (bookingSection) bookingSection.style.display = "none";
+      }
+    });
+
+    // Confirm payment handler
+    document.getElementById("confirmBooking").addEventListener("click", function (e) {
+      e.preventDefault();
+
+      // Membership payment flow
+      const pendingTier = localStorage.getItem("pendingMembershipTier");
+      if (pendingTier) {
+        setCookie("membershipTier", pendingTier, 7);
+        localStorage.removeItem("pendingMembershipTier");
+        alert("Membership payment successful! Welcome " + pendingTier + " member.");
+        window.location.href = "membership.html";
+        return;
+      }
+
+      // Booking flow 
+      const lounge = document.getElementById("lounge-select") ? document.getElementById("lounge-select").value : null;
+      const date = document.getElementById("booking-date") ? document.getElementById("booking-date").value : null;
+      const time = document.getElementById("booking-time") ? document.getElementById("booking-time").value : null;
+      if (lounge && date && time) {
+        const loungeImages = {
+          "Sydney Gold Lounge": "Images/sydneyLounge.png",
+          "Melbourne Executive Lounge": "Images/melbourneLounge.png",
+          "Brisbane Serenity Lounge": "Images/brisbaneLounge.png"
+        };
+        const booking = {
+          lounge,
+          date,
+          time,
+          guests: 1,
+          image: loungeImages[lounge] || "images/lounge-room.jpg"
+        };
+        const bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
+        bookings.push(booking);
+        localStorage.setItem("bookings", JSON.stringify(bookings));
+        window.location.href = "upcomingbooking.html";
+      } else if (!pendingTier) {
+        alert("Please complete all booking details.");
+      }
+    });
+  </script>
+</body>
+</html>
+

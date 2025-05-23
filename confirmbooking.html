@@ -58,9 +58,22 @@
         </div>
 
         <!-- 4) Guests & Price (static) -->
-        <p><strong>Guests:</strong> 1</p>
-        <p><strong>Price:</strong> $80</p>
-
+        <div class="form-group">
+          <label for="guest-select">Guests</label>
+            <select id="guest-select">
+              <option value="1">1 Guest</option>
+              <option value="2">2 Guests</option>
+              <option value="3">3 Guests</option>
+              <option value="4">4 Guests</option>
+              <option value="5">5 Guests</option>
+              <option value="6">6 Guests</option>
+            </select>
+        </div>
+        <p>
+          <strong>Price:</strong>
+          $<span id="price">80</span>
+        </p>
+        
         <!-- 5) Time Until Booking (calculated) -->
         <p><strong>Time Until Booking:</strong> <span id="time-until">—</span></p>
       </div>
@@ -169,6 +182,17 @@
       const dateInput = document.getElementById('booking-date');
       const timeInput = document.getElementById('booking-time');
       const timeUntilSpan = document.getElementById('time-until');
+      const guestSelect = document.getElementById('guest-select');
+      const priceSpan   = document.getElementById('price');
+      const PRICE_PER_GUEST = 80;
+
+      function updatePrice() {
+        const count = parseInt(guestSelect.value, 10) || 1;
+        priceSpan.textContent = count * PRICE_PER_GUEST;
+      }
+      // initialize and re-calculate on change
+      guestSelect.addEventListener('change', updatePrice);
+      updatePrice();
 
       // 1) Set min date = today
       const now = new Date();
@@ -258,26 +282,26 @@
 
     document.getElementById("confirmBooking").addEventListener("click", function () {
       const lounge = document.getElementById("lounge-select").value;
-      const date = document.getElementById("booking-date").value;
-      const time = document.getElementById("booking-time").value;
+      const date   = document.getElementById("booking-date").value;
+      const time   = document.getElementById("booking-time").value;
+      const guests = parseInt(document.getElementById("guest-select").value, 10);
+      const price  = parseInt(document.getElementById("price").textContent, 10);
 
       if (!lounge || !date || !time) {
         alert("Please complete all booking details.");
         return;
       }
 
-      const booking = {
-        lounge,
-        date,
-        time,
-        guests: 1,
-        image: loungeImages[lounge] || "images/lounge-room.jpg"
-      };
-
+      // read existing or start fresh
       const bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
-      bookings.push(booking);
+
+      // append new booking
+      bookings.push({ lounge, date, time, guests, price, image: loungeImages[lounge] });
+
+      // save back
       localStorage.setItem("bookings", JSON.stringify(bookings));
 
+      // go show them
       window.location.href = "upcomingbooking.html";
     });
   </script>

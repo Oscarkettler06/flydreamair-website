@@ -229,13 +229,27 @@ body {
 }
 
 .cancel-link {
+    background-color: white;
     color: #e74c3c;
+    border: solid;
+    padding: 12px 30px;
+    border-radius: 8px;
     text-decoration: none;
     font-weight: 500;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 1rem;
+    transition: all 0.2s ease;
+    opacity: 0.8;
+}
+
+.cancel-link:hover {
+    color: white;
+    border: solid red;
+    background-color: red;
+    transform: translateY(-1px);
+    opacity: 0.9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .back-button {
@@ -246,11 +260,10 @@ body {
     color: white;
     border: none;
     padding: 12px 30px;
-    border-radius: 25px;
+    border-radius: 8px;
     cursor: pointer;
     text-decoration: none;
     font-size: 16px;
-    margin-top: 30px;
     width: fit-content;
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -550,4 +563,45 @@ body {
     .navbar-logo span {
         font-size: 1.1rem;
     }
+}
+
+/* === Upcoming Bookings === */
+.booking-thumbnail {
+  max-width: 400px;
+  max-height: 400px;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+}
+
+.no-bookings::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    url('/Images/sydneyLounge.png'),
+    url('/Images/melbourneLounge.png'),
+    url('/Images/brisbaneLounge.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.4;
+  /* optional blend mode to soften */
+  background-blend-mode: overlay;
+  z-index: 0;
+}
+
+/* Bring text & button above the images */
+.no-bookings > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Emphasize the message */
+.no-bookings p {
+  font-size: 1.4rem;
+  font-weight: 1000;
+  color: white;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+  margin-bottom: 1.5rem;
 }
