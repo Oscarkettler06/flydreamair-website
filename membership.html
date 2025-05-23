@@ -55,7 +55,6 @@
         <button type="submit" class="primary-button">Confirm membership</button>
         <a href="javascript:void(0);" id="Cancel" class="primary-button">Cancel Membership</a>
       </div>
-      <div id="status" style="margin-top:1em;color:green;"></div>
     </form>
   </main>
   <script src="script.js"></script>
@@ -78,8 +77,8 @@
           window.location.href = "confirmMembership.html?membership=1";
         }
       } else {
-        setCookie("membershipTier", "", -1);
-        if (statusElem) statusElem.innerText = "Membership cleared.";
+        setCookie("membershipTier", "Bronze", -1);
+        if (statusElem) statusElem.innerText = "Membership Reset to free.";
         updateGreeting();
         updateRadioSelection();
       }
