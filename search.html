@@ -5,7 +5,7 @@
   <title>
    Search Results – FlyDreamAir
   </title>
-  <link href="css/style.css" rel="stylesheet"/>
+  <link href="style.css" rel="stylesheet"/>
  </head>
  <body>
   <!-- Navigation Bar -->
@@ -53,48 +53,39 @@
       </label>
       <select id="lounge-filter" onchange="filterLounges(); persistSelection();">
        <option value="">
-        All Cities
+        All Lounges
        </option>
-       <option value="Sydney">
-        Sydney
+       <option value="Sydney Gold Lounge">
+        Sydney Gold Lounge
        </option>
-       <option value="Melbourne">
-        Melbourne
+       <option value="Melbourne Executive Lounge">
+        Melbourne Executive Lounge
        </option>
-       <option value="Brisbane">
-        Brisbane
-       </option>
-       <option value="Perth">
-        Perth
-       </option>
-       <option value="Adelaide">
-        Adelaide
+       <option value="Brisbane Serenity Lounge">
+        Brisbane Serenity Lounge
        </option>
       </select>
      </div>
+     <label for="state-filter">Browse by State:</label>
+     <select id="state-filter" onchange="filterLounges(); persistSelection();">
+      <option value="">All States</option>
+      <option value="NSW">NSW</option>
+      <option value="VIC">VIC</option>
+      <option value="QLD">QLD</option>
+     </select>
      <!-- Card: Sydney -->
      <!-- Card: Melbourne -->
      <!-- Card: Brisbane -->
      <div class="lounge-card" data-lounge="Sydney Gold Lounge" data-state="NSW">
-      <img alt="Sydney Gold Lounge" class="lounge-image" src="images/airportlounge1.jpg"/>
+
+     <img alt="Sydney Gold Lounge" class="lounge-image" src="./Images/sydneyLounge.png"/>
       <div class="card-content">
        <h3>
         Sydney Gold Lounge
        </h3>
        <p>
-        Date:
-        <span class="date">
-         23 May
-        </span>
-        | Time:
-        <span class="time">
-         10:45 AM
-        </span>
-       </p>
-       <p>
         Amenities: Free Wi-Fi, Bar, 2 Beds, 1 Bath, Breakfast
        </p>
-       <p class="benefits">Silver Members: Priority Booking, Complimentary Amenities Access</p>
        <p>
         Rating: ★★★★☆
        </p>
@@ -103,52 +94,15 @@
        </button>
       </div>
      </div>
-     <div class="lounge-card" data-lounge="Sydney Skyview Lounge" data-state="NSW">
-      <img alt="Sydney Skyview Lounge" class="lounge-image" src="images/airportlounge2.jpg"/>
-      <div class="card-content">
-       <h3>
-        Sydney Skyview Lounge
-       </h3>
-       <p>
-        Date:
-        <span class="date">
-        </span>
-        | Time:
-        <span class="time">
-        </span>
-       </p>
-       <p>
-        Amenities: Panoramic Views, Massage Chairs, Cocktail Bar
-       </p>
-       <p class="benefits">Gold Members: Free VIP Breakfast, Early Check-In, Lounge Bed Access</p>
-       <p>
-        Rating: ★★★☆☆
-       </p>
-       <button class="primary-button" onclick="window.location.href='confirmbooking.html'">
-        Add to Itinerary
-       </button>
-      </div>
-     </div>
      <div class="lounge-card" data-lounge="Melbourne Executive Lounge" data-state="VIC">
-      <img alt="Melbourne Executive Lounge" class="lounge-image" src="images/airportlounge12.jpg"/>
+      <img alt="Melbourne Executive Lounge" class="lounge-image" src="./Images/melbourneLounge.png"/>
       <div class="card-content">
        <h3>
         Melbourne Executive Lounge
        </h3>
        <p>
-        Date:
-        <span class="date">
-         24 May
-        </span>
-        | Time:
-        <span class="time">
-         11:30 AM
-        </span>
-       </p>
-       <p>
         Amenities: Workspace, Shower, Quiet Zone, Buffet
        </p>
-       <p class="benefits">Silver Members: Priority Booking, Complimentary Amenities Access</p>
        <p>
         Rating: ★★★★★
        </p>
@@ -157,152 +111,47 @@
        </button>
       </div>
      </div>
-     <div class="lounge-card" data-lounge="Melbourne Prestige Lounge" data-state="VIC">
-      <img alt="Melbourne Prestige Lounge" class="lounge-image" src="images/airportlounge4.jpg"/>
-      <div class="card-content">
-       <h3>
-        Melbourne Prestige Lounge
-       </h3>
-       <p>
-        Date:
-        <span class="date">
-        </span>
-        | Time:
-        <span class="time">
-        </span>
-       </p>
-       <p>
-        Amenities: Private Cabins, Espresso Bar, Conference Room
-       </p>
-       <p class="benefits">Gold Members: Free VIP Breakfast, Early Check-In, Lounge Bed Access</p>
-       <p>
-        Rating: ★★★★☆
-       </p>
-       <button class="primary-button" onclick="window.location.href='confirmbooking.html'">
-        Add to Itinerary
-       </button>
-      </div>
-     </div>
      <div class="lounge-card" data-lounge="Brisbane Serenity Lounge" data-state="QLD">
-      <img alt="Brisbane Serenity Lounge" class="lounge-image" src="images/airportlounge5.jpg"/>
+      <img alt="Brisbane Serenity Lounge" class="lounge-image" src="./Images/brisbaneLounge.png"/>
       <div class="card-content">
        <h3>
         Brisbane Serenity Lounge
        </h3>
        <p>
-        Date:
-        <span class="date">
-         25 May
-        </span>
-        | Time:
-        <span class="time">
-         9:15 AM
-        </span>
-       </p>
-       <p>
         Amenities: Recliners, Beverages, Wi-Fi, Snacks
        </p>
-       <p class="benefits">Silver Members: Priority Booking, Complimentary Amenities Access</p>
        <p>
         Rating: ★★★☆☆
        </p>
        <button class="primary-button" onclick="window.location.href='confirmbooking.html'">
         Add to Itinerary
        </button>
-      </div>
-     </div>
-     <div class="lounge-card" data-lounge="Brisbane Sunset Lounge" data-state="QLD">
-      <img alt="Brisbane Sunset Lounge" class="lounge-image" src="images/airportlounge6.jpg"/>
-      <div class="card-content">
-       <h3>
-        Brisbane Sunset Lounge
-       </h3>
-       <p>
-        Date:
-        <span class="date">
-        </span>
-        | Time:
-        <span class="time">
-        </span>
-       </p>
-       <p>
-        Amenities: Sunset Views, Juice Bar, Lounge Beds
-       </p>
-       <p>
-        Rating: ★★★☆☆
-       </p>
-       <button class="primary-button" onclick="window.location.href='confirmbooking.html'">
-        Add to Itinerary
-       </button>
-      </div>
-     </div>
-     <div class="lounge-card" data-lounge="Perth Coastal Lounge" data-state="WA">
-      <img alt="Perth Coastal Lounge" class="lounge-image" src="images/airportlounge7.jpg"/>
-      <div class="card-content">
-       <h3>Perth Coastal Lounge</h3>
-       <p>Date: <span class="date">26 May</span> | Time: <span class="time">12:00 PM</span></p>
-       <p>Amenities: Coastal Views, Bar, Showers, Snacks</p>
-       <p class="benefits">Silver Members: Priority Booking, Complimentary Amenities Access</p>
-       <p>Rating: ★★★★☆</p>
-       <button class="primary-button" onclick="window.location.href='confirmbooking.html'">Add to Itinerary</button>
-      </div>
-     </div>
-     <div class="lounge-card" data-lounge="Adelaide Horizon Lounge" data-state="SA">
-      <img alt="Adelaide Horizon Lounge" class="lounge-image" src="images/airportlounge9.jpg"/>
-      <div class="card-content">
-       <h3>Adelaide Horizon Lounge</h3>
-       <p>Date: <span class="date">27 May</span> | Time: <span class="time">1:20 PM</span></p>
-       <p>Amenities: Wine Bar, Relaxation Zone, Charging Stations</p>
-       <p class="benefits">Silver Members: Priority Booking, Complimentary Amenities Access</p>
-       <p>Rating: ★★★☆☆</p>
-       <button class="primary-button" onclick="window.location.href='confirmbooking.html'">Add to Itinerary</button>
-      </div>
-     </div>
-     <div class="lounge-card" data-lounge="Perth Western Lounge" data-state="WA">
-      <img alt="Perth Western Lounge" class="lounge-image" src="images/airportlounge10.jpg"/>
-      <div class="card-content">
-       <h3>Perth Western Lounge</h3>
-       <p>Date: <span class="date"></span> | Time: <span class="time"></span></p>
-       <p>Amenities: Open Bar, Reading Area, Massage Services</p>
-       <p class="benefits">Silver Members: Priority Booking, Complimentary Amenities Access</p>
-       <p>Rating: ★★★★☆</p>
-       <button class="primary-button" onclick="window.location.href='confirmbooking.html'">Add to Itinerary</button>
-      </div>
-     </div>
-     <div class="lounge-card" data-lounge="Adelaide Twilight Lounge" data-state="SA">
-      <img alt="Adelaide Twilight Lounge" class="lounge-image" src="images/airportlounge11.jpg"/>
-      <div class="card-content">
-       <h3>Adelaide Twilight Lounge</h3>
-       <p>Date: <span class="date">28 May</span> | Time: <span class="time">4:40 PM</span></p>
-       <p>Amenities: Ambient Lighting, Cocktail Bar, Lounge Beds</p>
-       <p class="benefits">Gold Members: Free VIP Breakfast, Early Check-In, Lounge Bed Access</p>
-       <p>Rating: ★★★★☆</p>
-       <button class="primary-button" onclick="window.location.href='confirmbooking.html'">Add to Itinerary</button>
       </div>
      </div>
     </main>
    </div>
   </main>
+
   <script>
     const loungeSelect = document.getElementById('lounge-filter');
     const stateSelect  = document.getElementById('state-filter');
-    const cards = document.querySelectorAll('.lounge-card');
+    const cards        = document.querySelectorAll('.lounge-card');
 
     function filterLounges() {
       const lounge  = loungeSelect.value;
       const state   = stateSelect.value;
       cards.forEach(card => {
-        const loungeName = card.dataset.lounge;
-        card.style.display = (!choice || loungeName.includes(choice)) ? '' : 'none';
+        const matchLounge = !lounge || card.dataset.lounge === lounge;
+        const matchState  = !state  || card.dataset.state  === state;
+        card.style.display = (matchLounge && matchState) ? '' : 'none';
       });
     }
 
     function persistSelection() {
       localStorage.setItem('selectedLounge', loungeSelect.value);
-      localStorage.setItem('selectedState',  stateSelect.value);
     }
 
-     // Go back to standard selection "All" after load
+    // Go back to standard selection "All" after load
     window.addEventListener('DOMContentLoaded', () => {
       // Reset both filters to “All”
       loungeSelect.value = '';
@@ -315,6 +164,6 @@
     loungeSelect.addEventListener('change', () => { filterLounges(); persistSelection(); });
     stateSelect .addEventListener('change', () => { filterLounges(); persistSelection(); });
   </script>
-  <script src="script.js"></script>
+
  </body>
 </html>
