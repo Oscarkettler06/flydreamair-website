@@ -40,44 +40,47 @@
 </script>
 
 <script>
+  window.addEventListener("DOMContentLoaded", () => {
     const bookingList = document.getElementById("booking-list");
-    const stored = localStorage.getItem("bookings");
-    const bookings = stored ? JSON.parse(stored) : [];
+    const bookings    = JSON.parse(localStorage.getItem("bookings") || "[]");
 
     if (bookings.length === 0) {
       bookingList.innerHTML = "<p>No bookings found. Book a lounge to get started.</p>";
-    } else {
-      bookings.forEach(({ lounge, date, time, guests, image }, index) => {
-        const card = document.createElement("div");
-        card.className = "booking-card";
-        card.innerHTML = `
-          <img src="${image}" alt="Lounge preview" class="booking-thumbnail">
-          <h3>${lounge}</h3>
-          <p>Date: ${date}</p>
-          <p>Time: ${time}</p>
-          <p>Guests: ${guests}</p>
-          <div class="booking-actions">
-            <button class="primary-button" onclick="window.location.href='loungecheckin.html'">Check In</button>
-            <button class="primary-button cancel-btn" data-index="${index}">Cancel</button>
-          </div>
-        `;
-        bookingList.appendChild(card);
-      });
+      return;
     }
-  </script>
 
-<script>
-  document.addEventListener('click', function(event) {
-    if (event.target && event.target.classList.contains('cancel-btn')) {
-      const index = event.target.getAttribute('data-index');
-      const storedBookings = localStorage.getItem('bookings');
-      if (storedBookings) {
-        const bookingsArray = JSON.parse(storedBookings);
-        bookingsArray.splice(index, 1);
-        localStorage.setItem('bookings', JSON.stringify(bookingsArray));
-        location.reload();
-      }
-    }
+    bookings.forEach((b, i) => {
+      const card = document.createElement("div");
+      card.className = "booking-card";
+      card.innerHTML = `
+        <img src="${b.image}" 
+             alt="${b.lounge}" class="booking-thumbnail">
+        <h3>${b.lounge}</h3>
+        <p>Date: ${b.date}</p>
+        <p>Time: ${b.time}</p>
+        <p>Guests: ${b.guests}</p>
+        <p>Price: $${b.price}</p>
+        <div class="booking-actions">
+          <button class="primary-button" 
+                  onclick="window.location.href='loungecheckin.html'">
+            Check In
+          </button>
+          <button class="primary-button cancel-btn" data-index="${i}">
+            Cancel
+          </button>
+        </div>
+      `;
+      bookingList.appendChild(card);
+    });
+
+    // delegate cancel clicks
+    bookingList.addEventListener("click", e => {
+      if (!e.target.classList.contains("cancel-btn")) return;
+      const idx = parseInt(e.target.dataset.index, 10);
+      bookings.splice(idx, 1);
+      localStorage.setItem("bookings", JSON.stringify(bookings));
+      location.reload();
+    });
   });
 </script>
 

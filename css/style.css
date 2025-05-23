@@ -564,3 +564,12 @@ body {
         font-size: 1.1rem;
     }
 }
+
+/* === Upcoming Bookings === */
+.booking-thumbnail {
+  max-width: 400px;
+  max-height: 400px;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+}
