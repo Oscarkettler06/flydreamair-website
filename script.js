@@ -24,10 +24,10 @@ function updateGreeting() {
   if (!greetingElem) return;
   const tier = getCookie("membershipTier");
   let greeting;
-  if (tier === "Regular") {
-    greeting = "Welcome Regular member! Want to upgrade to Deluxe? Just select it below.";
-  } else if (tier === "Deluxe") {
-    greeting = "Welcome Deluxe member! Enjoy your premium benefits.";
+  if (tier === "Silver") {
+    greeting = "Welcome Silver member! You now have access to free lounge bookings.";
+  } else if (tier === "Gold") {
+    greeting = "Welcome Gold member! Enjoy your free lounge booking & premium benefits.";
   } else {
     greeting = "No Membership with RyanAir? You can fix that here";
   }
