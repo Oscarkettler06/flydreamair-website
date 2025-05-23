@@ -151,12 +151,12 @@
       localStorage.setItem('selectedState',  stateSelect.value);
     }
 
-    // on load: restore previous choices & apply filter
+     // Go back to standard selection "All" after load
     window.addEventListener('DOMContentLoaded', () => {
-      const savedL = localStorage.getItem('selectedLounge');
-      const savedS = localStorage.getItem('selectedState');
-      if (savedL) loungeSelect.value = savedL;
-      if (savedS) stateSelect.value  = savedS;
+      // Reset both filters to “All”
+      loungeSelect.value = '';
+      stateSelect.value  = '';
+
       filterLounges();
     });
 
