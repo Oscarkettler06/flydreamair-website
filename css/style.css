@@ -573,3 +573,54 @@ body {
   height: auto;
   object-fit: cover;
 }
+
+.no-bookings::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    url('Images/sydneyLounge.png'),
+    url('Images/melbourneLounge.png'),
+    url('Images/brisbaneLounge.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.4;
+  /* optional blend mode to soften */
+  background-blend-mode: overlay;
+  z-index: 0;
+}
+
+/* Bring text & button above the images */
+.no-bookings > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Emphasize the message */
+.no-bookings p {
+  font-size: 1.4rem;
+  font-weight: 1000;
+  color: white;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+  margin-bottom: 1.5rem;
+}
+
+/* Style the "Make a booking" button */
+.no-bookings .primary-button {
+  background: rgba(255,255,255,0.9);
+  color: #333;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 1000;
+  border-radius: 25px;
+  text-shadow: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.no-bookings .primary-button:hover {
+    color: white;
+    background-color: #3367d6;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

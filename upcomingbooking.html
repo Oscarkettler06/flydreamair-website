@@ -45,7 +45,13 @@
     const bookings    = JSON.parse(localStorage.getItem("bookings") || "[]");
 
     if (bookings.length === 0) {
-      bookingList.innerHTML = "<p>No bookings found. Book a lounge to get started.</p>";
+      bookingList.innerHTML = `
+        <div class="no-bookings">
+          <p>You have no upcoming bookings.</p>
+          <button class="primary-button" onclick="window.location.href='search.html'">
+            Make a booking
+          </button>
+        </div>`;
       return;
     }
 
