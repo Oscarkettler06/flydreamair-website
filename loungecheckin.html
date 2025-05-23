@@ -65,7 +65,7 @@
 <script src="script.js"></script>
 <script>
   window.addEventListener("DOMContentLoaded", () => {
-    const first = getCookie("firstName") || "Guest";
+  const first = getCookie("firstName") || "Guest";
   const last = getCookie("surname") || "";
   const tier = getMembershipTier();
   welcomeText.textContent = `Hello, ${first}${last ? ' ' + last : ''}`;
