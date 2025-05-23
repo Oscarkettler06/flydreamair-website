@@ -109,11 +109,20 @@
           </div>
         </div>
       </div>
+
+
+        <!-- Action Buttons -->
+        <div class="button-container">
+        <button class="primary-button" id="payment-form">Confirm Booking</button>
+        <a href="search.html" class="primary-button cancel-link">Cancel ✕</a>
+        <a href="index.html" class="primary-button back-button">
+         <span>←</span> Back to Dashboard
+        </a>
+        </div>
     </div>
   </main>
 
   <script>
-    // Only payment form switching logic remains
     window.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('input[name="payment"]').forEach(r => {
         r.addEventListener('change', switchForm);
