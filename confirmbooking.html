@@ -193,7 +193,7 @@
 
 function shouldShowPayment() {
   const tier = getMembershipTier();
-  return tier === "Bronze";
+  return !(tier === "Silver" || tier === "Gold");
 }
 
 function getBookingPrice(guestCount) {
@@ -244,6 +244,28 @@ const first = getCookie("firstName") || "Guest";
       const guestSelect = document.getElementById("guest-select");
       guestSelect.addEventListener("change", updatePriceDisplay);
     });
+
+  const paymentRadios = document.querySelectorAll('input[name="payment"]');
+  const paymentForms = {
+    card: document.getElementById('form-card'),
+    visa: document.getElementById('form-visa'),
+    applepay: document.getElementById('form-applepay'),
+    googlepay: document.getElementById('form-googlepay')
+  };
+
+function togglePaymentForms() {
+  const selected = document.querySelector('input[name="payment"]:checked').value;
+  Object.keys(paymentForms).forEach(key => {
+    paymentForms[key].style.display = (key === selected) ? 'block' : 'none';
+  });
+}
+
+paymentRadios.forEach(radio => {
+  radio.addEventListener('change', togglePaymentForms);
+});
+
+// Initialize
+togglePaymentForms();
 
 
   </script>

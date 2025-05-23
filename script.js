@@ -41,6 +41,7 @@ function updateRadioSelection() {
   const regularRadio = document.getElementById("Regular");
   if (deluxeRadio) deluxeRadio.checked = tier === "Deluxe";
   if (regularRadio) regularRadio.checked = tier === "Regular";
+  if (regularRadio) regularRadio.checked = tier === "Regular";
 }
 
 // Handle membership form submission
@@ -48,15 +49,6 @@ function handleMemberFormSubmit(e) {
   e.preventDefault();
   const tierInput = document.querySelector('input[name="MemberTier"]:checked');
   const tier = tierInput ? tierInput.value : "";
-
-  const statusElem = document.getElementById("status");
-  if (tier) {
-    setCookie("membershipTier", tier, 7);
-    if (statusElem) statusElem.innerText = `Membership tier '${tier}' saved!`;
-  } else {
-    setCookie("membershipTier", "", -1);
-    if (statusElem) statusElem.innerText = "Membership cleared.";
-  }
 
   updateGreeting();
   updateRadioSelection();
