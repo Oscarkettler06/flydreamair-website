@@ -238,46 +238,169 @@ const first = getCookie("firstName") || "Guest";
       }
     }
 
-window.addEventListener('DOMContentLoaded', () => {
-  updatePriceDisplay();
-  updatePaymentSection();
-  const guestSelect = document.getElementById("guest-select");
-  guestSelect.addEventListener("change", updatePriceDisplay);
-});
+    window.addEventListener('DOMContentLoaded', () => {
+      updatePriceDisplay();
+      updatePaymentSection();
+      const guestSelect = document.getElementById("guest-select");
+      guestSelect.addEventListener("change", updatePriceDisplay);
+    });
 
 
   </script>
 
   <script>
-    const loungeImages = {
-      "Sydney Gold Lounge": "Images/sydneyLounge.png",
-      "Melbourne Executive Lounge": "Images/melbourneLounge.png",
-      "Brisbane Serenity Lounge": "Images/brisbaneLounge.png"
-    };
+     window.addEventListener('DOMContentLoaded', () => {
+      // 1) Compute todayStr (local date)
+      const now      = new Date();
+      const yyyy     = now.getFullYear();
+      const mm       = String(now.getMonth()+1).padStart(2,'0');
+      const dd       = String(now.getDate()).padStart(2,'0');
+      const todayStr = `${yyyy}-${mm}-${dd}`;
 
-    document.getElementById("confirmBooking").addEventListener("click", function () {
-      const lounge = document.getElementById("lounge-select").value;
-      const date   = document.getElementById("booking-date").value;
-      const time   = document.getElementById("booking-time").value;
-      const guests = parseInt(document.getElementById("guest-select").value, 10);
-      const price  = parseInt(document.getElementById("price").textContent, 10);
+      // 2) Your one-and-only defaults
+      const DEFAULT_CAPACITIES = {
+        'Sydney Gold Lounge':         30,
+        'Melbourne Executive Lounge': 25,
+        'Brisbane Serenity Lounge':   20
+      };
 
-      if (!lounge || !date || !time) {
-        alert("Please complete all booking details.");
-        return;
+      // 3) Load or initialize stored capacities
+      let loungeCapacities = JSON.parse(localStorage.getItem('loungeCapacities') || 'null')
+                              || { ...DEFAULT_CAPACITIES };
+      function saveCapacities() {
+        localStorage.setItem('loungeCapacities', JSON.stringify(loungeCapacities));
       }
 
-      // read existing or start fresh
-      const bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
+      // 4) Reset helper, called whenever the booking-date changes
+      function resetForBookingDate(selDate) {
+        const last = localStorage.getItem('capacitiesLastReset');
+        if (selDate && selDate !== last) {
+          loungeCapacities = { ...DEFAULT_CAPACITIES };
+          saveCapacities();
+          localStorage.setItem('capacitiesLastReset', selDate);
+        }
+      }
 
-      // append new booking
-      bookings.push({ lounge, date, time, guests, price, image: loungeImages[lounge] });
+      // 5) Grab all your controls
+      const loungeSelect = document.getElementById('lounge-select');
+      const guestSelect  = document.getElementById('guest-select');
+      const priceSpan    = document.getElementById('price');
+      const confirmBtn   = document.getElementById('confirmBooking');
+      const dateInput    = document.getElementById('booking-date');
+      const timeInput    = document.getElementById('booking-time');
+      const timeUntil    = document.getElementById('time-until');
+      const previewImg   = document.getElementById('lounge-preview');
+      const PRICE_PER_GUEST = 80;
 
-      // save back
-      localStorage.setItem("bookings", JSON.stringify(bookings));
+      // lock the date picker to today forward
+      dateInput.min = todayStr;
 
-      // go show them
-      window.location.href = "upcomingbooking.html";
+      // 6) Build guest dropdown up to remaining capacity
+      function updateGuestOptions() {
+        const cap = loungeCapacities[loungeSelect.value] || 0;
+        guestSelect.innerHTML = '';
+        if (!loungeSelect.value || cap === 0) {
+          guestSelect.disabled   = true;
+          guestSelect.innerHTML  = '<option>—</option>';
+          confirmBtn.disabled    = true;
+          confirmBtn.textContent = cap === 0 && loungeSelect.value
+            ? 'Sold Out'
+            : 'Confirm Booking';
+        } else {
+          guestSelect.disabled   = false;
+          confirmBtn.disabled    = false;
+          confirmBtn.textContent = 'Confirm Booking';
+          for (let i = 1; i <= cap; i++) {
+            const o = document.createElement('option');
+            o.value = i;
+            o.textContent = i + (i===1 ? ' Guest' : ' Guests');
+            guestSelect.appendChild(o);
+          }
+          updatePrice();
+        }
+      }
+
+      // 7) When lounge changes: swap image + rebuild guests
+      const loungeImages = {
+        'Sydney Gold Lounge':         'Images/sydneyLounge.png',
+        'Melbourne Executive Lounge': 'Images/melbourneLounge.png',
+        'Brisbane Serenity Lounge':   'Images/brisbaneLounge.png'
+      };
+      loungeSelect.addEventListener('change', () => {
+        const url = loungeImages[loungeSelect.value];
+        if (url) {
+          previewImg.src = url;
+          previewImg.style.display = 'block';
+        } else {
+          previewImg.style.display = 'none';
+        }
+        updateGuestOptions();
+      });
+
+      // 8) Price updater
+      function updatePrice() {
+        const cnt = parseInt(guestSelect.value,10) || 1;
+        priceSpan.textContent = cnt * PRICE_PER_GUEST;
+      }
+      guestSelect.addEventListener('change', updatePrice);
+
+      // 9) Time-until updater
+      function updateTimeUntil() {
+        if (!dateInput.value || !timeInput.value) {
+          timeUntil.textContent = '—';
+          return;
+        }
+        const [y,mo,d] = dateInput.value.split('-');
+        const [h,mi]   = timeInput.value.split(':');
+        let diff = new Date(y,mo-1,d,h,mi) - new Date();
+        if (diff <= 0) {
+          timeUntil.textContent = '0';
+          return;
+        }
+        const days = Math.floor(diff/86400000); diff%=86400000;
+        const hrs  = Math.floor(diff/3600000);   diff%=3600000;
+        const mins = Math.floor(diff/60000);
+        timeUntil.textContent =
+          (days? days+'d ':'')+
+          (hrs  ? hrs+'h ':'')+
+          mins+'m';
+      }
+      dateInput.addEventListener('change', () => {
+        resetForBookingDate(dateInput.value);
+        updateTimeUntil();
+        updateGuestOptions();
+      });
+      timeInput.addEventListener('change', updateTimeUntil);
+
+      // 10) Confirm handler
+      confirmBtn.addEventListener('click', () => {
+        const lounge = loungeSelect.value;
+        const date   = dateInput.value;
+        const time   = timeInput.value;
+        const guests = parseInt(guestSelect.value,10);
+        const price  = parseInt(priceSpan.textContent,10);
+        if (!lounge || !date || !time) {
+          alert('Please complete all booking details.');
+          return;
+        }
+        // store the booking
+        const bs = JSON.parse(localStorage.getItem('bookings')||'[]');
+        bs.push({ lounge, date, time, guests, price, image: previewImg.src });
+        localStorage.setItem('bookings', JSON.stringify(bs));
+
+        // subtract & persist capacities
+        loungeCapacities[lounge] -= guests;
+        saveCapacities();
+
+        // go to the upcoming page
+        window.location.href = 'upcomingbooking.html';
+      });
+
+      // 11) kick it all off
+      dateInput.dispatchEvent(new Event('change'));
+      loungeSelect.dispatchEvent(new Event('change'));
+      updatePrice();
+      updateTimeUntil();
     });
   </script>
 </body>
