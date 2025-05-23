@@ -75,7 +75,7 @@
           updateRadioSelection();
         } else { // Paid tiers
           localStorage.setItem("pendingMembershipTier", tier);
-          window.location.href = "confirmbooking.html?membership=1";
+          window.location.href = "confirmMembership.html?membership=1";
         }
       } else {
         setCookie("membershipTier", "", -1);
