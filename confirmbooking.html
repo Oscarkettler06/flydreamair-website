@@ -271,6 +271,25 @@
       }
       switchForm();
     });
+
+    function shouldShowPayment() {
+      const tier = getMembershipTier();
+      return !(tier === "Gold" || tier === "Silver");
+    }
+
+    function applyMembershipPricing() {
+      const paymentContainer = document.querySelector('.payment-container');
+      priceSpan = document.getElementById('price');
+        if (!shouldShowPayment()) {
+        if (paymentContainer) paymentContainer.style.display = 'none';
+        if (priceSpan) priceSpan.textContent = "0";
+      } else {
+        if (paymentContainer) paymentContainer.style.display = '';
+      }
+    }
+
+
+
   </script>
 
   <script>
