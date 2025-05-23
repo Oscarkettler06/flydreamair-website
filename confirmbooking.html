@@ -272,21 +272,48 @@
       switchForm();
     });
 
-    function shouldShowPayment() {
-      const tier = getMembershipTier();
-      return !(tier === "Gold" || tier === "Silver");
+      // Returns the user's membership tier from cookies
+    function getMembershipTier() {
+      const name = "membershipTier=";
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const ca = decodedCookie.split(';');
+      for (let c of ca) {
+        c = c.trim();
+        if (c.indexOf(name) === 0) return c.substring(name.length);
+      }
+      return "";
     }
 
-    function applyMembershipPricing() {
-      const paymentContainer = document.querySelector('.payment-container');
-      priceSpan = document.getElementById('price');
-        if (!shouldShowPayment()) {
-        if (paymentContainer) paymentContainer.style.display = 'none';
-        if (priceSpan) priceSpan.textContent = "0";
-      } else {
-        if (paymentContainer) paymentContainer.style.display = '';
-      }
+    // Returns true if the user should pay (Bronze), false for Gold/Silver
+  function shouldShowPayment() {
+    const tier = getMembershipTier();
+     !(tier === "Gold" || tier === "Silver");
+  }
+
+    // Calculates the booking price based on guests and membership
+  function getBookingPrice(guestCount) {
+    const PRICE_PER_GUEST = 80;
+    if (!shouldShowPayment()) return 0;
+    return (guestCount || 1) * PRICE_PER_GUEST;
+  }
+
+    // Update price display
+  function updatePriceDisplay() {
+    const guestSelect = document.getElementById("guest-select");
+    const priceSpan = document.getElementById("price");
+    const guests = parseInt(guestSelect.value, 10) || 1;
+    priceSpan.textContent = getBookingPrice(guests);
+  }
+
+    // Hide payment section if not needed
+  function updatePaymentSection() {
+    const paymentContainer = document.querySelector('.payment-container');
+    if (!shouldShowPayment() && paymentContainer) {
+      paymentContainer.style.display = 'none';
+    } else if (paymentContainer) {
+      paymentContainer.style.display = '';
     }
+  }
 
 
 
