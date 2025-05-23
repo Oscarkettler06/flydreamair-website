@@ -222,21 +222,6 @@ const first = getCookie("firstName") || "Guest";
     const last = getCookie("surname") || "";
     const tier = getCookie("membershipTier") || "";
 
-    const welcome = document.getElementById("welcome-text");
-    const perks = document.getElementById("membership-perks");
-
-    if (welcome) welcome.textContent = "Hello, " + first + " " + last;
-    if (perks) {
-      if (tier === "Gold") {
-        perks.textContent = "Your membership is Gold Tier, enjoy your free bookings & complimentary VIP breakfast.";
-      } else if (tier === "Silver") {
-        perks.textContent = "Your membership is Silver Tier, enjoy your free bookings";
-      } else if (tier === "Bronze") {
-        perks.textContent = "Your membership is Bronze Tier.";
-      } else {
-        perks.textContent = "Join our membership program to enjoy perks.";
-      }
-    }
 
     window.addEventListener('DOMContentLoaded', () => {
       updatePriceDisplay();
