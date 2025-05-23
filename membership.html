@@ -18,7 +18,7 @@
       <a href="upcomingbooking.html">Upcoming</a>
       <a href="confirmbooking.html">Confirm</a>
       <a href="loungecheckin.html">Check-In</a>
-      <a href="membership.html">Membership</a>
+      <a href="membership.html" class="active">Membership</a>
       <a href="profile.html">Profile</a>
     </div>
   </nav>
@@ -26,72 +26,100 @@
   <h1 id="greeting"></h1>
   <form id="MemberForm">
     <div id="tierOptions" class="tier-columns">
-    <div class="tier-column">
-      <div class="main-container">
-        <input type="radio" id="Bronze" name="MemberTier" value="Bronze">
-        <label for="Bronze" id="BronzeLabel" style="color: #cd7f32;">
-          Bronze Tier – Free membership that collects points for discounts.
-        </label>
+      <div class="tier-column">
+        <div class="main-container">
+          <input type="radio" id="Bronze" name="MemberTier" value="Bronze">
+          <label for="Bronze" id="BronzeLabel" style="color: #cd7f32;">
+            Bronze Tier – Free membership that collects points for discounts.
+          </label>
+        </div>
+      </div>
+      <div class="tier-column">
+        <div class="main-container">
+          <input type="radio" id="Silver" name="MemberTier" value="Silver">
+          <label for="Silver" id="SilverLabel" style="color: #c0c0c0;">
+            Silver Tier – All Bronze perks plus priority booking and free amenities.
+          </label>
+        </div>
+      </div>
+      <div class="tier-column">
+        <div class="main-container">
+          <input type="radio" id="Gold" name="MemberTier" value="Gold">
+          <label for="Gold" id="GoldLabel" style="color: #ffd700;">
+            Gold Tier – All perks including VIP breakfast upgrades and early check-in.
+          </label>
+        </div>
       </div>
     </div>
-    <div class="tier-column">
-      <div class="main-container">
-        <input type="radio" id="Silver" name="MemberTier" value="Silver">
-        <label for="Silver" id="SilverLabel" style="color: #c0c0c0;">
-          Silver Tier – All Bronze perks plus priority booking and free amenities.
-        </label>
-      </div>
-    </div>
-    <div class="tier-column">
-      <div class="main-container">
-        <input type="radio" id="Gold" name="MemberTier" value="Gold">
-        <label for="Gold" id="GoldLabel" style="color: #ffd700;">
-          Gold Tier – All perks including VIP breakfast upgrades and early check-in.
-        </label>
-      </div>
-    </div>
-  </div>
     <div class="button-container">
       <button type="submit" class="primary-button">Confirm membership</button>
       <a href="javascript:void(0);" id="Cancel" class="primary-button">Cancel Membership</a>
     </div>
   </form>
 </main>
-<script src="script.js"></script>
 <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const tier = getCookie("membershipTier");
-      const greeting = document.getElementById("greeting");
+  // Utility functions for cookies
+  function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+      const date = new Date();
+      date.setTime(date.getTime() + (days*24*60*60*1000));
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+  }
+  function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for(let i=0;i < ca.length;i++) {
+      let c = ca[i];
+      while (c.charAt(0)==' ') c = c.substring(1,c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+  }
 
-      if (tier && greeting) {
-        greeting.textContent = "Welcome " + tier + " member!";
-      }
+  window.addEventListener('DOMContentLoaded', () => {
+    const tier = getCookie("membershipTier");
+    const greeting = document.getElementById("greeting");
 
-      if (tier) {
-        const radio = document.querySelector(`input[name="MemberTier"][value="${tier}"]`);
-        if (radio) radio.checked = true;
-      }
+    if (tier && greeting) {
+      greeting.textContent = "Welcome " + tier + " member!";
+    }
 
-      const form = document.getElementById("MemberForm");
-      form.addEventListener("submit", function(e) {
-        e.preventDefault();
-        const selected = document.querySelector('input[name="MemberTier"]:checked');
-        if (selected) {
+    if (tier) {
+      const radio = document.querySelector(`input[name="MemberTier"][value="${tier}"]`);
+      if (radio) radio.checked = true;
+    }
+
+    const form = document.getElementById("MemberForm");
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const selected = document.querySelector('input[name="MemberTier"]:checked');
+      if (selected) {
+        // Bronze is free, set immediately
+        if (selected.value === "Bronze") {
           setCookie("membershipTier", selected.value, 7);
           greeting.textContent = "Welcome " + selected.value + " member!";
+        } else {
+          // Silver or Gold: store selection and redirect to payment page
+          localStorage.setItem("pendingMembershipTier", selected.value);
+          window.location.href = "confirmMembership.html?membership=1";
         }
-      });
-
-      const cancelBtn = document.getElementById("Cancel");
-      if (cancelBtn) {
-        cancelBtn.addEventListener("click", () => {
-          if (confirm("Are you sure you want to cancel your membership?")) {
-            setCookie("membershipTier", "", -1);
-            if (greeting) greeting.textContent = "No Membership with FlyDreamAir? You can fix that here.";
-          }
-        });
       }
     });
-  </script>
+
+    const cancelBtn = document.getElementById("Cancel");
+    if (cancelBtn) {
+      cancelBtn.addEventListener("click", () => {
+        if (confirm("Are you sure you want to cancel your membership?")) {
+          setCookie("membershipTier", "", -1);
+          if (greeting) greeting.textContent = "No Membership with FlyDreamAir? You can fix that here.";
+        }
+      });
+    }
+  });
+</script>
 </body>
 </html>
+
