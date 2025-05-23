@@ -29,6 +29,8 @@
     <div class="header">
       <h1>Confirm Your Booking</h1>
     </div>
+    <p class="welcome-text" id="welcome-text">Hello, Guest</p>
+            <p id="membership-perks"></p>
 
     <!-- Booking Details -->
     <div class="booking-details">
@@ -215,6 +217,26 @@ function updatePaymentSection() {
     paymentContainer.style.display = '';
   }
 }
+
+const first = getCookie("firstName") || "Guest";
+    const last = getCookie("surname") || "";
+    const tier = getCookie("membershipTier") || "";
+
+    const welcome = document.getElementById("welcome-text");
+    const perks = document.getElementById("membership-perks");
+
+    if (welcome) welcome.textContent = "Hello, " + first + " " + last;
+    if (perks) {
+      if (tier === "Gold") {
+        perks.textContent = "Enjoy early check-in and complimentary VIP breakfast.";
+      } else if (tier === "Silver") {
+        perks.textContent = "You get priority access today.";
+      } else if (tier === "Bronze") {
+        perks.textContent = "Earn points with every visit.";
+      } else {
+        perks.textContent = "Join our membership program to enjoy perks.";
+      }
+    }
 
 window.addEventListener('DOMContentLoaded', () => {
   updatePriceDisplay();
