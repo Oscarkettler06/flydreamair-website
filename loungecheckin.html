@@ -66,24 +66,18 @@
 <script>
   window.addEventListener("DOMContentLoaded", () => {
     const first = getCookie("firstName") || "Guest";
-    const last = getCookie("surname") || "";
-    const tier = getCookie("membershipTier") || "";
-
-    const welcome = document.getElementById("welcome-text");
-    const perks = document.getElementById("membership-perks");
-
-    if (welcome) welcome.textContent = "Hello, " + first + " " + last;
-    if (perks) {
-      if (tier === "Gold") {
-        perks.textContent = "Enjoy early check-in and complimentary VIP breakfast.";
-      } else if (tier === "Silver") {
-        perks.textContent = "You get priority access today.";
-      } else if (tier === "Bronze") {
-        perks.textContent = "Earn points with every visit.";
-      } else {
-        perks.textContent = "Join our membership program to enjoy perks.";
-      }
-    }
+  const last = getCookie("surname") || "";
+  const tier = getMembershipTier();
+  welcomeText.textContent = `Hello, ${first}${last ? ' ' + last : ''}`;
+  if (tier === "Gold") {
+    perksText.textContent = "Gold Member: Free lounge bookings for you and your guests!";
+  } else if (tier === "Silver") {
+    perksText.textContent = "Silver Member: Free lounge bookings for you and your guests!";
+  } else if (tier) {
+    perksText.textContent = `Welcome, ${tier} Member!`;
+  } else {
+    perksText.textContent = "";
+  }
   });
 </script>
 </html>
