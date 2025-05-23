@@ -29,7 +29,7 @@ function updateGreeting() {
   } else if (tier === "Gold") {
     greeting = "Welcome Gold member! Enjoy your free lounge booking & premium benefits.";
   } else {
-    greeting = "No Membership with RyanAir? You can fix that here";
+    greeting = "Welcome Bronze member! You are on the standard free membership.";
   }
   greetingElem.innerText = greeting;
 }
