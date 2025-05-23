@@ -178,143 +178,50 @@
   </main>
 
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const dateInput = document.getElementById('booking-date');
-      const timeInput = document.getElementById('booking-time');
-      const timeUntilSpan = document.getElementById('time-until');
-      const guestSelect = document.getElementById('guest-select');
-      const priceSpan   = document.getElementById('price');
-      const PRICE_PER_GUEST = 80;
-
-      function updatePrice() {
-        const count = parseInt(guestSelect.value, 10) || 1;
-        priceSpan.textContent = count * PRICE_PER_GUEST;
-      }
-      // initialize and re-calculate on change
-      guestSelect.addEventListener('change', updatePrice);
-      updatePrice();
-
-      // 1) Set min date = today
-      const now = new Date();
-      const yyyy = now.getFullYear();
-      const mm = String(now.getMonth()+1).padStart(2,'0');
-      const dd = String(now.getDate()).padStart(2,'0');
-      const todayStr = `${yyyy}-${mm}-${dd}`;
-      dateInput.min = todayStr;
-
-      // 2) Lock time.min when date is today
-      dateInput.addEventListener('change', () => {
-        if (dateInput.value === todayStr) {
-          const h = String(now.getHours()).padStart(2,'0');
-          const m = String(now.getMinutes()).padStart(2,'0');
-          timeInput.min = `${h}:${m}`;
-        } else {
-          timeInput.min = '';
-        }
-        updateTimeUntil();
-      });
-
-      // 3) Recalc time-until on time change
-      timeInput.addEventListener('change', updateTimeUntil);
-
-      function updateTimeUntil() {
-        if (!dateInput.value || !timeInput.value) {
-          timeUntilSpan.textContent = '—';
-          return;
-        }
-        const [y,mo,d] = dateInput.value.split('-');
-        const [h,mi] = timeInput.value.split(':');
-        const booking = new Date(y, mo-1, d, h, mi);
-        const diffMs = booking - new Date();
-        if (diffMs <= 0) {
-          timeUntilSpan.textContent = '0';
-          return;
-        }
-        const days = Math.floor(diffMs / 86400000);
-        const hours = Math.floor((diffMs % 86400000) / 3600000);
-        const mins = Math.floor((diffMs % 3600000) / 60000);
-        timeUntilSpan.textContent =
-          (days ? days+'d ' : '') +
-          (hours ? hours+'h ' : '') +
-          mins+'m';
-      }
-
-      // lounge preview logic
-      const loungeImages = {
-        'Sydney Gold Lounge': 'Images/sydneyLounge.png',
-        'Melbourne Executive Lounge': 'Images/melbourneLounge.png',
-        'Brisbane Serenity Lounge': 'Images/brisbaneLounge.png'
-      };
-      const loungeSelect = document.getElementById('lounge-select');
-      const previewImg  = document.getElementById('lounge-preview');
-
-      loungeSelect.addEventListener('change', () => {
-        const choice = loungeSelect.value;
-        if (loungeImages[choice]) {
-          previewImg.src = loungeImages[choice];
-          previewImg.style.display = 'block';
-        } else {
-          previewImg.style.display = 'none';
-        }
-      });
-      loungeSelect.dispatchEvent(new Event('change'));
-
-      // payment form toggle
-      document.querySelectorAll('input[name="payment"]').forEach(r => {
-        r.addEventListener('change', switchForm);
-      });
-      function switchForm() {
-        document.querySelectorAll('.payment-form').forEach(f => f.style.display = 'none');
-        const sel = document.querySelector('input[name="payment"]:checked').value;
-        const form = document.getElementById('form-' + sel);
-        if (form) form.style.display = 'block';
-      }
-      switchForm();
-    });
-
-      // Returns the user's membership tier from cookies
-    function getMembershipTier() {
-      const name = "membershipTier=";
-      const decodedCookie = decodeURIComponent(document.cookie);
-      const ca = decodedCookie.split(';');
-      for (let c of ca) {
-        c = c.trim();
-        if (c.indexOf(name) === 0) return c.substring(name.length);
-      }
-      return "";
-    }
-
-    // Returns true if the user should pay (Bronze), false for Gold/Silver
-  function shouldShowPayment() {
-    const tier = getMembershipTier();
-     !(tier === "Gold" || tier === "Silver");
+  function getMembershipTier() {
+  const name = "membershipTier=";
+  const decodedCookie = decodeURIComponent(document.cookie);
+  const ca = decodedCookie.split(';');
+  for (let c of ca) {
+    c = c.trim();
+    if (c.indexOf(name) === 0) return c.substring(name.length);
   }
+  return "";
+}
 
-    // Calculates the booking price based on guests and membership
-  function getBookingPrice(guestCount) {
-    const PRICE_PER_GUEST = 80;
-    if (!shouldShowPayment()) return 0;
-    return (guestCount || 1) * PRICE_PER_GUEST;
+function shouldShowPayment() {
+  const tier = getMembershipTier();
+  return !(tier === "Gold" || tier === "Silver");
+}
+
+function getBookingPrice(guestCount) {
+  const PRICE_PER_GUEST = 80;
+  if (!shouldShowPayment()) return 0;
+  return (guestCount || 1) * PRICE_PER_GUEST;
+}
+
+function updatePriceDisplay() {
+  const guestSelect = document.getElementById("guest-select");
+  const priceSpan = document.getElementById("price");
+  const guests = parseInt(guestSelect.value, 10) || 1;
+  priceSpan.textContent = getBookingPrice(guests);
+}
+
+function updatePaymentSection() {
+  const paymentContainer = document.querySelector('.payment-container');
+  if (!shouldShowPayment() && paymentContainer) {
+    paymentContainer.style.display = 'none';
+  } else if (paymentContainer) {
+    paymentContainer.style.display = '';
   }
+}
 
-    // Update price display
-  function updatePriceDisplay() {
-    const guestSelect = document.getElementById("guest-select");
-    const priceSpan = document.getElementById("price");
-    const guests = parseInt(guestSelect.value, 10) || 1;
-    priceSpan.textContent = getBookingPrice(guests);
-  }
-
-    // Hide payment section if not needed
-  function updatePaymentSection() {
-    const paymentContainer = document.querySelector('.payment-container');
-    if (!shouldShowPayment() && paymentContainer) {
-      paymentContainer.style.display = 'none';
-    } else if (paymentContainer) {
-      paymentContainer.style.display = '';
-    }
-  }
-
+window.addEventListener('DOMContentLoaded', () => {
+  updatePriceDisplay();
+  updatePaymentSection();
+  const guestSelect = document.getElementById("guest-select");
+  guestSelect.addEventListener("change", updatePriceDisplay);
+});
 
 
   </script>
