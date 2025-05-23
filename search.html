@@ -83,7 +83,8 @@
      <!-- Card: Melbourne -->
      <!-- Card: Brisbane -->
      <div class="lounge-card" data-lounge="Sydney Gold Lounge" data-state="NSW">
-      <img alt="Sydney Gold Lounge" class="lounge-image" src="./Images/sydneyLounge.png"/>
+
+     <img alt="Sydney Gold Lounge" class="lounge-image" src="./Images/sydneyLounge.png"/>
       <div class="card-content">
        <h3>
         Sydney Gold Lounge
@@ -99,31 +100,6 @@
        </button>
       </div>
      </div>
-     <div class="lounge-card" data-lounge="Sydney Skyview Lounge" data-state="NSW">
-      <img alt="Sydney Skyview Lounge" class="lounge-image" src="./Images/sydneySkyview.png"/>
-      <div class="card-content">
-       <h3>
-        Sydney Skyview Lounge
-       </h3>
-       <p>
-        Date:
-        <span class="date">
-        </span>
-        | Time:
-        <span class="time">
-        </span>
-       </p>
-       <p>
-        Amenities: Panoramic Views, Massage Chairs, Cocktail Bar
-       </p>
-       <p>
-        Rating: ★★★☆☆
-       </p>
-       <button class="primary-button" onclick="window.location.href='confirmbooking.html'">
-        Add to Itinerary
-       </button>
-      </div>
-     </div>
      <div class="lounge-card" data-lounge="Melbourne Executive Lounge" data-state="VIC">
       <img alt="Melbourne Executive Lounge" class="lounge-image" src="./Images/melbourneLounge.png"/>
       <div class="card-content">
@@ -131,43 +107,10 @@
         Melbourne Executive Lounge
        </h3>
        <p>
-        Date:
-        <span class="date">
-        </span>
-        | Time:
-        <span class="time">
-        </span>
-       </p>
-       <p>
         Amenities: Workspace, Shower, Quiet Zone, Buffet
        </p>
        <p>
         Rating: ★★★★★
-       </p>
-       <button class="primary-button" onclick="window.location.href='confirmbooking.html'">
-        Add to Itinerary
-       </button>
-      </div>
-     </div>
-     <div class="lounge-card" data-lounge="Melbourne Prestige Lounge" data-state="VIC">
-      <img alt="Melbourne Prestige Lounge" class="lounge-image" src="./Images/melbournePrestige.png"/>
-      <div class="card-content">
-       <h3>
-        Melbourne Prestige Lounge
-       </h3>
-       <p>
-        Date:
-        <span class="date">
-        </span>
-        | Time:
-        <span class="time">
-        </span>
-       </p>
-       <p>
-        Amenities: Private Cabins, Espresso Bar, Conference Room
-       </p>
-       <p>
-        Rating: ★★★★☆
        </p>
        <button class="primary-button" onclick="window.location.href='confirmbooking.html'">
         Add to Itinerary
@@ -181,40 +124,7 @@
         Brisbane Serenity Lounge
        </h3>
        <p>
-        Date:
-        <span class="date">
-        </span>
-        | Time:
-        <span class="time">
-        </span>
-       </p>
-       <p>
         Amenities: Recliners, Beverages, Wi-Fi, Snacks
-       </p>
-       <p>
-        Rating: ★★★☆☆
-       </p>
-       <button class="primary-button" onclick="window.location.href='confirmbooking.html'">
-        Add to Itinerary
-       </button>
-      </div>
-     </div>
-     <div class="lounge-card" data-lounge="Brisbane Sunset Lounge" data-state="QLD">
-      <img alt="Brisbane Sunset Lounge" class="lounge-image" src="./Images/brisbaneSunset.png"/>
-      <div class="card-content">
-       <h3>
-        Brisbane Sunset Lounge
-       </h3>
-       <p>
-        Date:
-        <span class="date">
-        </span>
-        | Time:
-        <span class="time">
-        </span>
-       </p>
-       <p>
-        Amenities: Sunset Views, Juice Bar, Lounge Beds
        </p>
        <p>
         Rating: ★★★☆☆
@@ -228,49 +138,30 @@
    </div>
   </main>
   <script>
-   const filterSelect = document.getElementById('lounge-filter');
-    const cards = document.querySelectorAll('.lounge-card');
+    const filterSelect = document.getElementById('lounge-filter');
+      const cards = document.querySelectorAll('.lounge-card');
 
-    filterSelect.addEventListener('change', () => {
-      const choice = filterSelect.value;
-      cards.forEach(card => {
-        const loungeName = card.dataset.lounge;
-        card.style.display = (!choice || loungeName === choice) ? '' : 'none';
+      filterSelect.addEventListener('change', () => {
+        const choice = filterSelect.value;
+        cards.forEach(card => {
+          const loungeName = card.dataset.lounge;
+          card.style.display = (!choice || loungeName === choice) ? '' : 'none';
+        });
       });
-    });
-     // Run this after the DOM is ready
-    window.addEventListener('DOMContentLoaded', () => {
-      const now = new Date();
 
-      // Format date as "17 Apr"
-      const dateOptions = { day: 'numeric', month: 'short' };
-      const dateStr = now.toLocaleDateString(undefined, dateOptions);
+      function persistSelection() {
+        const val = document.getElementById('lounge-filter').value;
+        localStorage.setItem('selectedLounge', val);
+      }
 
-      // Format time as "10:05 AM"
-      const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
-      const timeStr = now.toLocaleTimeString(undefined, timeOptions);
-
-      // Inject into every card
-      document.querySelectorAll('.card-content').forEach(card => {
-        card.querySelector('.date').textContent = dateStr;
-        card.querySelector('.time').textContent = timeStr;
-      });
+      window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('selectedLounge');
+      if (saved) {
+        document.getElementById('lounge-filter').value = saved;
+        filterLounges();
+      }
     });
   </script>
   <script src="script.js"></script>
-  <script>
-   function persistSelection() {
-  const val = document.getElementById('lounge-filter').value;
-  localStorage.setItem('selectedLounge', val);
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem('selectedLounge');
-  if (saved) {
-    document.getElementById('lounge-filter').value = saved;
-    filterLounges();
-  }
-});
-  </script>
  </body>
 </html>
