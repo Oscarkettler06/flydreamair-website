@@ -138,29 +138,37 @@
    </div>
   </main>
   <script>
-    const filterSelect = document.getElementById('lounge-filter');
-      const cards = document.querySelectorAll('.lounge-card');
+    const loungeSelect = document.getElementById('lounge-filter');
+    const stateSelect  = document.getElementById('state-filter');
+    const cards = document.querySelectorAll('.lounge-card');
 
-      filterSelect.addEventListener('change', () => {
-        const choice = filterSelect.value;
-        cards.forEach(card => {
-          const loungeName = card.dataset.lounge;
-          card.style.display = (!choice || loungeName === choice) ? '' : 'none';
-        });
+    function filterLounges() {
+      const lounge  = loungeSelect.value;
+      const state   = stateSelect.value;
+      cards.forEach(card => {
+        const matchLounge = !lounge || card.dataset.lounge === lounge;
+        const matchState  = !state  || card.dataset.state  === state;
+        card.style.display = (matchLounge && matchState) ? '' : 'none';
       });
+    }
 
-      function persistSelection() {
-        const val = document.getElementById('lounge-filter').value;
-        localStorage.setItem('selectedLounge', val);
-      }
+    function persistSelection() {
+      localStorage.setItem('selectedLounge', loungeSelect.value);
+      localStorage.setItem('selectedState',  stateSelect.value);
+    }
 
-      window.addEventListener('DOMContentLoaded', () => {
-      const saved = localStorage.getItem('selectedLounge');
-      if (saved) {
-        document.getElementById('lounge-filter').value = saved;
-        filterLounges();
-      }
+    // on load: restore previous choices & apply filter
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedL = localStorage.getItem('selectedLounge');
+      const savedS = localStorage.getItem('selectedState');
+      if (savedL) loungeSelect.value = savedL;
+      if (savedS) stateSelect.value  = savedS;
+      filterLounges();
     });
+
+    // wire up events
+    loungeSelect.addEventListener('change', () => { filterLounges(); persistSelection(); });
+    stateSelect .addEventListener('change', () => { filterLounges(); persistSelection(); });
   </script>
   <script src="script.js"></script>
  </body>
