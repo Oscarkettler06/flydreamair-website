@@ -579,9 +579,9 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    url('/Images/sydneyLounge.png'),
-    url('/Images/melbourneLounge.png'),
-    url('/Images/brisbaneLounge.png');
+    url('Images/sydneyLounge.png'),
+    url('Images/melbourneLounge.png'),
+    url('Images/brisbaneLounge.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

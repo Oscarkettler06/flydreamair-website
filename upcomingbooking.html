@@ -9,7 +9,7 @@
     <!-- Navigation Bar -->
     <nav class="navbar">
       <div class="navbar-logo">
-        <img src="images/airplane.png" alt="FlyDreamAir Logo">
+        <img src="Images/airplane.png" alt="FlyDreamAir Logo">
         <span>FlyDreamAir</span>
       </div>
       <div class="navbar-links">
@@ -42,7 +42,7 @@
 <script>
   window.addEventListener("DOMContentLoaded", () => {
     const bookingList = document.getElementById("booking-list");
-    const bookings    = JSON.parse(localStorage.getItem("bookings") || "[]");
+    const bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
 
     if (bookings.length === 0) {
       bookingList.innerHTML = `
