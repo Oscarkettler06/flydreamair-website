@@ -51,6 +51,29 @@
         </ul>
       </div>
 
+       <div id="user-info-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+  <form id="user-info-form" style="background:#fff; padding:2em; border-radius:8px; max-width:350px; margin:auto;">
+    <h2>Welcome! Please enter your details</h2>
+    <label>
+      First Name:
+      <input type="text" name="firstName" required>
+    </label><br><br>
+    <label>
+      Surname:
+      <input type="text" name="surname" required>
+    </label><br><br>
+    <label>
+      Email:
+      <input type="email" name="email" required>
+    </label><br><br>
+    <label>
+      Phone:
+      <input type="tel" name="phone" required>
+    </label><br><br>
+    <button type="submit">Save</button>
+  </form>
+</div>
+
   </main>
 
   <script src="script.js"></script>
@@ -80,6 +103,27 @@
         else badge.className = "membership-badge";
       }
     });
+
+
+    function openEditModal() {
+      const form = document.forms["user-info-form"];
+      form.firstName.value = getCookie("firstName");
+      form.surname.value = getCookie("surname");
+      form.email.value = getCookie("email");
+      form.phone.value = getCookie("phone");
+      document.getElementById("user-info-modal").style.display = "flex";
+    }
+
+    document.getElementById("user-info-form").onsubmit = function (e) {
+      e.preventDefault();
+      const form = e.target;
+      setCookie("firstName", form.firstName.value, 30);
+      setCookie("surname", form.surname.value, 30);
+      setCookie("email", form.email.value, 30);
+      setCookie("phone", form.phone.value, 30);
+      document.getElementById("user-info-modal").style.display = "none";
+      location.reload(); // Refresh to update values on the page
+    };
   </script>
 </body>
 </html>
