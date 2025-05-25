@@ -417,8 +417,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Store the booking
     const bs = JSON.parse(localStorage.getItem('bookings')||'[]');
-    bs.push({ lounge, date, time, guests, price, image: previewImg.src });
+    const location = lounge.includes("Sydney") ? "SYD International Terminal 1"
+                  : lounge.includes("Melbourne") ? "MEL Terminal 2"
+                  : lounge.includes("Brisbane") ? "BNE Terminal 1"
+                  : "Unknown";
+    bs.push({ lounge, location, date, time, guests, price, image: previewImg.src });
     localStorage.setItem('bookings', JSON.stringify(bs));
+    localStorage.setItem('upcomingBookings', JSON.stringify(bs));
 
     // Subtract & persist capacities
     loungeCapacities[lounge] -= guests;

@@ -605,3 +605,40 @@ body {
   text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
   margin-bottom: 1.5rem;
 }
+/* === Check-in Lounge Cards === */
+.booking-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
+}
+
+.booking-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.booking-card p {
+  margin: 0.4rem 0;
+  font-size: 1rem;
+  color: #444;
+  width: 100%;
+}
+
+.booking-card .primary-button {
+  margin-top: 1.2rem;
+}
+
+/* Ensure multiple lounge images are spaced and wrap correctly */
+.lounge-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}

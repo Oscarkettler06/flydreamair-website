@@ -44,6 +44,9 @@
     const bookingList = document.getElementById("booking-list");
     const bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
 
+    // Sync with upcomingBookings key for use on other pages
+    localStorage.setItem("upcomingBookings", JSON.stringify(bookings));
+
     if (bookings.length === 0) {
       bookingList.innerHTML = `
         <div class="no-bookings">
@@ -85,6 +88,7 @@
       const idx = parseInt(e.target.dataset.index, 10);
       bookings.splice(idx, 1);
       localStorage.setItem("bookings", JSON.stringify(bookings));
+      localStorage.setItem("upcomingBookings", JSON.stringify(bookings));
       location.reload();
     });
   });

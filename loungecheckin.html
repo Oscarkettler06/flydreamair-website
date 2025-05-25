@@ -34,19 +34,10 @@
         <div class="booking-info">
             <p class="welcome-text" id="welcome-text">Hello, Guest</p>
             <p id="membership-perks"></p>
-            <p>You have an upcoming lounge booking.</p>
-            <ul>
-                <li><strong>Lounge:</strong> Sydney Gold Lounge</li>
-                <li><strong>Location:</strong> SYD International Terminal 1</li>
-                <li><strong>Date:</strong> April 17, 2025</li>
-                <li><strong>Time:</strong> 10:00 AM</li>
-            </ul>
-
-            <button class="primary-button">Check-In Now</button>
+            <div id="dynamic-booking-content"></div>
         </div>
 
-        <!-- Lounge Image -->
-        <img src="images/lounge-room.jpg" alt="Interior view of Sydney Gold Lounge" class="lounge-image">
+        <div class="lounge-images" id="lounge-images"></div>
 
         <!-- QR Code Section -->
         <div class="qr-section">
@@ -64,20 +55,84 @@
 </body>
 <script src="script.js"></script>
 <script>
-  window.addEventListener("DOMContentLoaded", () => {
-  const first = getCookie("firstName") || "Guest";
-  const last = getCookie("surname") || "";
-  const tier = getMembershipTier();
-  welcomeText.textContent = `Hello, ${first}${last ? ' ' + last : ''}`;
-  if (tier === "Gold") {
-    perksText.textContent = "Gold Member: Free lounge bookings for you and your guests!";
-  } else if (tier === "Silver") {
-    perksText.textContent = "Silver Member: Free lounge bookings for you and your guests!";
-  } else if (tier) {
-    perksText.textContent = `Welcome, ${tier} Member!`;
-  } else {
-    perksText.textContent = "";
+  function getCookie(name) {
+    const cookieArr = document.cookie.split("; ");
+    for (let i = 0; i < cookieArr.length; i++) {
+      const pair = cookieArr[i].split("=");
+      if (pair[0] === name) return decodeURIComponent(pair[1]);
+    }
+    return null;
   }
+
+  function getMembershipTier() {
+    return getCookie("membershipTier") || "Bronze";
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const first = getCookie("firstName") || "Guest";
+    const last = getCookie("surname") || "";
+    const tier = getMembershipTier();
+    document.getElementById("welcome-text").textContent = `Hello, ${first}${last ? ' ' + last : ''}`;
+
+    const perksText = document.getElementById("membership-perks");
+    if (tier === "Gold") {
+      perksText.textContent = "Gold Member: Free lounge bookings for you and your guests!";
+    } else if (tier === "Silver") {
+      perksText.textContent = "Silver Member: Free lounge bookings for you and your guests!";
+    } else if (tier) {
+      perksText.textContent = `Welcome, ${tier} Member!`;
+    } else {
+      perksText.textContent = "";
+    }
+
+    const bookingsRaw = localStorage.getItem("upcomingBookings");
+    console.log("Loaded raw upcomingBookings:", bookingsRaw);
+    const bookings = JSON.parse(bookingsRaw) || [];
+    console.log("Parsed bookings:", bookings);
+    const bookingContent = document.getElementById("dynamic-booking-content");
+    const loungeImages = document.getElementById("lounge-images");
+
+    if (bookings.length === 0) {
+      bookingContent.innerHTML = "<p>You do not have an upcoming booking.</p>";
+    } else {
+      const status = document.createElement("p");
+      status.textContent = `You have ${bookings.length === 1 ? 'an upcoming booking' : 'upcoming bookings'}.`;
+      bookingContent.appendChild(status);
+
+      bookings.forEach((booking, i) => {
+        console.log("Rendering booking:", booking);
+        const card = document.createElement("div");
+        card.className = "booking-card";
+
+        const img = document.createElement("img");
+        img.src = booking.image || "images/lounge-room.jpg";
+        img.alt = `Interior view of ${booking.lounge}`;
+        img.className = "lounge-image";
+        card.appendChild(img);
+
+        const info = document.createElement("div");
+        info.innerHTML = `
+          <h3>${booking.lounge || 'Unnamed Lounge'}</h3>
+          <p><strong>Location:</strong> ${booking.location || 'N/A'}</p>
+          <p><strong>Date:</strong> ${booking.date || 'N/A'}</p>
+          <p><strong>Time:</strong> ${booking.time || 'N/A'}</p>
+          <p><strong>Guests:</strong> ${booking.guests || 'N/A'}</p>
+          <p><strong>Price:</strong> ${booking.price || 'N/A'}</p>
+        `;
+
+        const checkinButton = document.createElement("button");
+        checkinButton.className = "primary-button";
+        checkinButton.textContent = "Check In Now";
+        checkinButton.addEventListener("click", () => {
+          alert("You have been checked in! Show the QR code to staff to complete lounge entry.");
+        });
+
+        card.appendChild(info);
+        card.appendChild(checkinButton);
+        bookingContent.appendChild(card);
+      });
+    }
+
   });
 </script>
 </html>
