@@ -156,12 +156,20 @@
       // Membership payment flow
       const pendingTier = localStorage.getItem("pendingMembershipTier");
       if (pendingTier) {
+        // Generate a random 10-character Membership ID
+        const membershipID = Array.from({ length: 10 }, () =>
+        String.fromCharCode(65 + Math.floor(Math.random() * 26))
+          ).join('');
+
         setCookie("membershipTier", pendingTier, 7);
+        setCookie("membershipID", membershipID, 7);
         localStorage.removeItem("pendingMembershipTier");
-        alert("Membership payment successful! Welcome " + pendingTier + " member.");
-        window.location.href = "membership.html";
-        return;
-      }
+
+      alert("Membership payment successful! Welcome " + pendingTier + " member. Your ID: " + membershipID);
+      window.location.href = "membership.html";
+      return;
+    }
+
 
       // Booking flow 
       const lounge = document.getElementById("lounge-select") ? document.getElementById("lounge-select").value : null;
