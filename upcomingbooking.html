@@ -40,58 +40,90 @@
 </script>
 
 <script>
-  window.addEventListener("DOMContentLoaded", () => {
-    const bookingList = document.getElementById("booking-list");
-    const bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
+      // --- Default Capacities (must match confirmbooking.js) ---
+    const DEFAULT_CAPACITIES = {
+      'Sydney Gold Lounge':         30,
+      'Melbourne Executive Lounge': 25,
+      'Brisbane Serenity Lounge':   20
+    };
 
-    // Sync with upcomingBookings key for use on other pages
-    localStorage.setItem("upcomingBookings", JSON.stringify(bookings));
-
-    if (bookings.length === 0) {
-      bookingList.innerHTML = `
-        <div class="no-bookings">
-          <p>You have no upcoming bookings.</p>
-          <button class="primary-button" onclick="window.location.href='search.html'">
-            Make a booking
-          </button>
-        </div>`;
-      return;
+    // --- Helpers for per-date capacities in localStorage ---
+    function loadCapacitiesForDate(date) {
+      const byDate = JSON.parse(localStorage.getItem('capacitiesByDate') || '{}');
+      return byDate[date]
+        ? { ...byDate[date] }
+        : { ...DEFAULT_CAPACITIES };
+    }
+    function saveCapacitiesForDate(date, caps) {
+      const byDate = JSON.parse(localStorage.getItem('capacitiesByDate') || '{}');
+      byDate[date] = caps;
+      localStorage.setItem('capacitiesByDate', JSON.stringify(byDate));
     }
 
-    bookings.forEach((b, i) => {
-      const card = document.createElement("div");
-      card.className = "booking-card";
-      card.innerHTML = `
-        <img src="${b.image}" 
-             alt="${b.lounge}" class="booking-thumbnail">
-        <h3>${b.lounge}</h3>
-        <p>Date: ${b.date}</p>
-        <p>Time: ${b.time}</p>
-        <p>Guests: ${b.guests}</p>
-        <p>Price: $${b.price}</p>
-        <div class="booking-actions">
-          <button class="primary-button" 
-                  onclick="window.location.href='loungecheckin.html'">
-            Check In
-          </button>
-          <button class="primary-button cancel-btn" data-index="${i}">
-            Cancel
-          </button>
-        </div>
-      `;
-      bookingList.appendChild(card);
-    });
+    window.addEventListener("DOMContentLoaded", () => {
+      const bookingList = document.getElementById("booking-list");
+      const bookings    = JSON.parse(localStorage.getItem("bookings") || "[]");
 
-    // delegate cancel clicks
-    bookingList.addEventListener("click", e => {
-      if (!e.target.classList.contains("cancel-btn")) return;
-      const idx = parseInt(e.target.dataset.index, 10);
-      bookings.splice(idx, 1);
-      localStorage.setItem("bookings", JSON.stringify(bookings));
+      // mirror to upcomingBookings
       localStorage.setItem("upcomingBookings", JSON.stringify(bookings));
-      location.reload();
+
+      if (bookings.length === 0) {
+        bookingList.innerHTML = `
+          <div class="no-bookings">
+            <p>You have no upcoming bookings.</p>
+            <button class="primary-button" onclick="location.href='search.html'">
+              Make a booking
+            </button>
+          </div>`;
+        return;
+      }
+
+      // render each booking
+      bookings.forEach((b, i) => {
+        const card = document.createElement("div");
+        card.className = "booking-card";
+        card.innerHTML = `
+          <img src="${b.image}" alt="${b.lounge}" class="booking-thumbnail">
+          <h3>${b.lounge}</h3>
+          <p>Date: ${b.date}</p>
+          <p>Time: ${b.time}</p>
+          <p>Guests: ${b.guests}</p>
+          <p>Price: $${b.price}</p>
+          <div class="booking-actions">
+            <button class="primary-button"
+                    onclick="location.href='loungecheckin.html'">
+              Check In
+            </button>
+            <button class="primary-button cancel-btn"
+                    data-index="${i}">
+              Cancel
+            </button>
+          </div>`;
+        bookingList.appendChild(card);
+      });
+
+      // delegate cancel clicks
+      bookingList.addEventListener("click", e => {
+        if (!e.target.classList.contains("cancel-btn")) return;
+        const idx = parseInt(e.target.dataset.index, 10);
+        const b   = bookings[idx];
+
+        // 1) restore capacity for that lounge+date
+        const caps = loadCapacitiesForDate(b.date);
+        caps[b.lounge] = (caps[b.lounge] || 0) + b.guests;
+        // don't exceed default
+        caps[b.lounge] = Math.min(caps[b.lounge], DEFAULT_CAPACITIES[b.lounge]);
+        saveCapacitiesForDate(b.date, caps);
+
+        // 2) remove booking & persist
+        bookings.splice(idx, 1);
+        localStorage.setItem("bookings", JSON.stringify(bookings));
+        localStorage.setItem("upcomingBookings", JSON.stringify(bookings));
+
+        // 3) refresh UI
+        location.reload();
+      });
     });
-  });
 </script>
 <script src="script.js"></script>
 </body>
